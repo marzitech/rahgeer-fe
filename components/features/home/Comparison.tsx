@@ -10,7 +10,7 @@ const FEATURES = [
 
 function Check() {
   return (
-    <span className="inline-flex size-8 items-center justify-center rounded-full bg-green-100 text-green-700">
+    <span className="inline-flex size-6 items-center justify-center rounded-full bg-green-100 text-sm text-green-700 md:size-8 md:text-base">
       ✓
     </span>
   );
@@ -18,33 +18,40 @@ function Check() {
 
 function Cross() {
   return (
-    <span className="inline-flex size-8 items-center justify-center rounded-full bg-red-100 text-red-500">
+    <span className="inline-flex size-6 items-center justify-center rounded-full bg-red-100 text-sm text-red-500 md:size-8 md:text-base">
       ✕
     </span>
   );
 }
 
-/** "Why Marzi is different" — Marzi vs Others comparison table. */
+/** "Why Marzi is different" — Marzi vs Others comparison table. All three
+ *  columns stay visible on mobile (compact paddings + narrow tick columns,
+ *  like the Figma mobile design) — no horizontal scrolling. */
 export function Comparison() {
   return (
     <section className="bg-cream py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading eyebrow="Comparison" title="Why Marzi is different" />
 
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-black/10 bg-white">
-          <table className="w-full min-w-[640px] text-left">
+        <div className="mt-12 overflow-hidden rounded-2xl border border-black/10 bg-white">
+          <table className="w-full text-left">
             <thead>
               <tr className="border-b border-black/10">
-                <th className="w-[40%] p-6 text-lg font-semibold">Feature</th>
-                <th className="bg-brand-deep p-6 text-center text-white">
-                  <span className="font-display text-xl font-semibold">
+                <th className="p-4 text-base font-semibold md:w-[40%] md:p-6 md:text-lg">
+                  Feature
+                </th>
+                <th className="bg-brand-deep w-[86px] p-2 text-center text-white md:w-auto md:p-6">
+                  <span className="font-display text-base font-semibold md:text-xl">
                     Marzi
                   </span>
-                  <span className="text-gold mt-1 block text-xs font-medium">
-                    ★ Recommended
+                  {/* inline-flex + nowrap keeps the star glued before the
+                      word — never wrapping onto its own line */}
+                  <span className="text-gold mt-1 flex items-center justify-center gap-0.5 text-[9px] font-medium whitespace-nowrap md:text-xs">
+                    <span aria-hidden>★</span>
+                    Recommended
                   </span>
                 </th>
-                <th className="text-foreground/60 p-6 text-center text-lg font-semibold">
+                <th className="text-foreground/60 w-[64px] p-2 text-center text-base font-semibold md:w-auto md:p-6 md:text-lg">
                   Others
                 </th>
               </tr>
@@ -57,11 +64,13 @@ export function Comparison() {
                     i < FEATURES.length - 1 ? "border-b border-black/5" : ""
                   }
                 >
-                  <td className="p-6 text-sm">{feature}</td>
-                  <td className="bg-brand-deep/5 p-6 text-center">
+                  <td className="p-4 text-[13px] leading-relaxed md:p-6 md:text-sm">
+                    {feature}
+                  </td>
+                  <td className="bg-brand-deep/5 p-2 text-center md:p-6">
                     <Check />
                   </td>
-                  <td className="p-6 text-center">
+                  <td className="p-2 text-center md:p-6">
                     <Cross />
                   </td>
                 </tr>
