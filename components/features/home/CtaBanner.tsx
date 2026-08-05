@@ -1,31 +1,52 @@
-/** "Let's Plan Your Next Holiday Together" — dark closing CTA card. */
+import { Phone } from "lucide-react";
+
+/** "Let's Plan Your Next Holiday Together" — closing CTA card on cream:
+ *  black-plum → pink-crimson gradient with faint concentric rings, serif
+ *  heading with soft-gold line, pink + outline button pair (per design). */
 export function CtaBanner() {
   return (
-    <section className="bg-white pb-20">
+    <section className="bg-cream pb-20">
       <div className="mx-auto max-w-[1192px] px-4">
-        <div className="from-ink to-brand-darker rounded-3xl bg-gradient-to-b px-8 py-16 text-center text-white">
-          <h2 className="font-display text-4xl font-semibold text-balance">
-            Let&apos;s Plan
-            <br />
-            <span className="text-gold italic">Your Next Holiday</span> Together
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-sm text-white/75">
-            Tell us where you&apos;d like to go. Your dedicated Travel Mitr will
-            help plan and book every detail.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href="#plan-your-trip"
-              className="bg-brand hover:bg-brand-deep rounded-full px-7 py-3.5 text-sm font-semibold transition"
-            >
-              📞 Talk to a Travel Mitr
-            </a>
-            <a
-              href="#plan-your-trip"
-              className="rounded-full border border-white/40 px-7 py-3.5 text-sm font-semibold transition hover:bg-white/10"
-            >
-              Request a Callback
-            </a>
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-8 py-16 text-center text-white">
+          {/* Faint concentric rings, per the design's background texture */}
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "repeating-radial-gradient(circle at 50% 120%, transparent 0, transparent 56px, white 57px, transparent 58px)",
+            }}
+          />
+
+          <div className="relative">
+            <h2 className="font-display text-[44px] leading-tight font-semibold text-balance">
+              Let&apos;s Plan
+              <br />
+              <span className="text-[#ecc464]">Your Next Holiday</span> Together
+            </h2>
+            <p className="mx-auto mt-5 max-w-md text-[15px] text-white/85">
+              Tell us where you&apos;d like to go. Your dedicated Travel Mitr
+              will help plan and book every detail.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="#plan-your-trip"
+                className="bg-marzi-pink flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition hover:brightness-110"
+              >
+                <Phone
+                  className="h-4 w-4"
+                  fill="currentColor"
+                  strokeWidth={0}
+                />
+                Talk to a Travel Mitr
+              </a>
+              <a
+                href="#plan-your-trip"
+                className="rounded-full border border-white/60 px-7 py-3.5 text-sm font-semibold transition hover:bg-white/10"
+              >
+                Request a Callback
+              </a>
+            </div>
           </div>
         </div>
       </div>
