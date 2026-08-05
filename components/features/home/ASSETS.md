@@ -27,6 +27,12 @@ detail, decorative ellipse groups behind sections (omitted in v1).
 
 - Hero background: real asset committed at `public/images/home/hero-bg.jpg`
   (user-provided export, 1672x941 → JPEG q82).
+- Marzi logo: real `public/images/brand/marzi-logo.png` (from marzi-web).
+- Destination cards: real photos from marzi-holidays itinerary art at
+  `public/images/destinations/*.jpg` (Europe uses the Georgia artwork as a
+  stand-in — swap for the design's Europe photo when Figma access returns).
+- Bold Fest badge: removed — campaign toggled off upstream (marzi-web
+  latest); re-copy `bold-fest-header.png` from marzi-web if it returns.
 
 ## Interim hand-drawn icons (replace with Figma exports)
 
@@ -34,6 +40,4 @@ Generic Material-style SVGs drawn inline as stopgaps — swap for the
 design's exported icons when access returns:
 
 - LeadForm.tsx: PhoneIcon, ShieldIcon
-- Header.tsx: DownloadIcon; Bold Fest badge is styled text standing in for
-  the campaign asset image
 - TravelMitr.tsx: chip icons are emoji stand-ins
