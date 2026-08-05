@@ -1,4 +1,4 @@
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const AUDIENCES = [
@@ -6,13 +6,15 @@ const AUDIENCES = [
     title: "Book for yourself",
     description:
       "Curated itineraries designed for your pace, comfort and interests.",
-    imageLabel: "Traveller by the lake",
+    image: "/images/home/book-yourself.jpg",
+    imagePosition: "object-center",
   },
   {
     title: "Book for parents",
     description:
       "Curated itineraries designed for their pace, comfort and safety.",
-    imageLabel: "Parents travelling",
+    image: "/images/home/book-parents.jpg",
+    imagePosition: "object-top",
   },
 ];
 
@@ -32,22 +34,25 @@ export function PlanningFor() {
               key={audience.title}
               className="group relative h-[400px] overflow-hidden rounded-3xl"
             >
-              <ImagePlaceholder
-                label={audience.imageLabel}
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+              <Image
+                src={audience.image}
+                alt={audience.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 556px"
+                className={`object-cover transition-transform duration-500 group-hover:scale-105 ${audience.imagePosition}`}
               />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-8 pt-20">
-                <h3 className="font-display text-3xl font-semibold text-white">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-8 pt-24">
+                <h3 className="font-display text-[32px] font-semibold text-white">
                   {audience.title}
                 </h3>
-                <p className="mt-2 text-sm text-white/80">
+                <p className="mt-1.5 text-sm text-white/85">
                   {audience.description}
                 </p>
                 <a
                   href="#plan-your-trip"
-                  className="text-foreground hover:bg-gold mt-5 inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold transition"
+                  className="text-foreground hover:bg-cream mt-5 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold shadow transition group-hover:gap-3"
                 >
-                  Start Planning →
+                  Start Planning <span aria-hidden>→</span>
                 </a>
               </div>
             </div>
