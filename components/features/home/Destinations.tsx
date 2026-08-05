@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
 
@@ -18,47 +19,54 @@ const TABS = [
 
 type Tab = (typeof TABS)[number];
 
+// Uniform card copy per the design.
+const CARD_BLURB =
+  "Curated itineraries designed for your pace, comfort, and curiosity.";
+
 const DESTINATIONS: {
   name: string;
   image: string;
-  blurb: string;
   tags: Tab[];
+  cta: "View packages" | "Read travel guide";
+  priceFromInr?: number;
 }[] = [
   {
     name: "Europe",
     image: "/images/destinations/europe.jpg",
-    blurb: "Grand cities, scenic rail journeys and unhurried sightseeing.",
     tags: ["International", "First International Trip"],
+    cta: "View packages",
+    priceFromInr: 56302,
   },
   {
     name: "Kashmir",
     image: "/images/destinations/kashmir.jpg",
-    blurb: "Houseboats, gardens and mountain air at a gentle pace.",
     tags: ["India", "Mountains"],
+    cta: "View packages",
+    priceFromInr: 56302,
   },
   {
     name: "Japan",
     image: "/images/destinations/japan.jpg",
-    blurb: "Culture, comfort and cherry blossoms made easy to explore.",
     tags: ["International"],
+    cta: "Read travel guide",
   },
   {
     name: "Kerala",
     image: "/images/destinations/kerala.jpg",
-    blurb: "Backwaters, ayurveda and slow mornings by the water.",
     tags: ["India", "Wellness", "Beaches"],
+    cta: "Read travel guide",
   },
   {
     name: "Vietnam",
     image: "/images/destinations/vietnam.jpg",
-    blurb: "Gentle adventures for your first trip beyond the familiar.",
     tags: ["International", "First International Trip"],
+    cta: "Read travel guide",
   },
   {
     name: "Rajasthan",
     image: "/images/destinations/rajasthan.jpg",
-    blurb: "Palaces, heritage stays and royal comfort throughout.",
     tags: ["India", "Spiritual"],
+    cta: "Read travel guide",
   },
 ];
 
@@ -153,18 +161,27 @@ export function Destinations() {
                 sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 380px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
+              {destination.priceFromInr ? (
+                <div className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md">
+                  <p className="text-foreground/60 text-xs">Starting from</p>
+                  <p className="text-brand text-lg leading-tight font-bold">
+                    ₹{destination.priceFromInr.toLocaleString("en-IN")}
+                  </p>
+                </div>
+              ) : null}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-6 pt-20">
                 <h3 className="font-display text-[26px] font-semibold text-white">
                   {destination.name}
                 </h3>
                 <p className="mt-1 text-sm leading-snug text-white/80">
-                  {destination.blurb}
+                  {CARD_BLURB}
                 </p>
                 <a
                   href="#plan-your-trip"
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-white underline-offset-4 hover:underline"
+                  className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2"
                 >
-                  Plan This Trip <span aria-hidden>→</span>
+                  {destination.cta}
+                  <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
                 </a>
               </div>
             </div>
