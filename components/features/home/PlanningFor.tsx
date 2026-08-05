@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const AUDIENCES = [
@@ -8,6 +9,7 @@ const AUDIENCES = [
       "Curated itineraries designed for your pace, comfort and interests.",
     image: "/images/home/book-yourself-solo.jpg", // design export: solo traveller, palace terrace
     imagePosition: "object-[center_30%]",
+    href: "/plan/yourself",
   },
   {
     title: "Book for parents",
@@ -15,6 +17,7 @@ const AUDIENCES = [
       "Curated itineraries designed for their pace, comfort and safety.",
     image: "/images/home/book-parents-lake.jpg", // design export: couple by the lake
     imagePosition: "object-[center_40%]",
+    href: "/plan/parents",
   },
 ];
 
@@ -48,12 +51,12 @@ export function PlanningFor() {
                 <p className="mt-1.5 text-sm text-white/85">
                   {audience.description}
                 </p>
-                <a
-                  href="#plan-your-trip"
+                <Link
+                  href={audience.href}
                   className="text-foreground hover:bg-cream mt-5 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold shadow transition group-hover:gap-3"
                 >
                   Start Planning <span aria-hidden>→</span>
-                </a>
+                </Link>
               </div>
             </div>
           ))}

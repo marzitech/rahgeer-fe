@@ -49,8 +49,22 @@ type FormState = "idle" | "submitting" | "success" | "error";
 const inputClasses =
   "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
 
-/** "Plan Your Trip — Free" hero card → backend enquiry lead. */
-export function LeadForm() {
+type LeadFormProps = {
+  /** Card heading; default is the hero's "Plan Your Trip — Free". */
+  heading?: React.ReactNode;
+  /** Annotates the enquiry so ops knows who the trip is for. */
+  audience?: "yourself" | "parents";
+  /** Show the OR divider + AI Trip planner button (planning pages). */
+  showAiPlanner?: boolean;
+};
+
+/** The Marzi lead form → backend enquiry. Used by the home hero and the
+ *  /plan/[audience] planning pages. */
+export function LeadForm({
+  heading,
+  audience,
+  showAiPlanner = false,
+}: LeadFormProps) {
   const [destination, setDestination] = useState("");
   const [month, setMonth] = useState("");
   const [fullName, setFullName] = useState("");
@@ -63,12 +77,16 @@ export function LeadForm() {
     setState("submitting");
     setErrorMessage("");
     try {
+      const messageParts = [
+        month ? `Preferred travel month: ${month}` : "",
+        audience === "parents" ? "Booking for parents." : "",
+      ].filter(Boolean);
       await createEnquiry({
         full_name: fullName,
         phone: mobile,
         destination,
         trip_scope: guessTripScope(destination),
-        message: month ? `Preferred travel month: ${month}` : "",
+        message: messageParts.join(" "),
         source: "website",
       });
       setState("success");
@@ -82,8 +100,11 @@ export function LeadForm() {
     }
   }
 
-  const cardClasses =
-    "rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
+  // Planning pages use the design's warm card: butter-yellow top -> white
+  // -> soft pink bottom. The hero card keeps its white-top variant.
+  const cardClasses = showAiPlanner
+    ? "rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_22%,#ffffff_78%,#f9d9e9_100%)] p-7 shadow-2xl"
+    : "rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
 
   if (state === "success") {
     return (
@@ -102,7 +123,7 @@ export function LeadForm() {
   return (
     <form id="plan-your-trip" onSubmit={handleSubmit} className={cardClasses}>
       <h3 className="font-display text-brand text-[28px] font-bold">
-        Plan Your Trip — Free
+        {heading ?? "Plan Your Trip — Free"}
       </h3>
 
       <div className="mt-6 space-y-5">
@@ -180,6 +201,26 @@ export function LeadForm() {
           <ShieldIcon />
           No spam. Your details stay private.
         </p>
+
+        {showAiPlanner ? (
+          <>
+            <div className="flex items-center gap-3">
+              <span className="h-px flex-1 bg-black/10" />
+              <span className="text-foreground/40 text-xs font-medium">OR</span>
+              <span className="h-px flex-1 bg-black/10" />
+            </div>
+            {/* TODO: route to the AI trip-planner flow (rahgeer-be itinerary
+                API is live; FE flow not built yet). */}
+            <button
+              type="button"
+              title="Coming soon"
+              className="text-foreground flex w-full items-center justify-center gap-2 rounded-full border border-black/20 bg-white py-4 text-sm font-semibold transition hover:border-black/40"
+            >
+              <span aria-hidden>✨</span>
+              Plan Trip using AI Trip planner
+            </button>
+          </>
+        ) : null}
       </div>
     </form>
   );
