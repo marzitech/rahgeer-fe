@@ -6,15 +6,15 @@ const AUDIENCES = [
     title: "Book for yourself",
     description:
       "Curated itineraries designed for your pace, comfort and interests.",
-    image: "/images/home/book-yourself.jpg", // golden-hour viewpoint group
-    imagePosition: "object-[center_65%]",
+    image: "/images/home/book-yourself-solo.jpg", // design export: solo traveller, palace terrace
+    imagePosition: "object-[center_30%]",
   },
   {
     title: "Book for parents",
     description:
       "Curated itineraries designed for their pace, comfort and safety.",
-    image: "/images/home/book-parents.jpg", // temple trip group
-    imagePosition: "object-[center_35%]",
+    image: "/images/home/book-parents-lake.jpg", // design export: couple by the lake
+    imagePosition: "object-[center_40%]",
   },
 ];
 
