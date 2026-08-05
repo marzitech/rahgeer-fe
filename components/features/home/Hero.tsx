@@ -2,11 +2,12 @@ import Image from "next/image";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { LeadForm } from "./LeadForm";
 
-/** Hero: full-bleed Udaipur sunset photo, dark-left overlay for legibility,
- *  trusted-by pill, serif headline with gold accent, lead form card right. */
+/** Full-viewport hero: the Udaipur sunset photo covers the entire first
+ *  screen (the fixed header floats on top of it); dark-left overlay for
+ *  legibility, trusted-by pill, serif headline, lead form card right. */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative flex min-h-screen items-center overflow-hidden">
       <Image
         src="/images/home/hero-bg.jpg"
         alt=""
@@ -19,7 +20,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-black/25" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-      <div className="relative mx-auto grid max-w-[1192px] grid-cols-1 items-center gap-12 px-4 py-16 lg:grid-cols-[1fr_480px] lg:py-14">
+      <div className="relative mx-auto grid w-full max-w-[1192px] grid-cols-1 items-center gap-12 px-4 pt-28 pb-14 md:pt-32 lg:grid-cols-[1fr_480px]">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 shadow">
             <div className="flex -space-x-2">

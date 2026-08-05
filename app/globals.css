@@ -6,14 +6,16 @@
   --background: #ffffff;
   --foreground: #1c1017;
 
-  --marzi-purple: #36145a; /* header / footer bar */
-  --marzi-purple-deep: #2e1065;
-  --brand: #a3125c; /* primary magenta */
-  --brand-deep: #7b0c45;
+  /* Exact marzi-web production values */
+  --marzi-purple: #2e1065; /* header / footer bar */
+  --marzi-purple-deep: #23093f;
+  --brand: #821a52; /* marzi-primary magenta */
+  --brand-deep: #6a1243;
   --brand-darker: #4d0629;
+  --marzi-pink: #ec1e79; /* CTA pink */
   --cream: #fffcf3; /* warm section background */
   --cream-dark: #f7edd8;
-  --gold: #ffc839; /* accent (CTA highlight, stars) */
+  --gold: #ffc61a; /* marzi-gold accent */
   --ink: #27010f; /* near-black plum (dark CTA card) */
 }
 
@@ -22,6 +24,7 @@
   --color-foreground: var(--foreground);
   --color-marzi-purple: var(--marzi-purple);
   --color-marzi-purple-deep: var(--marzi-purple-deep);
+  --color-marzi-pink: var(--marzi-pink);
   --color-brand: var(--brand);
   --color-brand-deep: var(--brand-deep);
   --color-brand-darker: var(--brand-darker);
