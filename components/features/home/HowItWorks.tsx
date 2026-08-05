@@ -1,24 +1,52 @@
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { cn } from "@/lib/utils";
 
 const STEPS = [
   {
     title: "Tell us about your holiday",
-    description: "",
+    description:
+      "Share where you'd like to go, when, and how you love to travel.",
   },
   {
     title: "Receive a personalised plan",
     description:
       "Curated itineraries designed for your pace, comfort and interests.",
   },
-  { title: "We book everything", description: "" },
-  { title: "Enjoy your holiday", description: "" },
+  {
+    title: "We book everything",
+    description:
+      "Flights, stays, local experiences and paperwork — all handled for you.",
+  },
+  {
+    title: "Enjoy your holiday",
+    description:
+      "Travel with your Mitr a phone call away, every day of the trip.",
+  },
 ];
 
-/** "Simple. Personal. Yours." — magenta band, numbered steps + photo. */
+const STEP_INTERVAL_MS = 4000;
+
+/** "Simple. Personal. Yours." — crimson band; auto-advancing stepper with
+ *  expanding descriptions (pauses on hover, clickable) + consultant photo. */
 export function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(
+      () => setActiveStep((step) => (step + 1) % STEPS.length),
+      STEP_INTERVAL_MS,
+    );
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   return (
-    <section className="from-brand-deep to-brand bg-gradient-to-b py-20 text-white">
+    <section className="from-brand-darker via-brand-deep to-brand bg-gradient-to-b py-20 text-white">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           dark
@@ -27,31 +55,65 @@ export function HowItWorks() {
         />
 
         <div className="mt-12 grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_640px]">
-          <ol className="relative space-y-2 border-l border-white/25 pl-8">
-            {STEPS.map((step, index) => (
-              <li key={step.title} className="relative py-4">
-                <span
-                  aria-hidden
-                  className="bg-gold text-ink absolute top-6 -left-[41px] flex size-6 items-center justify-center rounded-full text-xs font-bold"
-                >
-                  {index + 1}
-                </span>
-                <h3 className="font-display text-2xl font-semibold">
-                  {step.title}
-                </h3>
-                {step.description ? (
-                  <p className="mt-2 max-w-md text-sm text-white/80">
-                    {step.description}
-                  </p>
-                ) : null}
-              </li>
-            ))}
+          <ol
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {STEPS.map((step, index) => {
+              const isActive = index === activeStep;
+              return (
+                <li key={step.title} className="relative">
+                  {/* Segment of the vertical progress line */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute top-0 bottom-0 left-0 w-px transition-colors duration-500",
+                      isActive ? "bg-gold" : "bg-white/25",
+                    )}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setActiveStep(index)}
+                    aria-current={isActive ? "step" : undefined}
+                    className="w-full py-5 pl-8 text-left"
+                  >
+                    <h3
+                      className={cn(
+                        "font-display text-2xl font-semibold transition-all duration-500",
+                        isActive
+                          ? "text-white"
+                          : "text-white/50 hover:text-white/75",
+                      )}
+                    >
+                      {step.title}
+                    </h3>
+                    <div
+                      className={cn(
+                        "grid transition-all duration-500 ease-in-out",
+                        isActive
+                          ? "mt-2 grid-rows-[1fr] opacity-100"
+                          : "grid-rows-[0fr] opacity-0",
+                      )}
+                    >
+                      <p className="max-w-md overflow-hidden text-sm text-white/80">
+                        {step.description}
+                      </p>
+                    </div>
+                  </button>
+                </li>
+              );
+            })}
           </ol>
 
-          <ImagePlaceholder
-            label="Family planning with Travel Mitr"
-            className="h-[480px] w-full rounded-3xl"
-          />
+          <div className="relative h-[480px] w-full overflow-hidden rounded-3xl">
+            <Image
+              src="/images/home/how-it-works.jpg"
+              alt="A Marzi consultant walking through a personalised plan"
+              fill
+              sizes="(max-width: 1024px) 100vw, 640px"
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
