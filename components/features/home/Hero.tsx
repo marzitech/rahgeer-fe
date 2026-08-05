@@ -7,7 +7,7 @@ import { LeadForm } from "./LeadForm";
  *  legibility, trusted-by pill, serif headline, lead form card right. */
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden">
+    <section className="relative flex items-center overflow-hidden lg:min-h-screen">
       <Image
         src="/images/home/hero-bg.jpg"
         alt=""
@@ -16,12 +16,13 @@ export function Hero() {
         sizes="100vw"
         className="object-cover object-center"
       />
-      {/* Legibility overlays: darken overall + stronger on the text side */}
-      <div className="absolute inset-0 bg-black/25" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+      {/* Legibility overlays: darken overall + stronger on the text side
+          (on mobile the text spans the full width, so darken evenly) */}
+      <div className="absolute inset-0 bg-black/30 lg:bg-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-black/10 lg:to-transparent" />
 
-      <div className="relative mx-auto grid w-full max-w-[1192px] grid-cols-1 items-center gap-12 px-4 pt-28 pb-14 md:pt-32 lg:grid-cols-[1fr_480px]">
-        <div>
+      <div className="relative mx-auto grid w-full max-w-[1192px] grid-cols-1 items-center gap-10 px-4 pt-24 pb-12 md:pt-28 lg:grid-cols-[1fr_480px] lg:gap-12 lg:pt-32 lg:pb-14">
+        <div className="lg:col-start-1">
           <div className="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 shadow">
             <div className="flex -space-x-2">
               {[0, 1, 2].map((i) => (
@@ -36,14 +37,13 @@ export function Hero() {
             </p>
           </div>
 
-          <h1 className="font-display mt-8 text-[52px] leading-[1.15] font-bold text-white">
+          <h1 className="font-display mt-6 text-[34px] leading-[1.2] font-bold text-white md:text-[44px] lg:mt-8 lg:text-[52px] lg:leading-[1.15]">
             Travel Confidently.
             <br />
             Your <span className="text-gold">Travel Mitr</span> Takes
-            <br />
-            Care of Everything.
+            <br className="hidden md:block" /> Care of Everything.
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/85">
+          <p className="mt-4 max-w-xl text-base text-white/85 md:text-lg lg:mt-6">
             India&apos;s first dedicated travel platform for people above 50 —
             from planning to booking.
           </p>

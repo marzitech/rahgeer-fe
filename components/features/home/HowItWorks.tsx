@@ -93,7 +93,7 @@ export function HowItWorks() {
                   >
                     <h3
                       className={cn(
-                        "font-display text-2xl font-semibold transition-all duration-500",
+                        "font-display text-xl font-semibold transition-all duration-500 md:text-2xl",
                         isActive
                           ? "text-white"
                           : "text-white/50 hover:text-white/75",
@@ -119,7 +119,7 @@ export function HowItWorks() {
             })}
           </ol>
 
-          <div className="relative h-[480px] w-full overflow-hidden rounded-3xl">
+          <div className="relative h-[280px] w-full overflow-hidden rounded-3xl md:h-[400px] lg:h-[480px]">
             <Image
               src="/images/home/how-it-works.jpg"
               alt="A Marzi consultant walking through a personalised plan"

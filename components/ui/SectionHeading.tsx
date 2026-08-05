@@ -22,7 +22,7 @@ export function SectionHeading({
         {eyebrow}
       </p>
       <h2
-        className={`font-display mt-3 text-4xl font-semibold text-balance ${
+        className={`font-display mt-3 text-[28px] font-semibold text-balance md:text-4xl ${
           dark ? "text-white" : "text-foreground"
         }`}
       >

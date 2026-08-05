@@ -31,8 +31,8 @@ export function Comparison() {
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading eyebrow="Comparison" title="Why Marzi is different" />
 
-        <div className="mt-12 overflow-hidden rounded-2xl border border-black/10 bg-white">
-          <table className="w-full text-left">
+        <div className="mt-12 overflow-x-auto rounded-2xl border border-black/10 bg-white">
+          <table className="w-full min-w-[640px] text-left">
             <thead>
               <tr className="border-b border-black/10">
                 <th className="w-[40%] p-6 text-lg font-semibold">Feature</th>

@@ -32,7 +32,7 @@ export function PlanningFor() {
           {AUDIENCES.map((audience) => (
             <div
               key={audience.title}
-              className="group relative h-[400px] overflow-hidden rounded-3xl"
+              className="group relative h-[340px] overflow-hidden rounded-3xl md:h-[400px]"
             >
               <Image
                 src={audience.image}
@@ -42,7 +42,7 @@ export function PlanningFor() {
                 className={`object-cover transition-transform duration-500 group-hover:scale-105 ${audience.imagePosition}`}
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-8 pt-24">
-                <h3 className="font-display text-[32px] font-semibold text-white">
+                <h3 className="font-display text-[26px] font-semibold text-white md:text-[32px]">
                   {audience.title}
                 </h3>
                 <p className="mt-1.5 text-sm text-white/85">

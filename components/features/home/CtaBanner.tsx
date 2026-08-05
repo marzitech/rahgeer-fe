@@ -7,7 +7,7 @@ export function CtaBanner() {
   return (
     <section className="bg-cream pb-20">
       <div className="mx-auto max-w-[1192px] px-4">
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-8 py-16 text-center text-white">
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-6 py-12 text-center text-white md:px-8 md:py-16">
           {/* Faint concentric rings, per the design's background texture */}
           <div
             aria-hidden
@@ -19,7 +19,7 @@ export function CtaBanner() {
           />
 
           <div className="relative">
-            <h2 className="font-display text-[44px] leading-tight font-semibold text-balance">
+            <h2 className="font-display text-[30px] leading-tight font-semibold text-balance md:text-[44px]">
               Let&apos;s Plan
               <br />
               <span className="text-[#ecc464]">Your Next Holiday</span> Together

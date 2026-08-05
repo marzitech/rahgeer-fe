@@ -99,7 +99,7 @@ export function Destinations() {
           {visible.map((destination) => (
             <div
               key={destination.name}
-              className="group relative h-[400px] overflow-hidden rounded-3xl"
+              className="group relative h-[360px] overflow-hidden rounded-3xl md:h-[400px]"
             >
               <Image
                 src={destination.image}

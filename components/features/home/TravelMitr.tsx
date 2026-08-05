@@ -17,12 +17,12 @@ export function TravelMitr() {
   return (
     <section className="overflow-hidden bg-gradient-to-b from-[#140006] via-[#57062b] to-[#a11550] py-16 text-white">
       <div className="mx-auto max-w-[1192px] px-4 text-center">
-        <h2 className="font-display text-4xl font-semibold">
+        <h2 className="font-display text-[28px] font-semibold md:text-4xl">
           One person. Every step of your journey.
         </h2>
 
         <div className="mt-10 flex flex-col items-center">
-          <div className="relative size-[180px] overflow-hidden rounded-full ring-2 ring-white/30">
+          <div className="relative size-[140px] overflow-hidden rounded-full ring-2 ring-white/30 md:size-[180px]">
             <Image
               src="/images/home/travel-mitr.jpg"
               alt="Your dedicated Travel Mitr"
