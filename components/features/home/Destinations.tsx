@@ -158,9 +158,10 @@ export function Destinations() {
           className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
         >
           {visible.map((destination) => (
-            <div
+            <Link
               key={destination.name}
-              className="group relative h-[360px] w-[88%] shrink-0 snap-center overflow-hidden rounded-3xl sm:w-auto sm:shrink md:h-[400px]"
+              href={`/destinations/${destination.slug}`}
+              className="group relative block h-[360px] w-[88%] shrink-0 snap-center overflow-hidden rounded-3xl sm:w-auto sm:shrink md:h-[400px]"
             >
               <Image
                 src={destination.image}
@@ -170,15 +171,12 @@ export function Destinations() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {destination.priceFromInr ? (
-                <Link
-                  href={`/destinations/${destination.slug}`}
-                  className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md transition hover:scale-105"
-                >
+                <span className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md transition group-hover:scale-105">
                   <p className="text-foreground/60 text-xs">Starting from</p>
                   <p className="text-brand text-lg leading-tight font-bold">
                     ₹{destination.priceFromInr.toLocaleString("en-IN")}
                   </p>
-                </Link>
+                </span>
               ) : null}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-6 pt-20">
                 <h3 className="font-display text-[26px] font-semibold text-white">
@@ -187,19 +185,12 @@ export function Destinations() {
                 <p className="mt-1 text-sm leading-snug text-white/80">
                   {CARD_BLURB}
                 </p>
-                <Link
-                  href={
-                    destination.cta === "View packages"
-                      ? `/destinations/${destination.slug}`
-                      : "#plan-your-trip"
-                  }
-                  className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2"
-                >
+                <span className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2">
                   {destination.cta}
                   <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
-                </Link>
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

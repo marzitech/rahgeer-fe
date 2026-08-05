@@ -19,6 +19,8 @@ export type DestinationContent = {
   name: string;
   slug: string;
   image: string;
+  /** "packages" -> shows Choose Package That Feels Right; "guide" -> editorial only */
+  kind: "packages" | "guide";
   heroTagline: string;
   intro: string;
   highlights: { label: string; value: string }[];
@@ -53,6 +55,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   europe: {
     name: "Europe",
     slug: "europe",
+    kind: "packages",
     image: "/images/destinations/europe.jpg",
     heroTagline:
       "Experience Europe through a thoughtfully planned journey that balances culture, comfort, sightseeing and time to relax.",
@@ -85,6 +88,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   kashmir: {
     name: "Kashmir",
     slug: "kashmir",
+    kind: "packages",
     image: "/images/destinations/kashmir.jpg",
     heroTagline:
       "Experience Kashmir through a thoughtfully planned journey that balances nature, comfort, sightseeing and time to relax.",
@@ -113,6 +117,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   japan: {
     name: "Japan",
     slug: "japan",
+    kind: "guide",
     image: "/images/destinations/japan.jpg",
     heroTagline:
       "Experience Japan through a thoughtfully planned journey that balances culture, comfort, sightseeing and time to relax.",
@@ -152,6 +157,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   kerala: {
     name: "Kerala",
     slug: "kerala",
+    kind: "guide",
     image: "/images/destinations/kerala.jpg",
     heroTagline:
       "Experience Kerala through a thoughtfully planned journey that balances backwaters, comfort, wellness and time to relax.",
@@ -171,6 +177,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   vietnam: {
     name: "Vietnam",
     slug: "vietnam",
+    kind: "guide",
     image: "/images/destinations/vietnam.jpg",
     heroTagline:
       "Experience Vietnam through a thoughtfully planned journey that balances culture, comfort, sightseeing and time to relax.",
@@ -193,6 +200,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   rajasthan: {
     name: "Rajasthan",
     slug: "rajasthan",
+    kind: "guide",
     image: "/images/destinations/rajasthan.jpg",
     heroTagline:
       "Experience Rajasthan through a thoughtfully planned journey that balances heritage, comfort, sightseeing and time to relax.",

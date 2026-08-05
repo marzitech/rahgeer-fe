@@ -119,7 +119,9 @@ export default async function DestinationPage({
           </div>
         </section>
 
-        <FeaturedItineraries destination={destination} />
+        {destination.kind === "packages" ? (
+          <FeaturedItineraries destination={destination} />
+        ) : null}
 
         <Faq />
       </main>
