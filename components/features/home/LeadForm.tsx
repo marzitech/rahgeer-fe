@@ -46,6 +46,9 @@ function guessTripScope(destination: string): "domestic" | "international" {
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
+const inputClasses =
+  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
+
 /** "Plan Your Trip — Free" hero card → backend enquiry lead. */
 export function LeadForm() {
   const [destination, setDestination] = useState("");
@@ -79,13 +82,13 @@ export function LeadForm() {
     }
   }
 
+  const cardClasses =
+    "rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
+
   if (state === "success") {
     return (
-      <div
-        id="plan-your-trip"
-        className="rounded-2xl bg-white p-8 text-center shadow-xl"
-      >
-        <p className="font-display text-brand text-2xl font-semibold">
+      <div id="plan-your-trip" className={`${cardClasses} text-center`}>
+        <p className="font-display text-brand text-2xl font-bold">
           Thank you, {fullName.split(" ")[0]}!
         </p>
         <p className="text-foreground/70 mt-3 text-sm">
@@ -97,18 +100,14 @@ export function LeadForm() {
   }
 
   return (
-    <form
-      id="plan-your-trip"
-      onSubmit={handleSubmit}
-      className="rounded-2xl bg-white p-6 shadow-xl"
-    >
-      <h3 className="font-display text-foreground text-2xl font-semibold">
-        Plan Your Trip — <span className="text-brand">Free</span>
+    <form id="plan-your-trip" onSubmit={handleSubmit} className={cardClasses}>
+      <h3 className="font-display text-brand text-[28px] font-bold">
+        Plan Your Trip — Free
       </h3>
 
-      <div className="mt-5 space-y-4">
+      <div className="mt-6 space-y-5">
         <label className="block">
-          <span className="text-sm font-medium">
+          <span className="text-[13px] font-semibold">
             Where would you like to go?
           </span>
           <input
@@ -116,17 +115,17 @@ export function LeadForm() {
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
             placeholder="e.g. Switzerland, Kerala, Bhutan"
-            className="focus:border-brand focus:ring-brand/20 mt-1.5 w-full rounded-lg border border-black/15 px-4 py-3.5 text-sm outline-none focus:ring-2"
+            className={inputClasses}
           />
         </label>
 
         <div className="grid grid-cols-2 gap-4">
           <label className="block">
-            <span className="text-sm font-medium">Travel Month</span>
+            <span className="text-[13px] font-semibold">Travel Month</span>
             <select
               value={month}
               onChange={(e) => setMonth(e.target.value)}
-              className="focus:border-brand mt-1.5 w-full rounded-lg border border-black/15 bg-white px-3 py-3.5 text-sm outline-none"
+              className={`${inputClasses} appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%228%22%3E%3Cpath%20d%3D%22M1%201l5%205%205-5%22%20stroke%3D%22%23444%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%3C/svg%3E')] bg-[right_1rem_center] bg-no-repeat pr-9`}
             >
               <option value="">Select a month</option>
               {MONTHS.map((m) => (
@@ -135,21 +134,21 @@ export function LeadForm() {
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-medium">Full Name</span>
+            <span className="text-[13px] font-semibold">Full Name</span>
             <input
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="eg. Anita Sharma"
-              className="focus:border-brand focus:ring-brand/20 mt-1.5 w-full rounded-lg border border-black/15 px-4 py-3.5 text-sm outline-none focus:ring-2"
+              className={inputClasses}
             />
           </label>
         </div>
 
         <label className="block">
-          <span className="text-sm font-medium">Mobile Number</span>
-          <div className="mt-1.5 flex gap-2">
-            <span className="text-foreground/70 flex items-center rounded-lg border border-black/15 px-3 text-sm">
+          <span className="text-[13px] font-semibold">Mobile Number</span>
+          <div className="flex gap-3">
+            <span className="text-foreground/60 mt-2 flex items-center rounded-xl bg-[#f1f1f1] px-4 text-sm">
               +91
             </span>
             <input
@@ -159,8 +158,7 @@ export function LeadForm() {
               value={mobile}
               onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
               maxLength={10}
-              placeholder="10-digit mobile number"
-              className="focus:border-brand focus:ring-brand/20 w-full rounded-lg border border-black/15 px-4 py-3.5 text-sm outline-none focus:ring-2"
+              className={inputClasses}
             />
           </div>
         </label>
@@ -172,15 +170,45 @@ export function LeadForm() {
         <button
           type="submit"
           disabled={state === "submitting"}
-          className="bg-brand hover:bg-brand-deep w-full rounded-full py-3.5 text-sm font-semibold text-white transition disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-4 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-60"
         >
-          {state === "submitting" ? "Sending…" : "📞 Talk to a Travel Mitr"}
+          <PhoneIcon />
+          {state === "submitting" ? "Sending…" : "Talk to a Travel Mitr"}
         </button>
 
-        <p className="text-foreground/50 text-center text-xs">
-          🛡 No spam. Your details stay private.
+        <p className="flex items-center justify-center gap-1.5 text-center text-xs font-medium text-green-700">
+          <ShieldIcon />
+          No spam. Your details stay private.
         </p>
       </div>
     </form>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3.5a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <path d="M12 2 4 5v6c0 5.25 3.4 10.15 8 11 4.6-.85 8-5.75 8-11V5l-8-3Zm-1.4 14.6-3.6-3.6 1.4-1.4 2.2 2.2 5.2-5.2 1.4 1.4-6.6 6.6Z" />
+    </svg>
   );
 }

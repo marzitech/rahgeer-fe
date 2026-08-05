@@ -22,3 +22,18 @@ Design: Marzi Production — node `3256:93803` (Web / home desktop, 1280w).
 
 Also refine when Figma access returns: exact gradient stops, scallop edge
 detail, decorative ellipse groups behind sections (omitted in v1).
+
+## Resolved
+
+- Hero background: real asset committed at `public/images/home/hero-bg.jpg`
+  (user-provided export, 1672x941 → JPEG q82).
+
+## Interim hand-drawn icons (replace with Figma exports)
+
+Generic Material-style SVGs drawn inline as stopgaps — swap for the
+design's exported icons when access returns:
+
+- LeadForm.tsx: PhoneIcon, ShieldIcon
+- Header.tsx: DownloadIcon; Bold Fest badge is styled text standing in for
+  the campaign asset image
+- TravelMitr.tsx: chip icons are emoji stand-ins
