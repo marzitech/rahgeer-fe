@@ -1,6 +1,12 @@
 import Image from "next/image";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { LeadForm } from "./LeadForm";
+
+// Brand persona art (shared with the reviews section)
+const TRUSTED_AVATARS = [
+  "/images/home/reviewer-anita.jpg",
+  "/images/home/reviewer-priya.jpg",
+  "/images/home/reviewer-vikram.jpg",
+];
 
 /** Full-viewport hero: the Udaipur sunset photo covers the entire first
  *  screen (the fixed header floats on top of it); dark-left overlay for
@@ -25,11 +31,19 @@ export function Hero() {
         <div className="lg:col-start-1">
           <div className="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pr-4 pl-1.5 shadow">
             <div className="flex -space-x-2">
-              {[0, 1, 2].map((i) => (
-                <ImagePlaceholder
-                  key={i}
-                  className="size-7 rounded-full border-2 border-white"
-                />
+              {TRUSTED_AVATARS.map((src) => (
+                <span
+                  key={src}
+                  className="relative size-7 overflow-hidden rounded-full border-2 border-white"
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="28px"
+                    className="object-cover"
+                  />
+                </span>
               ))}
             </div>
             <p className="text-xs font-medium text-green-700">
