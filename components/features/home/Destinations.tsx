@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ const CARD_BLURB =
 
 const DESTINATIONS: {
   name: string;
+  slug: string;
   image: string;
   tags: Tab[];
   cta: "View packages" | "Read travel guide";
@@ -32,6 +34,7 @@ const DESTINATIONS: {
 }[] = [
   {
     name: "Europe",
+    slug: "europe",
     image: "/images/destinations/europe.jpg",
     tags: ["International", "First International Trip"],
     cta: "View packages",
@@ -39,6 +42,7 @@ const DESTINATIONS: {
   },
   {
     name: "Kashmir",
+    slug: "kashmir",
     image: "/images/destinations/kashmir.jpg",
     tags: ["India", "Mountains"],
     cta: "View packages",
@@ -46,24 +50,28 @@ const DESTINATIONS: {
   },
   {
     name: "Japan",
+    slug: "japan",
     image: "/images/destinations/japan.jpg",
     tags: ["International"],
     cta: "Read travel guide",
   },
   {
     name: "Kerala",
+    slug: "kerala",
     image: "/images/destinations/kerala.jpg",
     tags: ["India", "Wellness", "Beaches"],
     cta: "Read travel guide",
   },
   {
     name: "Vietnam",
+    slug: "vietnam",
     image: "/images/destinations/vietnam.jpg",
     tags: ["International", "First International Trip"],
     cta: "Read travel guide",
   },
   {
     name: "Rajasthan",
+    slug: "rajasthan",
     image: "/images/destinations/rajasthan.jpg",
     tags: ["India", "Spiritual"],
     cta: "Read travel guide",
@@ -162,12 +170,15 @@ export function Destinations() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {destination.priceFromInr ? (
-                <div className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md">
+                <Link
+                  href={`/destinations/${destination.slug}`}
+                  className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md transition hover:scale-105"
+                >
                   <p className="text-foreground/60 text-xs">Starting from</p>
                   <p className="text-brand text-lg leading-tight font-bold">
                     ₹{destination.priceFromInr.toLocaleString("en-IN")}
                   </p>
-                </div>
+                </Link>
               ) : null}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-6 pt-20">
                 <h3 className="font-display text-[26px] font-semibold text-white">
@@ -176,13 +187,17 @@ export function Destinations() {
                 <p className="mt-1 text-sm leading-snug text-white/80">
                   {CARD_BLURB}
                 </p>
-                <a
-                  href="#plan-your-trip"
+                <Link
+                  href={
+                    destination.cta === "View packages"
+                      ? `/destinations/${destination.slug}`
+                      : "#plan-your-trip"
+                  }
                   className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2"
                 >
                   {destination.cta}
                   <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
-                </a>
+                </Link>
               </div>
             </div>
           ))}
