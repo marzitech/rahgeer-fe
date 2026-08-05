@@ -1,0 +1,59 @@
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+
+const AUDIENCES = [
+  {
+    title: "Book for yourself",
+    description:
+      "Curated itineraries designed for your pace, comfort and interests.",
+    imageLabel: "Traveller by the lake",
+  },
+  {
+    title: "Book for parents",
+    description:
+      "Curated itineraries designed for their pace, comfort and safety.",
+    imageLabel: "Parents travelling",
+  },
+];
+
+/** "Who are you planning for?" — two large photo cards with CTAs. */
+export function PlanningFor() {
+  return (
+    <section className="bg-cream py-20">
+      <div className="mx-auto max-w-[1192px] px-4">
+        <SectionHeading
+          eyebrow="Book your trip"
+          title="Who are you planning for?"
+        />
+
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {AUDIENCES.map((audience) => (
+            <div
+              key={audience.title}
+              className="group relative h-[400px] overflow-hidden rounded-3xl"
+            >
+              <ImagePlaceholder
+                label={audience.imageLabel}
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-8 pt-20">
+                <h3 className="font-display text-3xl font-semibold text-white">
+                  {audience.title}
+                </h3>
+                <p className="mt-2 text-sm text-white/80">
+                  {audience.description}
+                </p>
+                <a
+                  href="#plan-your-trip"
+                  className="text-foreground hover:bg-gold mt-5 inline-block rounded-full bg-white px-6 py-3 text-sm font-semibold transition"
+                >
+                  Start Planning →
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

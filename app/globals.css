@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+/* Marzi brand tokens — sampled from the Figma home design + aligned with
+   marzi-web's production palette (deep purple bar, magenta primary). */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1c1017;
+
+  --marzi-purple: #36145a; /* header / footer bar */
+  --marzi-purple-deep: #2e1065;
+  --brand: #a3125c; /* primary magenta */
+  --brand-deep: #7b0c45;
+  --brand-darker: #4d0629;
+  --cream: #fffcf3; /* warm section background */
+  --cream-dark: #f7edd8;
+  --gold: #ffc839; /* accent (CTA highlight, stars) */
+  --ink: #27010f; /* near-black plum (dark CTA card) */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-marzi-purple: var(--marzi-purple);
+  --color-marzi-purple-deep: var(--marzi-purple-deep);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-darker: var(--brand-darker);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-gold: var(--gold);
+  --color-ink: var(--ink);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-playfair);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+/* Display headings use the serif brand voice */
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
 }
