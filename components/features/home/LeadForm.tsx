@@ -46,8 +46,82 @@ function guessTripScope(destination: string): "domestic" | "international" {
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
+type FieldName = "destination" | "fullName" | "mobile";
+type FieldErrors = Partial<Record<FieldName, string>>;
+
+/* Indian mobile numbers: 10 digits starting 6-9 (mirrors the backend's
+   phonenumbers validation so users hear about mistakes before submitting). */
+const MOBILE_PATTERN = /^[6-9]\d{9}$/;
+const NAME_PATTERN = /^[a-zA-Z][a-zA-Z\s.'-]*$/;
+const DESTINATION_PATTERN = /^[a-zA-Z][a-zA-Z\s,.&'-]*$/;
+
+function validate(values: {
+  destination: string;
+  fullName: string;
+  mobile: string;
+}): FieldErrors {
+  const errors: FieldErrors = {};
+
+  const destination = values.destination.trim();
+  if (!destination) {
+    errors.destination = "Please tell us where you'd like to go.";
+  } else if (destination.length < 2) {
+    errors.destination = "That destination looks too short.";
+  } else if (!DESTINATION_PATTERN.test(destination)) {
+    errors.destination = "Destinations can only contain letters.";
+  }
+
+  const fullName = values.fullName.trim();
+  if (!fullName) {
+    errors.fullName = "Please enter your name.";
+  } else if (fullName.length < 3) {
+    errors.fullName = "Your name looks too short.";
+  } else if (!NAME_PATTERN.test(fullName)) {
+    errors.fullName = "Names can only contain letters.";
+  }
+
+  if (!values.mobile) {
+    errors.mobile = "Please enter your mobile number.";
+  } else if (!MOBILE_PATTERN.test(values.mobile)) {
+    errors.mobile = "Enter a valid 10-digit mobile number.";
+  }
+
+  return errors;
+}
+
+/* Maps backend (DRF) field names to our form fields so server-side
+   validation errors land under the right input. */
+const BACKEND_FIELD_MAP: Record<string, FieldName> = {
+  destination: "destination",
+  full_name: "fullName",
+  phone: "mobile",
+};
+
+function backendFieldErrors(detail: unknown): FieldErrors {
+  const errors: FieldErrors = {};
+  if (detail && typeof detail === "object" && !Array.isArray(detail)) {
+    for (const [key, value] of Object.entries(detail)) {
+      const field = BACKEND_FIELD_MAP[key];
+      const message = Array.isArray(value) ? value[0] : value;
+      if (field && typeof message === "string") errors[field] = message;
+    }
+  }
+  return errors;
+}
+
 const inputClasses =
   "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
+const inputErrorClasses =
+  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none ring-2 ring-red-400 focus:ring-red-400";
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} role="alert" className="mt-1.5 text-xs font-medium text-red-600">
+      {message}
+    </p>
+  );
+}
 
 type LeadFormProps = {
   /** Card heading; default is the hero's "Plan Your Trip — Free". */
@@ -71,20 +145,38 @@ export function LeadForm({
   const [mobile, setMobile] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  function clearFieldError(field: FieldName) {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setState("submitting");
     setErrorMessage("");
+
+    const errors = validate({ destination, fullName, mobile });
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setState("idle");
+      return;
+    }
+
+    setState("submitting");
     try {
       const messageParts = [
         month ? `Preferred travel month: ${month}` : "",
         audience === "parents" ? "Booking for parents." : "",
       ].filter(Boolean);
       await createEnquiry({
-        full_name: fullName,
+        full_name: fullName.trim(),
         phone: mobile,
-        destination,
+        destination: destination.trim(),
         trip_scope: guessTripScope(destination),
         message: messageParts.join(" "),
         source: "website",
@@ -92,11 +184,17 @@ export function LeadForm({
       setState("success");
     } catch (error) {
       setState("error");
-      setErrorMessage(
-        error instanceof ApiError
-          ? "Please check your details and try again."
-          : "Something went wrong. Please try again.",
-      );
+      if (error instanceof ApiError) {
+        const serverErrors = backendFieldErrors(error.detail);
+        setFieldErrors(serverErrors);
+        setErrorMessage(
+          Object.keys(serverErrors).length > 0
+            ? ""
+            : "Please check your details and try again.",
+        );
+      } else {
+        setErrorMessage("Something went wrong. Please try again.");
+      }
     }
   }
 
@@ -121,7 +219,12 @@ export function LeadForm({
   }
 
   return (
-    <form id="plan-your-trip" onSubmit={handleSubmit} className={cardClasses}>
+    <form
+      id="plan-your-trip"
+      onSubmit={handleSubmit}
+      noValidate
+      className={cardClasses}
+    >
       <h3 className="font-display text-brand text-[28px] font-bold">
         {heading ?? "Plan Your Trip — Free"}
       </h3>
@@ -134,9 +237,20 @@ export function LeadForm({
           <input
             required
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            onChange={(e) => {
+              setDestination(e.target.value.replace(/[^a-zA-Z\s,.&'-]/g, ""));
+              clearFieldError("destination");
+            }}
+            aria-invalid={Boolean(fieldErrors.destination)}
+            aria-describedby="destination-error"
             placeholder="e.g. Switzerland, Kerala, Bhutan"
-            className={inputClasses}
+            className={
+              fieldErrors.destination ? inputErrorClasses : inputClasses
+            }
+          />
+          <FieldError
+            id="destination-error"
+            message={fieldErrors.destination}
           />
         </label>
 
@@ -159,10 +273,18 @@ export function LeadForm({
             <input
               required
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => {
+                setFullName(e.target.value.replace(/[^a-zA-Z\s.'-]/g, ""));
+                clearFieldError("fullName");
+              }}
+              aria-invalid={Boolean(fieldErrors.fullName)}
+              aria-describedby="full-name-error"
               placeholder="eg. Anita Sharma"
-              className={inputClasses}
+              className={
+                fieldErrors.fullName ? inputErrorClasses : inputClasses
+              }
             />
+            <FieldError id="full-name-error" message={fieldErrors.fullName} />
           </label>
         </div>
 
@@ -175,17 +297,25 @@ export function LeadForm({
             <input
               required
               inputMode="numeric"
-              pattern="[0-9]{10}"
               value={mobile}
-              onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
+              onChange={(e) => {
+                setMobile(e.target.value.replace(/\D/g, ""));
+                clearFieldError("mobile");
+              }}
               maxLength={10}
-              className={inputClasses}
+              aria-invalid={Boolean(fieldErrors.mobile)}
+              aria-describedby="mobile-error"
+              placeholder="10-digit mobile number"
+              className={fieldErrors.mobile ? inputErrorClasses : inputClasses}
             />
           </div>
+          <FieldError id="mobile-error" message={fieldErrors.mobile} />
         </label>
 
-        {state === "error" ? (
-          <p className="text-sm text-red-600">{errorMessage}</p>
+        {state === "error" && errorMessage ? (
+          <p role="alert" className="text-sm text-red-600">
+            {errorMessage}
+          </p>
         ) : null}
 
         <button

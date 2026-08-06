@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { listPackages } from "@/lib/api/endpoints";
 import type {
@@ -66,12 +67,12 @@ export function FeaturedItineraries({
               you&apos;re dreaming of and your Travel Mitr will build one for
               you.
             </p>
-            <a
+            <Link
               href="/#plan-your-trip"
               className="bg-brand hover:bg-brand-deep mt-6 inline-block rounded-full px-7 py-3.5 text-sm font-semibold text-white transition"
             >
               Plan my trip
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -107,12 +108,12 @@ export function FeaturedItineraries({
                         ₹{itinerary.priceFromInr.toLocaleString("en-IN")}
                       </p>
                     </div>
-                    <a
+                    <Link
                       href="/#plan-your-trip"
                       className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85"
                     >
                       View Itinerary
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
