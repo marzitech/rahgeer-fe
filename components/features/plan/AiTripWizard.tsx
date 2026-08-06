@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Check, ChevronLeft, ChevronRight, Search } from "lucide-react";
@@ -62,6 +62,29 @@ export function AiTripWizard() {
   const canContinue =
     (step === 1 && Boolean(destination)) ||
     (step === 2 && Boolean(travelMonth));
+
+  /* Circular month scroll: the list is rendered three times and the view
+     starts on the middle copy; whenever the scroll position drifts into an
+     outer copy, jump one copy-width back — an endless loop in both
+     directions with no visible seam. */
+  const monthTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (step !== 2) return;
+    const el = monthTrackRef.current;
+    if (el) el.scrollLeft = el.scrollWidth / 3;
+  }, [step]);
+
+  function handleMonthScroll() {
+    const el = monthTrackRef.current;
+    if (!el) return;
+    const copyWidth = el.scrollWidth / 3;
+    if (el.scrollLeft < copyWidth * 0.5) {
+      el.scrollLeft += copyWidth;
+    } else if (el.scrollLeft > copyWidth * 1.5) {
+      el.scrollLeft -= copyWidth;
+    }
+  }
 
   function goBack() {
     if (step === 1) router.back();
@@ -156,48 +179,58 @@ export function AiTripWizard() {
             When are you planning to travel?
           </h1>
 
-          {/* Month cards — horizontal scroll, single select */}
-          <div className="mt-6 flex snap-x [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
-            {monthOptions.map((m) => {
-              const selected = travelMonth === m.id;
-              return (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setTravelMonth(selected ? null : m.id)}
-                  aria-pressed={selected}
-                  className={`relative w-[124px] shrink-0 snap-center rounded-xl border-2 px-3 py-5 text-center transition md:w-[136px] ${
-                    selected
-                      ? "border-brand bg-[#fdeaf3]"
-                      : "border-black/10 bg-white hover:border-black/25"
-                  }`}
-                >
-                  {selected ? (
-                    <span className="bg-brand absolute top-2.5 right-2.5 flex size-5 items-center justify-center rounded-full text-white shadow">
-                      <Check className="h-3 w-3" strokeWidth={3.5} />
+          {/* Month cards — circular horizontal scroll, single select */}
+          <div
+            ref={monthTrackRef}
+            onScroll={handleMonthScroll}
+            className="mt-6 flex [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden"
+          >
+            {[0, 1, 2].flatMap((copy) =>
+              monthOptions.map((m) => {
+                const selected = travelMonth === m.id;
+                return (
+                  <button
+                    key={`${copy}-${m.id}`}
+                    type="button"
+                    onClick={() => setTravelMonth(selected ? null : m.id)}
+                    aria-pressed={selected}
+                    aria-hidden={copy !== 1}
+                    tabIndex={copy === 1 ? 0 : -1}
+                    className={`relative w-[124px] shrink-0 rounded-xl border-2 px-3 py-5 text-center transition md:w-[136px] ${
+                      selected
+                        ? "border-brand bg-[#fdeaf3]"
+                        : "border-black/10 bg-white hover:border-black/25"
+                    }`}
+                  >
+                    {selected ? (
+                      <span className="bg-brand absolute top-2.5 right-2.5 flex size-5 items-center justify-center rounded-full text-white shadow">
+                        <Check className="h-3 w-3" strokeWidth={3.5} />
+                      </span>
+                    ) : null}
+                    <span aria-hidden className="text-[34px] leading-none">
+                      {m.emoji}
                     </span>
-                  ) : null}
-                  <span aria-hidden className="text-[34px] leading-none">
-                    {m.emoji}
-                  </span>
-                  <p
-                    className={`mt-3 text-sm font-semibold ${
-                      selected ? "text-brand" : ""
-                    }`}
-                  >
-                    {m.label}
-                  </p>
-                  <p className="text-foreground/50 mt-0.5 text-xs">{m.year}</p>
-                  <span
-                    className={`mt-3 inline-block rounded-full border border-black/10 px-3 py-1 text-[10px] font-medium ${
-                      selected ? "bg-white" : "bg-[#f5f5f5]"
-                    }`}
-                  >
-                    {m.chip}
-                  </span>
-                </button>
-              );
-            })}
+                    <p
+                      className={`mt-3 text-sm font-semibold ${
+                        selected ? "text-brand" : ""
+                      }`}
+                    >
+                      {m.label}
+                    </p>
+                    <p className="text-foreground/50 mt-0.5 text-xs">
+                      {m.year}
+                    </p>
+                    <span
+                      className={`mt-3 inline-block rounded-full border border-black/10 px-3 py-1 text-[10px] font-medium ${
+                        selected ? "bg-white" : "bg-[#f5f5f5]"
+                      }`}
+                    >
+                      {m.chip}
+                    </span>
+                  </button>
+                );
+              }),
+            )}
           </div>
         </>
       ) : (
