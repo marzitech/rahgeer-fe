@@ -22,6 +22,23 @@ const DESTINATIONS = [
 
 const DURATIONS = ["1-3 Days", "4-6 Days", "7+ Days"];
 
+/* TODO(assets): Family + Group need their design photos exported from
+   Figma — using scenery stand-ins until then. */
+const TRAVEL_WITH = [
+  { name: "Solo", image: "/images/home/book-yourself-solo.jpg" },
+  { name: "Couple", image: "/images/home/book-parents-lake.jpg" },
+  { name: "Family", image: "/images/home/review-trip-1.jpg" },
+  { name: "Group", image: "/images/home/review-trip-2.jpg" },
+];
+
+const TRAVELLER_TYPES = [
+  { key: "children", label: "Children", age: "Age 2-11 years" },
+  { key: "adults", label: "Adults", age: "Age 18+ years" },
+  { key: "seniors", label: "Seniors", age: "Age 55+ years" },
+] as const;
+
+type TravellerKey = (typeof TRAVELLER_TYPES)[number]["key"];
+
 const DEPARTURE_CITIES = ["Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune"];
 
 /* Indian travel seasons per the design's chips: Monsoon (Jun-Sep),
@@ -60,6 +77,25 @@ export function AiTripWizard() {
   const [duration, setDuration] = useState<string | null>(null);
   const [departure, setDeparture] = useState<string | null>(null);
   const [departureQuery, setDepartureQuery] = useState("");
+  const [travelWith, setTravelWith] = useState<string | null>(null);
+  const [travellers, setTravellers] = useState<Record<TravellerKey, number>>({
+    children: 0,
+    adults: 2,
+    seniors: 0,
+  });
+
+  /* Traveller counters only apply to Family and Group trips. */
+  const needsTravellerCounts =
+    travelWith === "Family" || travelWith === "Group";
+  const totalTravellers =
+    travellers.children + travellers.adults + travellers.seniors;
+
+  function adjustTravellers(key: TravellerKey, delta: number) {
+    setTravellers((prev) => ({
+      ...prev,
+      [key]: Math.min(12, Math.max(0, prev[key] + delta)),
+    }));
+  }
 
   const filtered = DESTINATIONS.filter((d) =>
     d.name.toLowerCase().includes(query.trim().toLowerCase()),
@@ -69,7 +105,10 @@ export function AiTripWizard() {
   const canContinue =
     (step === 1 && Boolean(destination)) ||
     (step === 2 && Boolean(travelMonth)) ||
-    (step === 3 && Boolean(duration && departure));
+    (step === 3 && Boolean(duration && departure)) ||
+    (step === 4 &&
+      Boolean(travelWith) &&
+      (!needsTravellerCounts || totalTravellers > 0));
 
   /* Circular month scroll: the list is rendered three times and the view
      starts on the middle copy; whenever the scroll position drifts into an
@@ -100,7 +139,7 @@ export function AiTripWizard() {
   }
 
   return (
-    <div className="rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_20%,#ffffff_80%,#f9d9e9_100%)] p-6 shadow-2xl md:p-8">
+    <div className="rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_20%,#ffffff_80%,#f9d9e9_100%)] p-5 shadow-2xl md:p-8">
       {/* Step counter + 9-segment progress bar */}
       <p className="text-foreground/70 text-xs font-medium">
         Step <span className="text-brand font-bold">{step}</span> of{" "}
@@ -324,6 +363,103 @@ export function AiTripWizard() {
             })}
           </div>
         </>
+      ) : step === 4 ? (
+        <>
+          <h1 className="font-display mt-5 text-xl font-bold md:mt-6 md:text-[32px]">
+            Who are you travelling with?
+          </h1>
+
+          {/* Travel-party cards — photo + label, single select. Compact on
+              mobile so the traveller counters fit without scrolling. */}
+          <div className="mt-5 grid grid-cols-2 gap-2.5 md:mt-6 md:grid-cols-4 md:gap-4">
+            {TRAVEL_WITH.map((t) => {
+              const selected = travelWith === t.name;
+              return (
+                <button
+                  key={t.name}
+                  type="button"
+                  onClick={() => setTravelWith(selected ? null : t.name)}
+                  aria-pressed={selected}
+                  className={`relative rounded-2xl border-2 p-2 text-center transition ${
+                    selected
+                      ? "border-brand bg-[#fdeaf3]"
+                      : "border-black/10 bg-white hover:border-black/25"
+                  }`}
+                >
+                  <div className="relative h-[68px] w-full overflow-hidden rounded-xl md:h-[120px]">
+                    <Image
+                      src={t.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 768px) 45vw, 260px"
+                      className="object-cover"
+                    />
+                  </div>
+                  {selected ? (
+                    <span className="bg-brand absolute top-3.5 right-3.5 flex size-5 items-center justify-center rounded-full text-white shadow">
+                      <Check className="h-3 w-3" strokeWidth={3.5} />
+                    </span>
+                  ) : null}
+                  <p
+                    className={`py-1.5 text-[13px] font-semibold md:py-2.5 md:text-sm ${
+                      selected ? "text-brand" : ""
+                    }`}
+                  >
+                    {t.name}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Traveller counters — Family / Group only */}
+          {needsTravellerCounts ? (
+            <>
+              <p className="mt-5 text-[13px] font-semibold md:mt-7">
+                How many travellers?
+              </p>
+              <div className="mt-2.5 grid grid-cols-1 gap-2 md:mt-3 md:grid-cols-3 md:gap-4">
+                {TRAVELLER_TYPES.map((t) => (
+                  <div
+                    key={t.key}
+                    className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-4 py-2.5 md:px-5 md:py-4"
+                  >
+                    <div>
+                      <p className="font-display text-[15px] font-semibold md:text-[17px]">
+                        {t.label}
+                      </p>
+                      <p className="text-foreground/50 text-[11px] md:mt-0.5 md:text-xs">
+                        {t.age}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2.5 md:gap-3">
+                      <button
+                        type="button"
+                        onClick={() => adjustTravellers(t.key, -1)}
+                        disabled={travellers[t.key] === 0}
+                        aria-label={`Fewer ${t.label.toLowerCase()}`}
+                        className="flex size-7 items-center justify-center rounded-full bg-[#f1f1f1] text-lg font-bold transition hover:bg-[#e5e5e5] disabled:opacity-40 md:size-8"
+                      >
+                        −
+                      </button>
+                      <span className="w-5 text-center text-sm font-bold">
+                        {travellers[t.key]}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => adjustTravellers(t.key, 1)}
+                        aria-label={`More ${t.label.toLowerCase()}`}
+                        className="text-brand flex size-7 items-center justify-center rounded-full bg-[#fdeaf3] text-lg font-bold transition hover:bg-[#fbd8e9] md:size-8"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
+        </>
       ) : (
         <div className="py-10 text-center md:py-14">
           <h1 className="font-display text-2xl font-bold md:text-[32px]">
@@ -336,7 +472,7 @@ export function AiTripWizard() {
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-between gap-3 md:justify-end">
+      <div className="mt-6 flex items-center justify-between gap-3 md:mt-8 md:justify-end">
         <button
           type="button"
           onClick={goBack}
