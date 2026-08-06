@@ -68,11 +68,10 @@ export default async function PlanPage({
               showAiPlanner
             />
 
-            {/* Why travellers choose Marzi */}
-            <div className="h-fit rounded-2xl bg-white p-6 shadow-sm">
-              <div
-                className={`relative h-[220px] w-full overflow-hidden rounded-xl`}
-              >
+            {/* Why travellers choose Marzi — on mobile it sits directly on the
+                page (design); the white card appears at lg */}
+            <div className="mt-2 h-fit lg:mt-0 lg:rounded-2xl lg:bg-white lg:p-6 lg:shadow-sm">
+              <div className="relative h-[260px] w-full overflow-hidden rounded-xl lg:h-[220px]">
                 <Image
                   src={content.image}
                   alt=""

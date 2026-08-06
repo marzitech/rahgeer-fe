@@ -289,7 +289,7 @@ export function LeadForm({
         </div>
 
         <label className="block">
-          <span className="text-[13px] font-semibold">Mobile Number</span>
+          <span className="text-[13px] font-semibold">Phone Number</span>
           <div className="flex gap-3">
             <span className="text-foreground/60 mt-2 flex items-center rounded-xl bg-[#f1f1f1] px-4 text-sm">
               +91
@@ -323,8 +323,18 @@ export function LeadForm({
           disabled={state === "submitting"}
           className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-4 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-60"
         >
-          <PhoneIcon />
-          {state === "submitting" ? "Sending…" : "Talk to a Travel Mitr"}
+          {/* Parents page CTA per design: "Request a Free Plan ›" */}
+          {audience === "parents" ? (
+            <>
+              {state === "submitting" ? "Sending…" : "Request a Free Plan"}
+              <ArrowRightIcon />
+            </>
+          ) : (
+            <>
+              <PhoneIcon />
+              {state === "submitting" ? "Sending…" : "Talk to a Travel Mitr"}
+            </>
+          )}
         </button>
 
         <p className="flex items-center justify-center gap-1.5 text-center text-xs font-medium text-green-700">
@@ -366,6 +376,25 @@ function PhoneIcon() {
       aria-hidden
     >
       <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3.5a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
     </svg>
   );
 }
