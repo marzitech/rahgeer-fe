@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Check, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, MapPin, Search } from "lucide-react";
 
 /** AI trip-planner wizard (design: Step 1 of 9 — destination picker).
  *  Steps 2-9 are designed but not yet shared — they render a friendly
@@ -19,6 +19,10 @@ const DESTINATIONS = [
   { name: "Europe", image: "/images/destinations/europe.jpg" },
   { name: "Vietnam", image: "/images/destinations/vietnam.jpg" },
 ];
+
+const DURATIONS = ["1-3 Days", "4-6 Days", "7+ Days"];
+
+const DEPARTURE_CITIES = ["Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune"];
 
 /* Indian travel seasons per the design's chips: Monsoon (Jun-Sep),
    Pleasant (Oct-Nov), Cold & Crisp (Dec-Feb), Warm (Mar-May). */
@@ -53,6 +57,9 @@ export function AiTripWizard() {
   const [query, setQuery] = useState("");
   const [destination, setDestination] = useState<string | null>(null);
   const [travelMonth, setTravelMonth] = useState<string | null>(null);
+  const [duration, setDuration] = useState<string | null>(null);
+  const [departure, setDeparture] = useState<string | null>(null);
+  const [departureQuery, setDepartureQuery] = useState("");
 
   const filtered = DESTINATIONS.filter((d) =>
     d.name.toLowerCase().includes(query.trim().toLowerCase()),
@@ -61,7 +68,8 @@ export function AiTripWizard() {
 
   const canContinue =
     (step === 1 && Boolean(destination)) ||
-    (step === 2 && Boolean(travelMonth));
+    (step === 2 && Boolean(travelMonth)) ||
+    (step === 3 && Boolean(duration && departure));
 
   /* Circular month scroll: the list is rendered three times and the view
      starts on the middle copy; whenever the scroll position drifts into an
@@ -231,6 +239,89 @@ export function AiTripWizard() {
                 );
               }),
             )}
+          </div>
+        </>
+      ) : step === 3 ? (
+        <>
+          <h1 className="font-display mt-6 text-2xl font-bold md:text-[32px]">
+            What&apos;s the duration of your holiday?
+          </h1>
+
+          {/* Duration cards — radio-style circle, single select */}
+          <div className="mt-6 grid grid-cols-3 gap-3 md:gap-4">
+            {DURATIONS.map((d) => {
+              const selected = duration === d;
+              return (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => setDuration(selected ? null : d)}
+                  aria-pressed={selected}
+                  className={`flex flex-col items-center gap-3 rounded-xl border-2 px-3 py-6 transition md:py-8 ${
+                    selected
+                      ? "border-brand bg-[#fdeaf3]"
+                      : "border-black/10 bg-white hover:border-black/25"
+                  }`}
+                >
+                  {selected ? (
+                    <span className="bg-brand flex size-8 items-center justify-center rounded-full text-white md:size-9">
+                      <Check className="h-4 w-4" strokeWidth={3.5} />
+                    </span>
+                  ) : (
+                    <span className="size-8 rounded-full border-2 border-black/40 md:size-9" />
+                  )}
+                  <span className="text-xs font-bold md:text-sm">{d}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Departure city */}
+          <p className="mt-7 text-[13px] font-semibold">
+            Where will you be departing from?
+          </p>
+          <div className="mt-3 flex items-center gap-3 rounded-full bg-[#ececec] px-5 py-3.5">
+            <Search className="text-foreground/40 h-4 w-4 shrink-0" />
+            <input
+              value={departureQuery}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^a-zA-Z\s,.'-]/g, "");
+                setDepartureQuery(value);
+                setDeparture(value.trim() ? value.trim() : null);
+              }}
+              placeholder="Search for a city, state or country..."
+              className="text-foreground placeholder:text-foreground/40 w-full bg-transparent text-sm outline-none"
+            />
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            {["Current Location", ...DEPARTURE_CITIES].map((city) => {
+              const isCurrentLocation = city === "Current Location";
+              const selected = departure === city;
+              return (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => {
+                    setDeparture(selected ? null : city);
+                    setDepartureQuery("");
+                  }}
+                  aria-pressed={selected}
+                  className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-medium transition ${
+                    selected
+                      ? "border-brand text-brand bg-[#fdeaf3]"
+                      : isCurrentLocation
+                        ? "text-brand border-black/15 bg-white hover:border-black/30"
+                        : "border-black/15 bg-white hover:border-black/30"
+                  }`}
+                >
+                  {isCurrentLocation ? (
+                    <MapPin className="h-3.5 w-3.5" />
+                  ) : null}
+                  {city}
+                </button>
+              );
+            })}
           </div>
         </>
       ) : (
