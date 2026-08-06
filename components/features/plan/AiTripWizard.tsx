@@ -20,15 +20,48 @@ const DESTINATIONS = [
   { name: "Vietnam", image: "/images/destinations/vietnam.jpg" },
 ];
 
+/* Indian travel seasons per the design's chips: Monsoon (Jun-Sep),
+   Pleasant (Oct-Nov), Cold & Crisp (Dec-Feb), Warm (Mar-May). */
+function seasonFor(monthIndex: number): { chip: string; emoji: string } {
+  if (monthIndex >= 5 && monthIndex <= 8)
+    return { chip: "Monsoon", emoji: "🌧️" };
+  if (monthIndex === 9 || monthIndex === 10)
+    return { chip: "Pleasant", emoji: "🌤️" };
+  if (monthIndex === 11 || monthIndex <= 1)
+    return { chip: "Cold & Crisp", emoji: "❄️" };
+  return { chip: "Warm", emoji: "☀️" };
+}
+
+/* Rolling 12 months starting from the current month. Only rendered after
+   user interaction (step 2), so no SSR/hydration concern. */
+function buildMonthOptions() {
+  const now = new Date();
+  return Array.from({ length: 12 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    return {
+      id: `${d.toLocaleString("en-US", { month: "long" })} ${d.getFullYear()}`,
+      label: d.toLocaleString("en-US", { month: "long" }),
+      year: d.getFullYear(),
+      ...seasonFor(d.getMonth()),
+    };
+  });
+}
+
 export function AiTripWizard() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [query, setQuery] = useState("");
   const [destination, setDestination] = useState<string | null>(null);
+  const [travelMonth, setTravelMonth] = useState<string | null>(null);
 
   const filtered = DESTINATIONS.filter((d) =>
     d.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
+  const monthOptions = buildMonthOptions();
+
+  const canContinue =
+    (step === 1 && Boolean(destination)) ||
+    (step === 2 && Boolean(travelMonth));
 
   function goBack() {
     if (step === 1) router.back();
@@ -117,10 +150,60 @@ export function AiTripWizard() {
             ) : null}
           </div>
         </>
+      ) : step === 2 ? (
+        <>
+          <h1 className="font-display mt-6 text-2xl font-bold md:text-[32px]">
+            When are you planning to travel?
+          </h1>
+
+          {/* Month cards — horizontal scroll, single select */}
+          <div className="mt-6 flex snap-x [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
+            {monthOptions.map((m) => {
+              const selected = travelMonth === m.id;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setTravelMonth(selected ? null : m.id)}
+                  aria-pressed={selected}
+                  className={`relative w-[124px] shrink-0 snap-center rounded-xl border-2 px-3 py-5 text-center transition md:w-[136px] ${
+                    selected
+                      ? "border-brand bg-[#fdeaf3]"
+                      : "border-black/10 bg-white hover:border-black/25"
+                  }`}
+                >
+                  {selected ? (
+                    <span className="bg-brand absolute top-2.5 right-2.5 flex size-5 items-center justify-center rounded-full text-white shadow">
+                      <Check className="h-3 w-3" strokeWidth={3.5} />
+                    </span>
+                  ) : null}
+                  <span aria-hidden className="text-[34px] leading-none">
+                    {m.emoji}
+                  </span>
+                  <p
+                    className={`mt-3 text-sm font-semibold ${
+                      selected ? "text-brand" : ""
+                    }`}
+                  >
+                    {m.label}
+                  </p>
+                  <p className="text-foreground/50 mt-0.5 text-xs">{m.year}</p>
+                  <span
+                    className={`mt-3 inline-block rounded-full border border-black/10 px-3 py-1 text-[10px] font-medium ${
+                      selected ? "bg-white" : "bg-[#f5f5f5]"
+                    }`}
+                  >
+                    {m.chip}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </>
       ) : (
         <div className="py-10 text-center md:py-14">
           <h1 className="font-display text-2xl font-bold md:text-[32px]">
-            {destination} it is!
+            {destination} in {travelMonth} it is!
           </h1>
           <p className="text-foreground/70 mx-auto mt-3 max-w-md text-sm">
             The next steps of the AI planner are on their way. Meanwhile, a
@@ -141,7 +224,7 @@ export function AiTripWizard() {
         <button
           type="button"
           onClick={() => setStep(Math.min(step + 1, TOTAL_STEPS))}
-          disabled={!destination || step > 1}
+          disabled={!canContinue}
           className="flex items-center gap-1.5 rounded-full bg-black px-7 py-3 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-50"
         >
           Continue
