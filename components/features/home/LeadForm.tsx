@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
 
@@ -349,16 +350,13 @@ export function LeadForm({
               <span className="text-foreground/40 text-xs font-medium">OR</span>
               <span className="h-px flex-1 bg-black/10" />
             </div>
-            {/* TODO: route to the AI trip-planner flow (rahgeer-be itinerary
-                API is live; FE flow not built yet). */}
-            <button
-              type="button"
-              title="Coming soon"
+            <Link
+              href="/plan/ai"
               className="text-foreground flex w-full items-center justify-center gap-2 rounded-full border border-black/20 bg-white py-4 text-sm font-semibold transition hover:border-black/40"
             >
               <span aria-hidden>✨</span>
               Plan Trip using AI Trip planner
-            </button>
+            </Link>
           </>
         ) : null}
       </div>
