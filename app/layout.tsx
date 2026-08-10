@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
+import { BottomNav } from "@/components/features/home/BottomNav";
 import "./globals.css";
 
 // Same pairing as marzi-web production: Lato body + Playfair display.
@@ -20,6 +21,25 @@ export const metadata: Metadata = {
   title: "Marzi — Travel Confidently",
   description:
     "India's first dedicated travel platform for people above 50 — from planning to booking. Your Travel Mitr takes care of everything.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Marzi",
+  },
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2e1065",
+  width: "device-width",
+  initialScale: 1,
+  // Zoom stays enabled — this is a product for people 50+, so pinch-zoom
+  // accessibility outweighs the marginal "app-like" gain of blocking it.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -28,7 +48,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${lato.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <BottomNav />
+      </body>
     </html>
   );
 }
