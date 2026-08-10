@@ -8,13 +8,12 @@ export function CtaBanner() {
     <section className="bg-cream pb-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-6 py-12 text-center text-white md:px-8 md:py-16">
-          {/* Faint concentric rings, per the design's background texture */}
+          {/* Circular pattern texture at 7% opacity (per design) */}
           <div
             aria-hidden
-            className="absolute inset-0 opacity-[0.07]"
+            className="absolute inset-0 bg-[length:520px] bg-repeat opacity-[0.07]"
             style={{
-              backgroundImage:
-                "repeating-radial-gradient(circle at 50% 120%, transparent 0, transparent 56px, white 57px, transparent 58px)",
+              backgroundImage: "url('/images/textures/circular-pattern.png')",
             }}
           />
 

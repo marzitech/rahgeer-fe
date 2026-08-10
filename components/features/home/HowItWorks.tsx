@@ -47,18 +47,12 @@ export function HowItWorks() {
 
   return (
     <section className="relative overflow-hidden bg-[#a02458] py-20 text-white">
-      {/* Concentric-ring clusters in the background, per the design
-          (Figma's decorative Ellipse groups) — darker rings at low opacity,
-          offset across the band. */}
+      {/* Circular pattern texture at 7% opacity (per design) */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-[0.08]"
+        className="absolute inset-0 bg-[length:520px] bg-repeat opacity-[0.07]"
         style={{
-          backgroundImage: [
-            "repeating-radial-gradient(circle at 12% 20%, transparent 0, transparent 44px, #4d0629 45px, transparent 46px)",
-            "repeating-radial-gradient(circle at 85% 75%, transparent 0, transparent 52px, #4d0629 53px, transparent 54px)",
-            "repeating-radial-gradient(circle at 45% 110%, transparent 0, transparent 60px, #4d0629 61px, transparent 62px)",
-          ].join(", "),
+          backgroundImage: "url('/images/textures/circular-pattern.png')",
         }}
       />
       <div className="relative mx-auto max-w-[1192px] px-4">
