@@ -181,6 +181,14 @@ export function LeadForm({
         trip_scope: guessTripScope(destination),
         message: messageParts.join(" "),
         source: "website",
+        // Which form converted — tracked as the Form column in the
+        // ops leads Google Sheet.
+        form:
+          audience === "yourself"
+            ? "plan-yourself"
+            : audience === "parents"
+              ? "plan-parents"
+              : "home-hero",
       });
       setState("success");
     } catch (error) {
