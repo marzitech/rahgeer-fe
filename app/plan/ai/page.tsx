@@ -9,23 +9,29 @@ import { AiTripWizard } from "@/components/features/plan/AiTripWizard";
 export default function AiPlanPage() {
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-[#fdf7f2] pt-20 md:pt-24">
+      {/* Site chrome is hidden in print — the downloaded itinerary PDF
+          carries only the dossier itself */}
+      <div className="print:hidden">
+        <Header />
+      </div>
+      <main className="min-h-screen bg-[#fdf7f2] pt-20 md:pt-24 print:pt-0">
         <div className="mx-auto max-w-[1192px] px-4 py-8">
           <Link
             href="/"
-            className="text-brand inline-flex items-center gap-2 text-sm font-semibold hover:underline"
+            className="text-brand inline-flex items-center gap-2 text-sm font-semibold hover:underline print:hidden"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Travel
           </Link>
 
-          <div className="mt-4">
+          <div className="mt-4 print:mt-0">
             <AiTripWizard />
           </div>
         </div>
       </main>
-      <Footer />
+      <div className="print:hidden">
+        <Footer />
+      </div>
     </>
   );
 }
