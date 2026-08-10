@@ -26,6 +26,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Next generates the global route types (PageProps/LayoutProps) during
+      # build — typegen produces them without a full build so standalone tsc
+      # can resolve them.
+      - name: Generate route types
+        run: npx next typegen
+
       - name: Type check
         run: npm run type-check
 
