@@ -78,7 +78,7 @@ const SOCIALS = [
 /** Purple footer: brand blurb, link columns, address, legal line. */
 export function Footer() {
   return (
-    <footer className="bg-marzi-purple text-white">
+    <footer className="hide-in-app bg-marzi-purple text-white">
       <div className="mx-auto max-w-[1192px] px-4 py-14">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div className="col-span-2 md:col-span-1">

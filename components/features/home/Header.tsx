@@ -101,7 +101,7 @@ export function Header() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] bg-white/90 [padding-top:env(safe-area-inset-top)] backdrop-blur-md transition-all duration-500 md:bg-transparent md:[padding-top:0] md:backdrop-blur-none">
+      <div className="hide-in-app pointer-events-none fixed inset-x-0 top-0 z-[100] bg-white/90 [padding-top:env(safe-area-inset-top)] backdrop-blur-md transition-all duration-500 md:bg-transparent md:[padding-top:0] md:backdrop-blur-none">
         <header
           className={cn(
             "pointer-events-auto relative mx-auto flex h-16 items-center justify-between px-6 transition-all duration-500 ease-in-out md:h-20 md:px-10",
@@ -193,7 +193,7 @@ export function Header() {
       <div
         aria-hidden={!isOpen}
         className={cn(
-          "fixed inset-0 z-[110] lg:hidden",
+          "hide-in-app fixed inset-0 z-[110] lg:hidden",
           isOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
