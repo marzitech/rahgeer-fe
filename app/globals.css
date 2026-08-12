@@ -47,20 +47,6 @@ body {
   overscroll-behavior-y: none;
 }
 
-/* On phones the fixed bottom tab bar overlaps page content — reserve its
-   height (+ the home-indicator safe area) so nothing hides behind it.
-   Removed at md+ where the tab bar is hidden. Print never shows it. */
-@media (max-width: 767px) {
-  body {
-    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
-  }
-}
-@media print {
-  body {
-    padding-bottom: 0;
-  }
-}
-
 /* Display headings use the serif brand voice */
 .font-display {
   font-family: var(--font-playfair), Georgia, serif;

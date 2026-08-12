@@ -16,7 +16,8 @@ export function CuratedTrips() {
           subtitle="Ready-made journeys with everything handled — flights, stays, and pacing built for comfort."
         />
 
-        <div className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+        {/* Vertical stack on mobile; grid row from sm up */}
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {PACKAGES.map((destination) => (
             <DestinationCard key={destination.name} destination={destination} />
           ))}
