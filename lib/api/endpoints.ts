@@ -12,8 +12,9 @@ import { apiFetch, session } from "./client";
 // --- itineraries ------------------------------------------------------------
 
 export interface ItineraryIntake {
-  traveler_name: string;
-  phone: string;
+  // Contact is optional — captured at the download-gate, not at intake.
+  traveler_name?: string;
+  phone?: string;
   email?: string;
   destination: string;
   country?: string;
@@ -32,11 +33,24 @@ export interface ItineraryIntake {
   special_requests?: string;
 }
 
+export interface TransportOption {
+  mode: string;
+  duration: string;
+  cost: string;
+  senior_friendly: "high" | "medium" | "low";
+  notes: string;
+}
+
 export interface ItineraryBlock {
   time_of_day: "morning" | "afternoon" | "evening";
+  time?: string; // clock time, e.g. "10:30 AM"
+  duration?: string;
   title: string;
   description: string;
   estimated_cost_inr: number;
+  senior_note?: string;
+  transport_options?: TransportOption[];
+  recommended_mode?: string;
   citations: string[];
 }
 
@@ -47,6 +61,93 @@ export interface ItineraryDay {
   blocks: ItineraryBlock[];
 }
 
+/** Day entry inside ai_output — carries the dossier extras the day rows
+ *  don't (meals, stay, per-day Gen EV). */
+export interface AiOutputDay {
+  day_number: number;
+  title: string;
+  summary?: string;
+  meals?: { breakfast: string; lunch: string; dinner: string };
+  stay?: string;
+  gen_ev_score?: number;
+  day_type?: string;
+  blocks: ItineraryBlock[];
+}
+
+export interface HotelOption {
+  name: string;
+  city: string;
+  nights: number;
+  category: string;
+  why: string;
+  strengths: string[];
+  gen_ev_score: number;
+  tier: "primary" | "alternative";
+  price_per_night: string;
+}
+
+export interface RestaurantPick {
+  name: string;
+  city: string;
+  cuisine: string;
+  veg_options: string;
+  why: string;
+  context: string;
+  gen_ev_score: number;
+}
+
+export interface CityWeather {
+  city: string;
+  temp: string;
+  high: string;
+  low: string;
+  humidity: string;
+  condition: string;
+  summary: string;
+  planning_note: string;
+}
+
+export interface BudgetLine {
+  item: string;
+  per_person_inr: number;
+  total_inr: number;
+}
+
+export interface BudgetBreakdown {
+  total_inr: number;
+  per_person_inr: number;
+  accommodation: BudgetLine[];
+  transport: BudgetLine[];
+  food_and_dining: BudgetLine[];
+  activities_and_entry: BudgetLine[];
+  miscellaneous: BudgetLine[];
+}
+
+export interface RejectedOption {
+  option: string;
+  reason: string;
+  constraint: string;
+}
+
+export interface PackingList {
+  essentials: string[];
+  clothing: string[];
+  medication_health: string[];
+  comfort_seniors: string[];
+  documents: string[];
+  tech_gadgets: string[];
+}
+
+export interface GenEvScore {
+  score: number;
+  pacing_rest: number;
+  accessibility: number;
+  safety_security: number;
+  value_for_money: number;
+  label: string;
+  summary: string;
+}
+
 export interface Itinerary {
   id: string;
   ai_status: "pending" | "processing" | "success" | "failure";
@@ -55,6 +156,16 @@ export interface Itinerary {
     summary: string;
     total_estimated_cost_inr: number;
     travel_tips: string[];
+    // Trip Plan v2 dossier — optional so pre-v2 records still render
+    gen_ev?: GenEvScore;
+    trip_overview?: Record<string, string>;
+    days?: AiOutputDay[];
+    hotels?: HotelOption[];
+    restaurants?: RestaurantPick[];
+    weather?: CityWeather[];
+    budget?: BudgetBreakdown;
+    rejected_options?: RejectedOption[];
+    packing_list?: PackingList;
   } | null;
   ai_error: string;
   days: ItineraryDay[];
@@ -75,6 +186,22 @@ export async function createItinerary(intake: ItineraryIntake) {
 
 export const getItinerary = (id: string) =>
   apiFetch<Itinerary>(`/api/v1/itineraries/${id}/`);
+
+/** Curated sample itinerary shown on the Explore-destinations cards,
+ *  fetched by destination slug (kerala, japan, europe, rajasthan). */
+export const getSampleItinerary = (slug: string) =>
+  apiFetch<Itinerary>(`/api/v1/itineraries/samples/${slug}/`);
+
+/** "Where should we send your plan?" — contact capture gating the
+ *  dossier download; alerts the travel desk. */
+export const submitItineraryLead = (
+  id: string,
+  body: { name: string; email: string; whatsapp: string },
+) =>
+  apiFetch<{ detail: string }>(`/api/v1/itineraries/${id}/lead/`, {
+    method: "POST",
+    body,
+  });
 
 export const regenerateDay = (id: string, dayNumber: number, feedback = "") =>
   apiFetch<{ queued_day: number }>(

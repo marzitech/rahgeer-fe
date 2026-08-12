@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
+/* Marzi brand tokens — sampled from the Figma home design + aligned with
+   marzi-web's production palette (deep purple bar, magenta primary). */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1c1017;
+
+  /* Exact marzi-web production values */
+  --marzi-purple: #2e1065; /* header / footer bar */
+  --marzi-purple-deep: #23093f;
+  --brand: #821a52; /* marzi-primary magenta */
+  --brand-deep: #6a1243;
+  --brand-darker: #4d0629;
+  --marzi-pink: #ec1e79; /* CTA pink */
+  --cream: #fffcf3; /* warm section background */
+  --cream-dark: #f7edd8;
+  --gold: #ffc61a; /* marzi-gold accent */
+  --ink: #27010f; /* near-black plum (dark CTA card) */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-marzi-purple: var(--marzi-purple);
+  --color-marzi-purple-deep: var(--marzi-purple-deep);
+  --color-marzi-pink: var(--marzi-pink);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-darker: var(--brand-darker);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-gold: var(--gold);
+  --color-ink: var(--ink);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-lato);
+  --font-display: var(--font-playfair);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-lato), system-ui, sans-serif;
+  /* App-like touch feel: no grey tap flash, no accidental text selection
+     on chrome, no bounce/pull-to-refresh past the edges. */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* On phones the fixed bottom tab bar overlaps page content — reserve its
+   height (+ the home-indicator safe area) so nothing hides behind it.
+   Removed at md+ where the tab bar is hidden. Print never shows it. */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+}
+@media print {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Display headings use the serif brand voice */
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Continuous marquee (Travel Mitr service chips). The track holds two
+   copies of the list; translating -50% then looping reads as seamless. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Print (Download Full Itinerary): clean page setup for the Trip Plan
+   dossier — white paper, sane margins, colors preserved. */
+@media print {
+  @page {
+    margin: 10mm 12mm;
+  }
+  body {
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
