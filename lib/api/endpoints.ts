@@ -187,6 +187,11 @@ export async function createItinerary(intake: ItineraryIntake) {
 export const getItinerary = (id: string) =>
   apiFetch<Itinerary>(`/api/v1/itineraries/${id}/`);
 
+/** Curated sample itinerary shown on the Explore-destinations cards,
+ *  fetched by destination slug (kerala, japan, europe, rajasthan). */
+export const getSampleItinerary = (slug: string) =>
+  apiFetch<Itinerary>(`/api/v1/itineraries/samples/${slug}/`);
+
 /** "Where should we send your plan?" — contact capture gating the
  *  dossier download; alerts the travel desk. */
 export const submitItineraryLead = (

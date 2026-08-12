@@ -213,8 +213,9 @@ const SHOW_FULL_DOSSIER = false;
 /** Generated-itinerary screen (design: Frame 2147224642 + Trip Plan v2
  *  dossier) — hero banner, day tabs, numbered timeline with transport
  *  options, Gen EV + cost sidebar, then hotels / weather / restaurants /
- *  skipped options / packing / price breakdown. */
-function ItineraryResult({
+ *  skipped options / packing / price breakdown. Reused for curated sample
+ *  itineraries on the Explore-destinations pages. */
+export function ItineraryResult({
   itinerary,
   heroImage,
   monthLabel,
@@ -328,17 +329,21 @@ function ItineraryResult({
           ) : null}
         </div>
 
-        {/* Timeline + sidebar */}
-        <div className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_320px]">
-          <div>
+        {/* Timeline + sidebar — stretch so the day card's bottom aligns with
+            the sidebar (Gen EV + cost) for a balanced layout. */}
+        <div className="mt-6 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-[1fr_320px]">
+          <div className="flex flex-col">
             {daysToRender.map((day) => {
               const dayBlocks = day.blocks ?? [];
               const dayExtra = output?.days?.find(
                 (d) => d.day_number === day.day_number,
               );
               return (
-                <div key={day.day_number} className="mb-4 last:mb-0">
-                  <div className="rounded-2xl bg-white p-5 shadow-sm md:p-7">
+                <div
+                  key={day.day_number}
+                  className="mb-4 flex flex-1 flex-col last:mb-0"
+                >
+                  <div className="flex-1 rounded-2xl bg-white p-5 shadow-sm md:p-7">
                     {day.title || dayExtra?.gen_ev_score ? (
                       <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
                         <h3 className="font-display text-lg font-bold">
