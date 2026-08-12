@@ -1,86 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
-
-const TABS = [
-  "All",
-  "International",
-  "India",
-  "Spiritual",
-  "Mountains",
-  "Beaches",
-  "Wellness",
-  "First International Trip",
-] as const;
-
-type Tab = (typeof TABS)[number];
-
-// Uniform card copy per the design.
-const CARD_BLURB =
-  "Curated itineraries designed for your pace, comfort, and curiosity.";
-
-const DESTINATIONS: {
-  name: string;
-  slug: string;
-  image: string;
-  tags: Tab[];
-  cta: "View packages" | "Read travel guide";
-  priceFromInr?: number;
-}[] = [
-  {
-    name: "Europe",
-    slug: "europe",
-    image: "/images/destinations/europe.jpg",
-    tags: ["International", "First International Trip"],
-    cta: "View packages",
-    priceFromInr: 56302,
-  },
-  {
-    name: "Kashmir",
-    slug: "kashmir",
-    image: "/images/destinations/kashmir.jpg",
-    tags: ["India", "Mountains"],
-    cta: "View packages",
-    priceFromInr: 56302,
-  },
-  {
-    name: "Japan",
-    slug: "japan",
-    image: "/images/destinations/japan.jpg",
-    tags: ["International"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Kerala",
-    slug: "kerala",
-    image: "/images/destinations/kerala.jpg",
-    tags: ["India", "Wellness", "Beaches"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Vietnam",
-    slug: "vietnam",
-    image: "/images/destinations/vietnam.jpg",
-    tags: ["International", "First International Trip"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Rajasthan",
-    slug: "rajasthan",
-    image: "/images/destinations/rajasthan.jpg",
-    tags: ["India", "Spiritual"],
-    cta: "Read travel guide",
-  },
-];
+import { DestinationCard } from "./DestinationCard";
+import { GUIDES, TABS, type Tab } from "./destinations.data";
 
 const AUTO_SCROLL_MS = 4000;
 
-/** "Where would you like to go next?" — filter tabs + photo cards.
+/** "Where would you like to go next?" — filter tabs + destination cards.
  *  Desktop: 3-col grid. Mobile: horizontal snap carousel auto-advancing
  *  every 4s (pauses on touch/hover; dots sync with manual swipes). */
 export function Destinations() {
@@ -89,7 +17,7 @@ export function Destinations() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const visible = DESTINATIONS.filter(
+  const visible = GUIDES.filter(
     (d) => activeTab === "All" || d.tags.includes(activeTab),
   );
 
@@ -155,42 +83,10 @@ export function Destinations() {
           onTouchEnd={() => setIsPaused(false)}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
+          className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible [&::-webkit-scrollbar]:hidden"
         >
           {visible.map((destination) => (
-            <Link
-              key={destination.name}
-              href={`/destinations/${destination.slug}`}
-              className="group relative block h-[360px] w-[88%] shrink-0 snap-center overflow-hidden rounded-3xl sm:w-auto sm:shrink md:h-[400px]"
-            >
-              <Image
-                src={destination.image}
-                alt={destination.name}
-                fill
-                sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 380px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              {destination.priceFromInr ? (
-                <span className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md transition group-hover:scale-105">
-                  <p className="text-foreground/60 text-xs">Starting from</p>
-                  <p className="text-brand text-lg leading-tight font-bold">
-                    ₹{destination.priceFromInr.toLocaleString("en-IN")}
-                  </p>
-                </span>
-              ) : null}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-6 pt-20">
-                <h3 className="font-display text-[26px] font-semibold text-white">
-                  {destination.name}
-                </h3>
-                <p className="mt-1 text-sm leading-snug text-white/80">
-                  {CARD_BLURB}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2">
-                  {destination.cta}
-                  <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
-                </span>
-              </div>
-            </Link>
+            <DestinationCard key={destination.name} destination={destination} />
           ))}
         </div>
 

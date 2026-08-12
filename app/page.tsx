@@ -1,5 +1,6 @@
 import { Comparison } from "@/components/features/home/Comparison";
 import { CtaBanner } from "@/components/features/home/CtaBanner";
+import { CuratedTrips } from "@/components/features/home/CuratedTrips";
 import { Destinations } from "@/components/features/home/Destinations";
 import { Faq } from "@/components/features/home/Faq";
 import { Footer } from "@/components/features/home/Footer";
@@ -19,6 +20,7 @@ export default function HomePage() {
         <Hero />
         <TravelMitr />
         <PlanningFor />
+        <CuratedTrips />
         <Destinations />
         <PressStrip />
         <HowItWorks />
