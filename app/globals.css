@@ -47,6 +47,30 @@ body {
   overscroll-behavior-y: none;
 }
 
+/* ---------------------------------------------------------------------
+   Marzi app WebView switches. `data-app="true"` is set on <html> by the
+   root layout when the request UA contains the MarziApp token.
+   - .hide-in-app  : shown on the web, hidden inside the app
+   - .show-in-app  : hidden on the web, shown only inside the app
+   --------------------------------------------------------------------- */
+:root[data-app="true"] .hide-in-app {
+  display: none !important;
+}
+.show-in-app {
+  display: none;
+}
+:root[data-app="true"] .show-in-app {
+  display: revert;
+}
+/* Inside the app the site owns the status-bar space; and since the fixed
+   site header is hidden, drop the header-offset padding pages add to <main>. */
+:root[data-app="true"] body {
+  padding-top: env(safe-area-inset-top);
+}
+:root[data-app="true"] main {
+  padding-top: 0 !important;
+}
+
 /* Display headings use the serif brand voice */
 .font-display {
   font-family: var(--font-playfair), Georgia, serif;
