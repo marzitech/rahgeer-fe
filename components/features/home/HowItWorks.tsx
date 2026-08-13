@@ -9,22 +9,22 @@ const STEPS = [
   {
     title: "Tell us about your holiday",
     description:
-      "Share where you'd like to go, when, and how you love to travel.",
+      "Where do you want to go? When do you want to travel? Tell us what's important to you.",
   },
   {
     title: "Receive a personalised plan",
     description:
-      "Curated itineraries designed for your pace, comfort and interests.",
+      "We'll recommend flights, hotels, sightseeing, restaurants and a comfortable itinerary designed around you.",
   },
   {
     title: "We book everything",
     description:
-      "Flights, stays, local experiences and paperwork — all handled for you.",
+      "Flights, hotels, visa, insurance, forex and more — all handled by your Travel Mitr.",
   },
   {
     title: "Enjoy your holiday",
     description:
-      "Travel with your Mitr a phone call away, every day of the trip.",
+      "Relax and focus on making memories. We'll take care of the planning.",
   },
 ];
 
@@ -115,8 +115,8 @@ export function HowItWorks() {
 
           <div className="relative h-[280px] w-full overflow-hidden rounded-3xl md:h-[400px] lg:h-[480px]">
             <Image
-              src="/images/home/how-it-works.jpg"
-              alt="A Marzi consultant walking through a personalised plan"
+              src="/images/home/how-marzi-works.png"
+              alt="A senior couple planning their trip with a map, guidebook and laptop"
               fill
               sizes="(max-width: 1024px) 100vw, 640px"
               className="object-cover"

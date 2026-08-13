@@ -44,13 +44,11 @@ const DESTINATIONS = [
 
 const DURATIONS = ["1-3 Days", "4-6 Days", "7+ Days"];
 
-/* TODO(assets): Family + Group need their design photos exported from
-   Figma — using scenery stand-ins until then. */
 const TRAVEL_WITH = [
-  { name: "Solo", image: "/images/home/book-yourself-solo.jpg" },
-  { name: "Couple", image: "/images/home/book-parents-lake.jpg" },
-  { name: "Family", image: "/images/home/review-trip-1.jpg" },
-  { name: "Group", image: "/images/home/review-trip-2.jpg" },
+  { name: "Solo", image: "/images/home/travel-with-solo.jpg" },
+  { name: "Couple", image: "/images/home/travel-with-couple.jpg" },
+  { name: "Family", image: "/images/home/travel-with-family.jpg" },
+  { name: "Group", image: "/images/home/travel-with-group.jpg" },
 ];
 
 const DAY_PACES = [
@@ -1290,7 +1288,7 @@ export function AiTripWizard() {
         itinerary={itinerary}
         heroImage={
           DESTINATIONS.find((d) => d.name === destination)?.image ??
-          "/images/home/hero-bg.jpg"
+          "/images/home/hero-koh-tao.jpg"
         }
         monthLabel={travelMonth ?? ""}
         departure={departure ?? ""}
@@ -1576,9 +1574,11 @@ export function AiTripWizard() {
             Who are you travelling with?
           </h1>
 
-          {/* Travel-party cards — photo + label, single select. Compact on
-              mobile so the traveller counters fit without scrolling. */}
-          <div className="mt-5 grid grid-cols-2 gap-2.5 md:mt-6 md:grid-cols-4 md:gap-4">
+          {/* Travel-party cards — photo + label, single select. On mobile the
+              photo fills the card with the label as an overlay (bigger faces,
+              stays compact so the traveller counters fit); on desktop it's a
+              photo above a label. */}
+          <div className="mt-5 grid grid-cols-2 gap-3 md:mt-6 md:grid-cols-4 md:gap-4">
             {TRAVEL_WITH.map((t) => {
               const selected = travelWith === t.name;
               return (
@@ -1587,28 +1587,39 @@ export function AiTripWizard() {
                   type="button"
                   onClick={() => setTravelWith(selected ? null : t.name)}
                   aria-pressed={selected}
-                  className={`relative rounded-2xl border-2 p-2 text-center transition ${
+                  className={`group relative overflow-hidden rounded-2xl border-2 text-center transition md:overflow-visible md:p-2 ${
                     selected
-                      ? "border-brand bg-[#fdeaf3]"
+                      ? "border-brand md:bg-[#fdeaf3]"
                       : "border-black/10 bg-white hover:border-black/25"
                   }`}
                 >
-                  <div className="relative h-[68px] w-full overflow-hidden rounded-xl md:h-[120px]">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[120px] md:rounded-xl">
                     <Image
                       src={t.image}
                       alt=""
                       fill
                       sizes="(max-width: 768px) 45vw, 260px"
-                      className="object-cover"
+                      className="object-cover object-[center_28%] transition-transform duration-500 group-hover:scale-105"
                     />
+                    {/* Label overlay — mobile only (hidden on md, where the
+                        label sits below the photo instead) */}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent p-2.5 pt-8 md:hidden">
+                      <p className="text-left text-sm font-semibold text-white">
+                        {t.name}
+                      </p>
+                    </div>
                   </div>
                   {selected ? (
-                    <span className="bg-brand absolute top-3.5 right-3.5 flex size-5 items-center justify-center rounded-full text-white shadow">
-                      <Check className="h-3 w-3" strokeWidth={3.5} />
+                    <span className="bg-brand absolute top-2.5 right-2.5 flex size-6 items-center justify-center rounded-full text-white shadow ring-2 ring-white md:top-3.5 md:right-3.5 md:size-5 md:ring-0">
+                      <Check
+                        className="h-3.5 w-3.5 md:h-3 md:w-3"
+                        strokeWidth={3.5}
+                      />
                     </span>
                   ) : null}
+                  {/* Label below the photo — desktop only */}
                   <p
-                    className={`py-1.5 text-[13px] font-semibold md:py-2.5 md:text-sm ${
+                    className={`hidden py-2.5 text-sm font-semibold md:block ${
                       selected ? "text-brand" : ""
                     }`}
                   >

@@ -37,6 +37,15 @@
   --font-display: var(--font-playfair);
 }
 
+/* Anchor jumps (#destinations, #plan-your-trip, …) clear the fixed header.
+   NOTE: deliberately NOT setting `scroll-behavior: smooth` globally — it
+   hijacks the App Router's scroll-to-top on route change (you'd land on the
+   next page's footer). Smooth anchor scrolling is done per-jump in JS
+   (HashScroll + CtaBanner) instead. */
+html {
+  scroll-padding-top: 6rem;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -85,7 +94,7 @@ body {
 }
 
 .animate-marquee {
-  animation: marquee 28s linear infinite;
+  animation: marquee 60s linear infinite;
 }
 
 .animate-marquee:hover {

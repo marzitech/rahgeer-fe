@@ -1,11 +1,11 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const FEATURES = [
-  "Dedicated Travel Mitr for all travel planning and queries",
-  "Trip planning personalized to your preferences and needs",
-  "End to end support for booking flights, stay and local attractions",
-  "7 days a week on-call support",
-  "Dedicated support for managing Forex, VISA and Travel Insurance",
+  "Dedicated Travel Mitr for all your queries",
+  "Personalised Trip Planning",
+  "End to End Booking support",
+  "24x7 On Call support",
+  "Dedicated support for Forex, Visa, and Insurance",
 ];
 
 function Check() {
@@ -64,7 +64,7 @@ export function Comparison() {
                     i < FEATURES.length - 1 ? "border-b border-black/5" : ""
                   }
                 >
-                  <td className="p-4 text-[13px] leading-relaxed md:p-6 md:text-sm">
+                  <td className="p-4 text-sm leading-relaxed md:p-6 md:text-base">
                     {feature}
                   </td>
                   <td className="bg-brand-deep/5 p-2 text-center md:p-6">

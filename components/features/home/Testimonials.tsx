@@ -19,49 +19,22 @@ type Testimonial = {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    name: "Kavita Rao",
-    detail: "Traveler · Travelled to Sri Lanka",
+    name: "Manjunath",
+    detail: "Traveller · Age 65",
     quote:
-      "The trip was well organised, negotiated and full of warm people. I could simply relax and enjoy the experience.",
-    avatar: "/images/home/reviewer-anita.jpg",
-    tripPhoto: "/images/home/review-trip-1.jpg",
-    tripPhotoAlt: "Group of Marzi travellers in Sri Lanka",
+      "Every detail perfect, every moment memorable, exceeded expectations completely.",
   },
   {
-    name: "Amita Sharma",
-    detail: "Traveler · Travelled to Kashmir",
+    name: "Jayaram N",
+    detail: "Traveller",
     quote:
-      "The trip was well paced, organised and full of warm people. I would gladly travel with Marzi again.",
+      "My wife and I enjoyed the trip to Somnathpura, and Talakadu was very enjoyable.",
   },
   {
-    name: "Rajeev Sethi",
-    detail: "Traveler · Travelled to Vietnam",
+    name: "Shajee Kozhukkunnon",
+    detail: "Traveller",
     quote:
-      "The team handled the planning so well that I could focus entirely on enjoying the journey with my wife.",
-    avatar: "/images/home/reviewer-vikram.jpg",
-    tripPhoto: "/images/home/review-trip-2.jpg",
-    tripPhotoAlt: "Marzi travellers exploring Vietnam",
-  },
-  {
-    name: "Meera Kapoor",
-    detail: "Booked for parents",
-    quote:
-      "Thoughtfully planned and always keen to help. Booked my parents' trip and they came back smiling.",
-    avatar: "/images/home/reviewer-priya.jpg",
-  },
-  {
-    name: "Suresh Iyer",
-    detail: "Traveler · First international trip",
-    quote:
-      "Our Travel Mitr called before every leg of the journey. For our first trip abroad, that reassurance meant everything.",
-    tripPhoto: "/images/home/review-trip-3.jpg",
-    tripPhotoAlt: "A Marzi tour group with their guide",
-  },
-  {
-    name: "Lakshmi Nair",
-    detail: "Traveler · Travelled to Kerala",
-    quote:
-      "Every stay was comfortable and every day unhurried. It felt like the holiday was designed just for us.",
+      "Great selfless & positive group of Marzi. They are arranging trips without typical business intentions, which makes it more enjoyable.",
   },
 ];
 
@@ -145,12 +118,12 @@ export function Testimonials() {
           onTouchEnd={() => setIsPaused(false)}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="mt-12 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:block sm:columns-2 sm:gap-6 sm:overflow-visible lg:columns-3 [&::-webkit-scrollbar]:hidden sm:[&>*]:mb-6"
+          className="mt-12 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
         >
           {TESTIMONIALS.map((testimonial) => (
             <figure
               key={testimonial.name}
-              className="w-[88%] shrink-0 snap-center break-inside-avoid rounded-2xl border border-black/8 bg-white p-6 shadow-sm sm:w-auto sm:shrink"
+              className="flex w-[88%] shrink-0 snap-center flex-col rounded-2xl border border-black/8 bg-white p-6 shadow-sm sm:h-full sm:w-auto sm:shrink"
             >
               <Stars />
               {testimonial.tripPhoto ? (
@@ -167,7 +140,7 @@ export function Testimonials() {
               <blockquote className="text-foreground/80 mt-4 text-[15px] leading-relaxed">
                 “{testimonial.quote}”
               </blockquote>
-              <figcaption className="mt-5 flex items-center gap-3">
+              <figcaption className="mt-auto flex items-center gap-3 pt-5">
                 <Avatar testimonial={testimonial} />
                 <div>
                   <p className="text-sm font-bold">{testimonial.name}</p>

@@ -51,7 +51,7 @@ export function Destinations() {
   const activePage = Math.min(page, Math.max(0, slides.length - 1));
 
   return (
-    <section className="bg-cream py-20">
+    <section id="destinations" className="bg-cream scroll-mt-24 py-12 lg:py-14">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Explore destinations"
@@ -59,7 +59,7 @@ export function Destinations() {
           subtitle="Every holiday is planned around how you like to travel."
         />
 
-        <div className="mt-10 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-2 lg:mt-8">
           {TABS.map((tab) => (
             <button
               key={tab}
@@ -77,7 +77,7 @@ export function Destinations() {
         </div>
 
         {/* Slider */}
-        <div className="relative mt-10">
+        <div className="relative mt-6 lg:mt-8">
           <div
             ref={trackRef}
             onScroll={handleScroll}
@@ -125,7 +125,7 @@ export function Destinations() {
 
         {/* Dots */}
         {slides.length > 1 ? (
-          <div className="mt-6 flex justify-center gap-2">
+          <div className="mt-5 flex justify-center gap-2">
             {slides.map((_, index) => (
               <button
                 key={index}
