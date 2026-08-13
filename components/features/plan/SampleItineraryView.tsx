@@ -109,7 +109,7 @@ export function SampleItineraryView({ slug }: { slug: string }) {
       </Link>
       <ItineraryResult
         itinerary={itinerary}
-        heroImage={HERO[slug] ?? "/images/home/hero-bg.jpg"}
+        heroImage={HERO[slug] ?? "/images/home/hero-koh-tao.jpg"}
         monthLabel={monthLabel}
         departure={departure}
         score={score}

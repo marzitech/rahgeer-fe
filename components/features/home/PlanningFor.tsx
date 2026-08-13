@@ -4,19 +4,18 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const AUDIENCES = [
   {
-    title: "Book for yourself",
-    description:
-      "Curated itineraries designed for your pace, comfort and interests.",
-    image: "/images/home/book-yourself-solo.jpg", // design export: solo traveller, palace terrace
-    imagePosition: "object-[center_30%]",
+    title: "Book for senior travellers",
+    description: "Curated itineraries for people over 50.",
+    image: "/images/home/book-senior-travellers.jpg", // senior couple planning at a laptop
+    imagePosition: "object-[center_35%]",
     href: "/plan/yourself",
   },
   {
     title: "Book for parents",
     description:
       "Curated itineraries designed for their pace, comfort and safety.",
-    image: "/images/home/book-parents-lake.jpg", // design export: couple by the lake
-    imagePosition: "object-[center_40%]",
+    image: "/images/home/book-parents.jpg", // adult son on a call, parents' portrait behind
+    imagePosition: "object-center",
     href: "/plan/parents",
   },
 ];

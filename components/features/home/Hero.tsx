@@ -15,7 +15,7 @@ export function Hero() {
   return (
     <section className="relative flex items-center overflow-hidden lg:min-h-screen">
       <Image
-        src="/images/home/hero-bg.jpg"
+        src="/images/home/hero-koh-tao.jpg"
         alt=""
         fill
         priority
@@ -52,14 +52,14 @@ export function Hero() {
           </div>
 
           <h1 className="font-display mt-6 text-[34px] leading-[1.2] font-bold text-white md:text-[44px] lg:mt-8 lg:text-[52px] lg:leading-[1.15]">
-            Travel Confidently.
+            Travel Confidently
             <br />
-            Your <span className="text-gold">Travel Mitr</span> Takes
-            <br className="hidden md:block" /> Care of Everything.
+            Your <span className="text-gold">Travel Mitr</span> takes care of{" "}
+            <span className="text-gold">Everything</span>
           </h1>
           <p className="mt-4 max-w-xl text-base text-white/85 md:text-lg lg:mt-6">
-            India&apos;s first dedicated travel platform for people above 50 —
-            from planning to booking.
+            Marzi is India&apos;s first dedicated travel platform for people
+            above 50 – from planning to booking.
           </p>
         </div>
 

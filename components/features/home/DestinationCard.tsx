@@ -23,7 +23,11 @@ export function DestinationCard({
   return (
     <Link
       href={href}
-      className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-3xl"
+      className={cn(
+        "group relative block w-full overflow-hidden rounded-2xl sm:rounded-3xl",
+        // Explore grid: shorter/wider on desktop so the 2x2 fits one screen.
+        compact ? "aspect-[4/3] sm:aspect-[16/9]" : "aspect-[4/3]",
+      )}
     >
       <Image
         src={destination.image}

@@ -6,13 +6,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ChevronRight,
-  Compass,
   Download,
   Home,
   Info,
   Menu,
   Phone,
-  Sparkles,
   Users,
   X,
 } from "lucide-react";
@@ -36,22 +34,10 @@ const NAV_LINKS = [
   { href: `${MARZI_SITE}/contact-us`, label: "Contact Us" },
 ];
 
-// The mobile drawer mixes travel-app routes (internal) with brand-site links
+// The mobile drawer mirrors the desktop navbar exactly — brand-site links
 // (external, marked so they render a plain anchor).
 const MENU_ITEMS = [
-  { href: "/", label: "Home", Icon: Home, external: false },
-  {
-    href: "/#destinations",
-    label: "Explore Destinations",
-    Icon: Compass,
-    external: false,
-  },
-  {
-    href: "/plan/ai",
-    label: "Plan a Trip with AI",
-    Icon: Sparkles,
-    external: false,
-  },
+  { href: MARZI_SITE, label: "Home", Icon: Home, external: true },
   {
     href: `${MARZI_SITE}/about-us`,
     label: "About Us",
