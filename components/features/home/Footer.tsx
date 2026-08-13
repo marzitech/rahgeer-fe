@@ -54,31 +54,35 @@ function LinkedinIcon() {
   );
 }
 
+// Brand-site links resolve to marzi.life (this is the Travel sub-site);
+// "Holidays" and "Explore Destinations" stay on the travel site.
+const MARZI_SITE = "https://marzi.life";
+
 const EXPLORE = [
-  "Home",
-  "About Us",
-  "Meetups",
-  "Holidays",
-  "Contact Us",
-  "Stories",
+  { label: "Home", href: MARZI_SITE },
+  { label: "About Us", href: `${MARZI_SITE}/about-us` },
+  { label: "Meetups", href: `${MARZI_SITE}/events` },
+  { label: "Holidays", href: "/" },
+  { label: "Contact Us", href: `${MARZI_SITE}/contact-us` },
+  { label: "Stories", href: `${MARZI_SITE}/stories` },
 ];
 const POLICIES = [
-  "Privacy Policy",
-  "Terms & Conditions",
-  "Refund Policy",
-  "Shipping Policy",
+  { label: "Privacy Policy", href: `${MARZI_SITE}/privacy-policy` },
+  { label: "Terms & Conditions", href: `${MARZI_SITE}/terms-and-conditions` },
+  { label: "Refund Policy", href: `${MARZI_SITE}/refund-policy` },
+  { label: "Shipping Policy", href: `${MARZI_SITE}/shipping-policy` },
 ];
 const SOCIALS = [
-  { name: "Facebook", Icon: FacebookIcon },
-  { name: "Instagram", Icon: InstagramIcon },
-  { name: "YouTube", Icon: YoutubeIcon },
-  { name: "LinkedIn", Icon: LinkedinIcon },
+  { name: "Facebook", href: MARZI_SITE, Icon: FacebookIcon },
+  { name: "Instagram", href: MARZI_SITE, Icon: InstagramIcon },
+  { name: "YouTube", href: MARZI_SITE, Icon: YoutubeIcon },
+  { name: "LinkedIn", href: MARZI_SITE, Icon: LinkedinIcon },
 ];
 
 /** Purple footer: brand blurb, link columns, address, legal line. */
 export function Footer() {
   return (
-    <footer className="bg-marzi-purple text-white">
+    <footer className="hide-in-app bg-marzi-purple text-white">
       <div className="mx-auto max-w-[1192px] px-4 py-14">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div className="col-span-2 md:col-span-1">
@@ -94,10 +98,12 @@ export function Footer() {
               curated experiences.
             </p>
             <div className="mt-5 flex gap-3">
-              {SOCIALS.map(({ name, Icon }) => (
+              {SOCIALS.map(({ name, href, Icon }) => (
                 <a
                   key={name}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer noopener"
                   aria-label={name}
                   className="flex size-8 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/25"
                 >
@@ -112,10 +118,10 @@ export function Footer() {
               Explore
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {EXPLORE.map((label) => (
+              {EXPLORE.map(({ label, href }) => (
                 <li key={label}>
                   <Link
-                    href="#"
+                    href={href}
                     className="text-white/80 transition hover:text-white"
                   >
                     {label}
@@ -130,10 +136,10 @@ export function Footer() {
               Policies
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {POLICIES.map((label) => (
+              {POLICIES.map(({ label, href }) => (
                 <li key={label}>
                   <Link
-                    href="#"
+                    href={href}
                     className="text-white/80 transition hover:text-white"
                   >
                     {label}

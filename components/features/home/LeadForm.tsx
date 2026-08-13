@@ -210,8 +210,8 @@ export function LeadForm({
   // Planning pages use the design's warm card: butter-yellow top -> white
   // -> soft pink bottom. The hero card keeps its white-top variant.
   const cardClasses = showAiPlanner
-    ? "rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_22%,#ffffff_78%,#f9d9e9_100%)] p-7 shadow-2xl"
-    : "rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
+    ? "scroll-mt-24 rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_22%,#ffffff_78%,#f9d9e9_100%)] p-7 shadow-2xl"
+    : "scroll-mt-24 rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
 
   if (state === "success") {
     return (

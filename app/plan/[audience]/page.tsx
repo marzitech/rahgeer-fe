@@ -12,13 +12,13 @@ import { LeadForm } from "@/components/features/home/LeadForm";
 const AUDIENCES = {
   yourself: {
     title: "Book for yourself",
-    image: "/images/home/book-yourself-solo.jpg",
-    imagePosition: "object-[center_30%]",
+    image: "/images/home/book-senior-travellers.jpg",
+    imagePosition: "object-[center_35%]",
   },
   parents: {
     title: "Book for parents",
-    image: "/images/home/book-parents-lake.jpg",
-    imagePosition: "object-[center_40%]",
+    image: "/images/home/book-parents.jpg",
+    imagePosition: "object-center",
   },
 } as const;
 

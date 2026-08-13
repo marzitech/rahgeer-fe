@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
-import { BottomNav } from "@/components/features/home/BottomNav";
+import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
+import { HashScroll } from "@/components/HashScroll";
+import { isAppWebView } from "@/lib/app-webview";
 import "./globals.css";
 
 // Same pairing as marzi-web production: Lato body + Playfair display.
@@ -42,15 +44,19 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Detect the Marzi app WebView server-side so hidden chrome never renders.
+  const isApp = await isAppWebView();
+
   return (
     <html
       lang="en"
+      data-app={isApp ? "true" : undefined}
       className={`${lato.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        {children}
-        <BottomNav />
+        <HashScroll />
+        <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>
       </body>
     </html>
   );

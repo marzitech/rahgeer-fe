@@ -6,13 +6,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ChevronRight,
-  Compass,
   Download,
   Home,
   Info,
   Menu,
   Phone,
-  Sparkles,
   Users,
   X,
 } from "lucide-react";
@@ -25,22 +23,39 @@ import { cn } from "@/lib/utils";
  * logo colors, gray nav with brand underline, brand Download App button.
  */
 
+// The brand nav points at the main marzi.life site (this is the Travel
+// sub-site); the logo + bottom tab bar keep the travel home.
+const MARZI_SITE = "https://marzi.life";
+
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/about-us", label: "About Us" },
-  { href: "/meetups", label: "Meetups" },
-  { href: "/contact-us", label: "Contact Us" },
+  { href: MARZI_SITE, label: "Home" },
+  { href: `${MARZI_SITE}/about-us`, label: "About Us" },
+  { href: `${MARZI_SITE}/events`, label: "Meetups" },
+  { href: `${MARZI_SITE}/contact-us`, label: "Contact Us" },
 ];
 
-// The mobile drawer gets richer rows — icons + a couple of primary actions
-// so it reads like an app's menu screen, not a link list.
+// The mobile drawer mirrors the desktop navbar exactly — brand-site links
+// (external, marked so they render a plain anchor).
 const MENU_ITEMS = [
-  { href: "/", label: "Home", Icon: Home },
-  { href: "/#destinations", label: "Explore Destinations", Icon: Compass },
-  { href: "/plan/ai", label: "Plan a Trip with AI", Icon: Sparkles },
-  { href: "/about-us", label: "About Us", Icon: Info },
-  { href: "/meetups", label: "Meetups", Icon: Users },
-  { href: "/#plan-your-trip", label: "Talk to a Travel Mitr", Icon: Phone },
+  { href: MARZI_SITE, label: "Home", Icon: Home, external: true },
+  {
+    href: `${MARZI_SITE}/about-us`,
+    label: "About Us",
+    Icon: Info,
+    external: true,
+  },
+  {
+    href: `${MARZI_SITE}/events`,
+    label: "Meetups",
+    Icon: Users,
+    external: true,
+  },
+  {
+    href: `${MARZI_SITE}/contact-us`,
+    label: "Contact Us",
+    Icon: Phone,
+    external: true,
+  },
 ];
 
 const PLAY_STORE_URL =
@@ -72,7 +87,7 @@ export function Header() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] bg-white/90 [padding-top:env(safe-area-inset-top)] backdrop-blur-md transition-all duration-500 md:bg-transparent md:[padding-top:0] md:backdrop-blur-none">
+      <div className="hide-in-app pointer-events-none fixed inset-x-0 top-0 z-[100] bg-white/90 [padding-top:env(safe-area-inset-top)] backdrop-blur-md transition-all duration-500 md:bg-transparent md:[padding-top:0] md:backdrop-blur-none">
         <header
           className={cn(
             "pointer-events-auto relative mx-auto flex h-16 items-center justify-between px-6 transition-all duration-500 ease-in-out md:h-20 md:px-10",
@@ -110,17 +125,17 @@ export function Header() {
               </div>
             </Link>
 
-            {/* Desktop nav */}
+            {/* Desktop nav — brand-site links (marzi.life) */}
             <nav className="hidden items-center gap-6 lg:flex">
               {NAV_LINKS.map((link) => (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
                   className="group hover:text-brand relative text-sm font-bold tracking-wider text-gray-500 uppercase transition-colors focus:outline-none"
                 >
                   {link.label}
                   <span className="bg-brand absolute -bottom-1 left-0 h-0.5 w-0 transition-all group-hover:w-full" />
-                </Link>
+                </a>
               ))}
             </nav>
           </div>
@@ -164,7 +179,7 @@ export function Header() {
       <div
         aria-hidden={!isOpen}
         className={cn(
-          "fixed inset-0 z-[110] lg:hidden",
+          "hide-in-app fixed inset-0 z-[110] lg:hidden",
           isOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
@@ -217,24 +232,21 @@ export function Header() {
 
           {/* Nav rows */}
           <nav className="flex-1 overflow-y-auto px-3 py-4">
-            {MENU_ITEMS.map(({ href, label, Icon }) => {
+            {MENU_ITEMS.map(({ href, label, Icon, external }) => {
               const active =
-                href === "/"
-                  ? pathname === "/"
-                  : href.startsWith("/plan")
-                    ? pathname.startsWith("/plan")
-                    : pathname === href;
-              return (
-                <Link
-                  key={label}
-                  href={href}
-                  onClick={() => setIsOpen(false)}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "group flex items-center gap-3.5 rounded-2xl px-3 py-3.5 transition active:scale-[0.98]",
-                    active ? "bg-brand/5" : "hover:bg-black/[0.03]",
-                  )}
-                >
+                external || href.includes("#")
+                  ? false
+                  : href === "/"
+                    ? pathname === "/"
+                    : href.startsWith("/plan")
+                      ? pathname.startsWith("/plan")
+                      : pathname === href;
+              const rowClass = cn(
+                "group flex items-center gap-3.5 rounded-2xl px-3 py-3.5 transition active:scale-[0.98]",
+                active ? "bg-brand/5" : "hover:bg-black/[0.03]",
+              );
+              const inner = (
+                <>
                   <span
                     className={cn(
                       "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition",
@@ -252,6 +264,26 @@ export function Header() {
                     {label}
                   </span>
                   <ChevronRight className="text-foreground/30 h-4 w-4" />
+                </>
+              );
+              return external ? (
+                <a
+                  key={label}
+                  href={href}
+                  onClick={() => setIsOpen(false)}
+                  className={rowClass}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <Link
+                  key={label}
+                  href={href}
+                  onClick={() => setIsOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={rowClass}
+                >
+                  {inner}
                 </Link>
               );
             })}

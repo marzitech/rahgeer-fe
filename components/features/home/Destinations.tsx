@@ -1,129 +1,57 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
+import { DestinationCard } from "./DestinationCard";
+import { GUIDES, TABS, type Tab } from "./destinations.data";
 
-const TABS = [
-  "All",
-  "International",
-  "India",
-  "Spiritual",
-  "Mountains",
-  "Beaches",
-  "Wellness",
-  "First International Trip",
-] as const;
+const PER_SLIDE = 4; // 2 x 2 grid per slide
 
-type Tab = (typeof TABS)[number];
-
-// Uniform card copy per the design.
-const CARD_BLURB =
-  "Curated itineraries designed for your pace, comfort, and curiosity.";
-
-const DESTINATIONS: {
-  name: string;
-  slug: string;
-  image: string;
-  tags: Tab[];
-  cta: "View packages" | "Read travel guide";
-  priceFromInr?: number;
-}[] = [
-  {
-    name: "Europe",
-    slug: "europe",
-    image: "/images/destinations/europe.jpg",
-    tags: ["International", "First International Trip"],
-    cta: "View packages",
-    priceFromInr: 56302,
-  },
-  {
-    name: "Kashmir",
-    slug: "kashmir",
-    image: "/images/destinations/kashmir.jpg",
-    tags: ["India", "Mountains"],
-    cta: "View packages",
-    priceFromInr: 56302,
-  },
-  {
-    name: "Japan",
-    slug: "japan",
-    image: "/images/destinations/japan.jpg",
-    tags: ["International"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Kerala",
-    slug: "kerala",
-    image: "/images/destinations/kerala.jpg",
-    tags: ["India", "Wellness", "Beaches"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Vietnam",
-    slug: "vietnam",
-    image: "/images/destinations/vietnam.jpg",
-    tags: ["International", "First International Trip"],
-    cta: "Read travel guide",
-  },
-  {
-    name: "Rajasthan",
-    slug: "rajasthan",
-    image: "/images/destinations/rajasthan.jpg",
-    tags: ["India", "Spiritual"],
-    cta: "Read travel guide",
-  },
-];
-
-const AUTO_SCROLL_MS = 4000;
-
-/** "Where would you like to go next?" — filter tabs + photo cards.
- *  Desktop: 3-col grid. Mobile: horizontal snap carousel auto-advancing
- *  every 4s (pauses on touch/hover; dots sync with manual swipes). */
+/** "Where would you like to go next?" — filter tabs + a horizontal slider,
+ *  4 destinations (2x2) per slide on both mobile and desktop. */
 export function Destinations() {
   const [activeTab, setActiveTab] = useState<Tab>("All");
   const trackRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [page, setPage] = useState(0);
 
-  const visible = DESTINATIONS.filter(
+  const visible = GUIDES.filter(
     (d) => activeTab === "All" || d.tags.includes(activeTab),
   );
 
-  // Changing the filter changes the card list — restart from the first card.
+  const slides: (typeof visible)[] = [];
+  for (let i = 0; i < visible.length; i += PER_SLIDE) {
+    slides.push(visible.slice(i, i + PER_SLIDE));
+  }
+
+  // Reset to the first slide when the filter changes.
   function selectTab(tab: Tab) {
     setActiveTab(tab);
-    setActiveIndex(0);
+    setPage(0);
     trackRef.current?.scrollTo({ left: 0 });
   }
 
-  // Auto-advance only when the track actually scrolls (mobile layout).
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      const track = trackRef.current;
-      if (!track || track.scrollWidth <= track.clientWidth) return;
-      setActiveIndex((index) => {
-        const next = (index + 1) % visible.length;
-        track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
-        return next;
-      });
-    }, AUTO_SCROLL_MS);
-    return () => clearInterval(timer);
-  }, [isPaused, visible.length]);
+  function goTo(index: number) {
+    const track = trackRef.current;
+    if (!track) return;
+    const clamped = Math.max(0, Math.min(index, slides.length - 1));
+    setPage(clamped);
+    track.scrollTo({ left: clamped * track.clientWidth, behavior: "smooth" });
+  }
 
-  // Keep the dots honest when the user swipes manually.
   function handleScroll() {
     const track = trackRef.current;
     if (!track || track.clientWidth === 0) return;
-    setActiveIndex(Math.round(track.scrollLeft / track.clientWidth));
+    setPage(Math.round(track.scrollLeft / track.clientWidth));
   }
 
+  // selectTab already resets to slide 0 on filter change; clamp defensively
+  // for the dots/arrows in case slide count shrank.
+  const activePage = Math.min(page, Math.max(0, slides.length - 1));
+
   return (
-    <section className="bg-cream py-20">
+    <section id="destinations" className="bg-cream scroll-mt-24 py-12 lg:py-14">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Explore destinations"
@@ -131,13 +59,13 @@ export function Destinations() {
           subtitle="Every holiday is planned around how you like to travel."
         />
 
-        <div className="mt-10 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-2 lg:mt-8">
           {TABS.map((tab) => (
             <button
               key={tab}
               onClick={() => selectTab(tab)}
               className={cn(
-                "rounded-full px-5 py-2.5 text-sm font-medium transition",
+                "rounded-full px-4 py-2 text-sm font-medium transition sm:px-5 sm:py-2.5",
                 activeTab === tab
                   ? "bg-brand text-white shadow"
                   : "text-foreground/70 hover:border-brand/40 border border-black/10 bg-white",
@@ -148,75 +76,70 @@ export function Destinations() {
           ))}
         </div>
 
-        <div
-          ref={trackRef}
-          onScroll={handleScroll}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
-        >
-          {visible.map((destination) => (
-            <Link
-              key={destination.name}
-              href={`/destinations/${destination.slug}`}
-              className="group relative block h-[360px] w-[88%] shrink-0 snap-center overflow-hidden rounded-3xl sm:w-auto sm:shrink md:h-[400px]"
-            >
-              <Image
-                src={destination.image}
-                alt={destination.name}
-                fill
-                sizes="(max-width: 640px) 88vw, (max-width: 1024px) 50vw, 380px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              {destination.priceFromInr ? (
-                <span className="absolute top-4 right-4 rounded-xl bg-white px-4 py-2 text-center shadow-md transition group-hover:scale-105">
-                  <p className="text-foreground/60 text-xs">Starting from</p>
-                  <p className="text-brand text-lg leading-tight font-bold">
-                    ₹{destination.priceFromInr.toLocaleString("en-IN")}
-                  </p>
-                </span>
-              ) : null}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent p-6 pt-20">
-                <h3 className="font-display text-[26px] font-semibold text-white">
-                  {destination.name}
-                </h3>
-                <p className="mt-1 text-sm leading-snug text-white/80">
-                  {CARD_BLURB}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-[15px] font-bold text-white transition group-hover:gap-2">
-                  {destination.cta}
-                  <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
-                </span>
+        {/* Slider */}
+        <div className="relative mt-6 lg:mt-8">
+          <div
+            ref={trackRef}
+            onScroll={handleScroll}
+            className="flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto [&::-webkit-scrollbar]:hidden"
+          >
+            {slides.map((slide, index) => (
+              <div key={index} className="w-full shrink-0 snap-center">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6">
+                  {slide.map((destination) => (
+                    <DestinationCard
+                      key={destination.name}
+                      destination={destination}
+                      compact
+                    />
+                  ))}
+                </div>
               </div>
-            </Link>
-          ))}
+            ))}
+          </div>
+
+          {/* Prev / next arrows (desktop) */}
+          {slides.length > 1 ? (
+            <>
+              <button
+                type="button"
+                aria-label="Previous"
+                onClick={() => goTo(activePage - 1)}
+                disabled={activePage === 0}
+                className="text-foreground absolute top-1/2 -left-4 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg transition hover:scale-105 disabled:opacity-0 lg:flex"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next"
+                onClick={() => goTo(activePage + 1)}
+                disabled={activePage === slides.length - 1}
+                className="text-foreground absolute top-1/2 -right-4 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg transition hover:scale-105 disabled:opacity-0 lg:flex"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </>
+          ) : null}
         </div>
 
-        {/* Carousel dots — mobile only */}
-        <div className="mt-6 flex justify-center gap-2 sm:hidden">
-          {visible.map((destination, index) => (
-            <button
-              key={destination.name}
-              type="button"
-              aria-label={`Go to ${destination.name}`}
-              onClick={() => {
-                const track = trackRef.current;
-                if (!track) return;
-                setActiveIndex(index);
-                track.scrollTo({
-                  left: index * track.clientWidth,
-                  behavior: "smooth",
-                });
-              }}
-              className={cn(
-                "h-2 rounded-full transition-all",
-                index === activeIndex ? "bg-brand w-6" : "w-2 bg-black/20",
-              )}
-            />
-          ))}
-        </div>
+        {/* Dots */}
+        {slides.length > 1 ? (
+          <div className="mt-5 flex justify-center gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                onClick={() => goTo(index)}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  index === activePage ? "bg-brand w-6" : "w-2 bg-black/20",
+                )}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

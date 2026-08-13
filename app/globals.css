@@ -37,6 +37,15 @@
   --font-display: var(--font-playfair);
 }
 
+/* Anchor jumps (#destinations, #plan-your-trip, …) clear the fixed header.
+   NOTE: deliberately NOT setting `scroll-behavior: smooth` globally — it
+   hijacks the App Router's scroll-to-top on route change (you'd land on the
+   next page's footer). Smooth anchor scrolling is done per-jump in JS
+   (HashScroll + CtaBanner) instead. */
+html {
+  scroll-padding-top: 6rem;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -47,18 +56,28 @@ body {
   overscroll-behavior-y: none;
 }
 
-/* On phones the fixed bottom tab bar overlaps page content — reserve its
-   height (+ the home-indicator safe area) so nothing hides behind it.
-   Removed at md+ where the tab bar is hidden. Print never shows it. */
-@media (max-width: 767px) {
-  body {
-    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
-  }
+/* ---------------------------------------------------------------------
+   Marzi app WebView switches. `data-app="true"` is set on <html> by the
+   root layout when the request UA contains the MarziApp token.
+   - .hide-in-app  : shown on the web, hidden inside the app
+   - .show-in-app  : hidden on the web, shown only inside the app
+   --------------------------------------------------------------------- */
+:root[data-app="true"] .hide-in-app {
+  display: none !important;
 }
-@media print {
-  body {
-    padding-bottom: 0;
-  }
+.show-in-app {
+  display: none;
+}
+:root[data-app="true"] .show-in-app {
+  display: revert;
+}
+/* Inside the app the site owns the status-bar space; and since the fixed
+   site header is hidden, drop the header-offset padding pages add to <main>. */
+:root[data-app="true"] body {
+  padding-top: env(safe-area-inset-top);
+}
+:root[data-app="true"] main {
+  padding-top: 0 !important;
 }
 
 /* Display headings use the serif brand voice */
@@ -75,7 +94,7 @@ body {
 }
 
 .animate-marquee {
-  animation: marquee 28s linear infinite;
+  animation: marquee 60s linear infinite;
 }
 
 .animate-marquee:hover {

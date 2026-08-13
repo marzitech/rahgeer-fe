@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Calendar, Compass, FileText, Headset, House, Map } from "lucide-react";
+import { MitrHeading } from "./MitrHeading";
 
 const SERVICES = [
   { Icon: Compass, label: "Choose any destination" },
@@ -17,9 +18,7 @@ export function TravelMitr() {
   return (
     <section className="overflow-hidden bg-gradient-to-b from-[#140006] via-[#57062b] to-[#a11550] py-16 text-white">
       <div className="mx-auto max-w-[1192px] px-4 text-center">
-        <h2 className="font-display text-[28px] font-semibold md:text-4xl">
-          One person. Every step of your journey.
-        </h2>
+        <MitrHeading />
 
         <div className="mt-10 flex flex-col items-center">
           <div className="relative size-[140px] overflow-hidden rounded-full ring-2 ring-white/30 md:size-[180px]">
@@ -46,22 +45,27 @@ export function TravelMitr() {
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
         }}
       >
-        <div className="animate-marquee flex w-max gap-4 pr-4">
-          {[0, 1].map((copy) => (
+        <div className="animate-marquee flex w-max gap-5">
+          {/* Two identical halves (the -50% loop). Each half repeats the
+              service list enough times to overflow any viewport, so the
+              band is always full — no empty gap. */}
+          {[0, 1].map((half) => (
             <div
-              key={copy}
-              aria-hidden={copy === 1}
-              className="flex shrink-0 gap-4"
+              key={half}
+              aria-hidden={half === 1}
+              className="flex shrink-0 gap-5 pr-5"
             >
-              {SERVICES.map(({ Icon, label }) => (
-                <span
-                  key={label}
-                  className="border-gold/70 flex items-center gap-2.5 rounded-full border bg-white/5 px-6 py-3.5 text-[15px] font-medium whitespace-nowrap text-white"
-                >
-                  <Icon className="text-gold h-5 w-5" strokeWidth={1.8} />
-                  {label}
-                </span>
-              ))}
+              {[0, 1, 2].flatMap((rep) =>
+                SERVICES.map(({ Icon, label }) => (
+                  <span
+                    key={`${rep}-${label}`}
+                    className="border-gold/70 flex items-center gap-3 rounded-full border bg-white/5 px-8 py-4 text-[17px] font-medium whitespace-nowrap text-white md:text-lg"
+                  >
+                    <Icon className="text-gold h-6 w-6" strokeWidth={1.8} />
+                    {label}
+                  </span>
+                )),
+              )}
             </div>
           ))}
         </div>
