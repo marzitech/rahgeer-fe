@@ -24,9 +24,9 @@ const MONTHS = [
 // Hero photo per sample destination (placeholders — swap in real photos).
 const HERO: Record<string, string> = {
   "north-east": "/images/destinations/kerala.jpg",
-  goa: "/images/destinations/vietnam.jpg",
-  himachal: "/images/destinations/kashmir.jpg",
-  "karnataka-coorg": "/images/home/review-trip-1.jpg",
+  goa: "/images/destinations/goa.jpg",
+  himachal: "/images/destinations/himachal.jpg",
+  "karnataka-coorg": "/images/destinations/coorg.jpg",
   rajasthan: "/images/destinations/rajasthan.jpg",
   gujarat: "/images/destinations/rajasthan.jpg",
   "sikkim-darjeeling": "/images/home/review-trip-2.jpg",
@@ -34,7 +34,7 @@ const HERO: Record<string, string> = {
   kerala: "/images/destinations/kerala.jpg",
   "sri-lanka": "/images/destinations/vietnam.jpg",
   ladakh: "/images/destinations/kashmir.jpg",
-  "dharamshala-amritsar": "/images/destinations/kashmir.jpg",
+  "dharamshala-amritsar": "/images/destinations/himachal.jpg",
   "sikkim-darjeeling-gangtok": "/images/home/review-trip-2.jpg",
   nainital: "/images/destinations/europe.jpg",
 };

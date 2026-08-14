@@ -10,21 +10,29 @@ const STEPS = [
     title: "Tell us about your holiday",
     description:
       "Where do you want to go? When do you want to travel? Tell us what's important to you.",
+    image: "/images/home/how-marzi-works.jpg",
+    alt: "A Marzi consultant listening to a senior traveller's holiday wishes",
   },
   {
     title: "Receive a personalised plan",
     description:
       "We'll recommend flights, hotels, sightseeing, restaurants and a comfortable itinerary designed around you.",
+    image: "/images/home/how-marzi-works.png",
+    alt: "A senior couple reviewing their personalised plan with a map, guidebook and laptop",
   },
   {
     title: "We book everything",
     description:
       "Flights, hotels, visa, insurance, forex and more — all handled by your Travel Mitr.",
+    image: "/images/home/travel-mitr.jpg",
+    alt: "A Marzi Travel Mitr handling the bookings",
   },
   {
     title: "Enjoy your holiday",
     description:
       "Relax and focus on making memories. We'll take care of the planning.",
+    image: "/images/destinations/goa.jpg",
+    alt: "Travellers enjoying an evening on a Goa beach",
   },
 ];
 
@@ -82,6 +90,7 @@ export function HowItWorks() {
                   <button
                     type="button"
                     onClick={() => setActiveStep(index)}
+                    onMouseEnter={() => setActiveStep(index)}
                     aria-current={isActive ? "step" : undefined}
                     className="w-full py-5 pl-8 text-left"
                   >
@@ -114,13 +123,20 @@ export function HowItWorks() {
           </ol>
 
           <div className="relative h-[280px] w-full overflow-hidden rounded-3xl md:h-[400px] lg:h-[480px]">
-            <Image
-              src="/images/home/how-marzi-works.png"
-              alt="A senior couple planning their trip with a map, guidebook and laptop"
-              fill
-              sizes="(max-width: 1024px) 100vw, 640px"
-              className="object-cover"
-            />
+            {/* All step images stay mounted; the active one crossfades in. */}
+            {STEPS.map((step, index) => (
+              <Image
+                key={step.image}
+                src={step.image}
+                alt={index === activeStep ? step.alt : ""}
+                fill
+                sizes="(max-width: 1024px) 100vw, 640px"
+                className={cn(
+                  "object-cover transition-opacity duration-700",
+                  index === activeStep ? "opacity-100" : "opacity-0",
+                )}
+              />
+            ))}
           </div>
         </div>
       </div>
