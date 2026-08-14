@@ -10,29 +10,29 @@ const STEPS = [
     title: "Tell us about your holiday",
     description:
       "Where do you want to go? When do you want to travel? Tell us what's important to you.",
-    image: "/images/home/how-marzi-works.jpg",
-    alt: "A Marzi consultant listening to a senior traveller's holiday wishes",
+    image: "/images/home/how-marzi-works.png",
+    alt: "A senior couple sharing their holiday wishes over a map and guidebook",
   },
   {
     title: "Receive a personalised plan",
     description:
       "We'll recommend flights, hotels, sightseeing, restaurants and a comfortable itinerary designed around you.",
-    image: "/images/home/how-marzi-works.png",
-    alt: "A senior couple reviewing their personalised plan with a map, guidebook and laptop",
+    image: "/images/home/book-senior-travellers.jpg",
+    alt: "A senior couple reviewing their personalised printed itinerary",
   },
   {
     title: "We book everything",
     description:
       "Flights, hotels, visa, insurance, forex and more — all handled by your Travel Mitr.",
-    image: "/images/home/travel-mitr.jpg",
-    alt: "A Marzi Travel Mitr handling the bookings",
+    image: "/images/home/how-marzi-works.jpg",
+    alt: "Senior travellers consulting with their Marzi Travel Mitr",
   },
   {
     title: "Enjoy your holiday",
     description:
       "Relax and focus on making memories. We'll take care of the planning.",
-    image: "/images/destinations/goa.jpg",
-    alt: "Travellers enjoying an evening on a Goa beach",
+    image: "/images/home/travel-with-group.jpg",
+    alt: "A group of senior travellers setting off on their holiday together",
   },
 ];
 
