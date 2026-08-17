@@ -48,9 +48,11 @@ export async function searchDestinations(
   query: string,
   { signal, country }: SearchDestinationsOptions = {},
 ): Promise<DestinationSuggestion[]> {
+  // Same-origin proxy to Photon (see next.config.ts rewrites) — Photon's
+  // CORS policy blocks direct browser calls from our domain.
   // Country filtering happens client-side, so over-fetch to survive it.
   const res = await fetch(
-    `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=${country ? 20 : 10}&lang=en`,
+    `/api/geocode/search?q=${encodeURIComponent(query)}&limit=${country ? 20 : 10}&lang=en`,
     { signal },
   );
   if (!res.ok) throw new Error(`Photon responded ${res.status}`);
@@ -93,7 +95,7 @@ export async function reverseGeocodeCity(
   signal?: AbortSignal,
 ): Promise<string | null> {
   const res = await fetch(
-    `https://photon.komoot.io/reverse?lat=${lat}&lon=${lon}&lang=en`,
+    `/api/geocode/reverse?lat=${lat}&lon=${lon}&lang=en`,
     { signal },
   );
   if (!res.ok) throw new Error(`Photon responded ${res.status}`);
