@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,37 @@ export function Destinations() {
   const [activeTab, setActiveTab] = useState<Tab>("All");
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
+
+  /* Restore the tab + slide the visitor left on (e.g. after coming Back
+     from a package/itinerary page), so the section looks exactly as it did
+     when they navigated away. Session-scoped; runs once after hydration. */
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("home-destinations-ui");
+      if (!saved) return;
+      const { tab, page: savedPage } = JSON.parse(saved) as {
+        tab?: Tab;
+        page?: number;
+      };
+      if (tab && TABS.includes(tab)) setActiveTab(tab);
+      if (typeof savedPage === "number" && savedPage > 0) {
+        setPage(savedPage);
+        requestAnimationFrame(() => {
+          const track = trackRef.current;
+          if (track) track.scrollLeft = savedPage * track.clientWidth;
+        });
+      }
+    } catch {
+      /* corrupt storage — start fresh */
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      "home-destinations-ui",
+      JSON.stringify({ tab: activeTab, page }),
+    );
+  }, [activeTab, page]);
 
   const visible = GUIDES.filter(
     (d) => activeTab === "All" || d.tags.includes(activeTab),

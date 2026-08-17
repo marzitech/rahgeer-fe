@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Check, Clock, MapPin, Phone, X } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
 import type { PackageContent } from "@/lib/content/packages";
 
 /** Circular Gen EV Score ring (green). */
@@ -49,12 +50,12 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
   return (
     <main className="bg-[#fdf7f2] pt-20 md:pt-24">
       <div className="mx-auto max-w-[1192px] px-4 py-8">
-        <Link
+        <BackLink
           href="/#destinations"
           className="text-brand inline-flex items-center gap-2 text-sm font-semibold hover:underline"
         >
-          <span aria-hidden>←</span> Back to Travel
-        </Link>
+          <span aria-hidden>←</span> Back to destinations
+        </BackLink>
 
         {/* Hero banner */}
         <div className="relative mt-4 overflow-hidden rounded-2xl">
