@@ -34,7 +34,7 @@ const TESTIMONIALS: Testimonial[] = [
     name: "Shajee Kozhukkunnon",
     detail: "Traveller",
     quote:
-      "Great selfless & positive group of Marzi. They are arranging trips without typical business intentions, which makes it more enjoyable.",
+      "Great selfless & positive group of Marzi. They are arranging trips, which makes it more enjoyable.",
   },
 ];
 
