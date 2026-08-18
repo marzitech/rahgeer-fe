@@ -1,10 +1,206 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Check, Clock, MapPin, Phone, X } from "lucide-react";
+import { guessTripScope } from "@/components/features/home/LeadForm";
+import { ApiError } from "@/lib/api/client";
+import { createEnquiry } from "@/lib/api/endpoints";
 import type { PackageContent } from "@/lib/content/packages";
+
+/** "Talk to a Travel Mitr" popup for a curated package — the lead-gate
+ *  modal's warm card, trimmed to just Name + Mobile (never prefilled).
+ *  Submits a website enquiry tagged with the package so ops knows which
+ *  trip to call about. */
+function TalkToMitrModal({
+  pkg,
+  onClose,
+}: {
+  pkg: PackageContent;
+  onClose: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [errors, setErrors] = useState<{
+    name?: string;
+    mobile?: string;
+    submit?: string;
+  }>({});
+  const [state, setState] = useState<"idle" | "submitting" | "success">(
+    "idle",
+  );
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const next: typeof errors = {};
+    if (name.trim().length < 3) next.name = "Please enter your name.";
+    if (!/^[6-9]\d{9}$/.test(mobile))
+      next.mobile = "Enter a valid 10-digit mobile number.";
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    setState("submitting");
+    try {
+      await createEnquiry({
+        full_name: name.trim(),
+        phone: mobile,
+        destination: pkg.name,
+        trip_scope: guessTripScope(pkg.name),
+        message: `Package enquiry: ${pkg.title} (${pkg.datesLabel})`,
+        source: "website",
+        form: "package-talk-to-mitr",
+      });
+      setState("success");
+    } catch (error) {
+      setState("idle");
+      setErrors({
+        submit:
+          error instanceof ApiError
+            ? "Please check your details and try again."
+            : "Something went wrong. Please try again.",
+      });
+    }
+  }
+
+  const inputClasses =
+    "mt-1.5 w-full rounded-xl bg-[#f1f1f1] px-4 py-3.5 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Talk to a Travel Mitr"
+    >
+      <div className="relative w-full max-w-md rounded-2xl bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_25%,#ffffff_70%,#f9d9e9_100%)] p-7 shadow-2xl">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="text-foreground/60 absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-black/5 transition hover:bg-black/10"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        {state === "success" ? (
+          <div className="py-6 text-center">
+            <p className="font-display text-brand text-2xl font-bold">
+              Thank you, {name.trim().split(" ")[0]}!
+            </p>
+            <p className="text-foreground/70 mt-3 text-sm">
+              Your Travel Mitr will call you shortly about the {pkg.name}{" "}
+              tour.
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 rounded-full bg-black px-8 py-3 text-sm font-semibold text-white transition hover:bg-black/85"
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} noValidate>
+            <h2 className="font-display text-brand pr-8 text-2xl font-bold">
+              Talk to a Travel Mitr
+            </h2>
+            <p className="text-foreground/60 mt-1.5 text-sm">
+              Share your details and we&apos;ll call you about the {pkg.name}{" "}
+              tour.
+            </p>
+
+            <div className="mt-5 space-y-4">
+              <label className="block">
+                <span className="text-[13px] font-semibold">Full Name</span>
+                <input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value.replace(/[^a-zA-Z\s.'-]/g, ""));
+                    setErrors((prev) => ({ ...prev, name: undefined }));
+                  }}
+                  aria-invalid={Boolean(errors.name)}
+                  placeholder="e.g. Asha Rao"
+                  className={inputClasses}
+                />
+                {errors.name ? (
+                  <p
+                    role="alert"
+                    className="mt-1 text-xs font-medium text-red-600"
+                  >
+                    {errors.name}
+                  </p>
+                ) : null}
+              </label>
+
+              <label className="block">
+                <span className="text-[13px] font-semibold">
+                  Mobile Number
+                </span>
+                <div className="flex gap-3">
+                  <span className="text-foreground/60 mt-1.5 flex items-center rounded-xl bg-[#f1f1f1] px-4 text-sm">
+                    +91
+                  </span>
+                  <input
+                    inputMode="numeric"
+                    value={mobile}
+                    onChange={(e) => {
+                      setMobile(e.target.value.replace(/\D/g, ""));
+                      setErrors((prev) => ({ ...prev, mobile: undefined }));
+                    }}
+                    maxLength={10}
+                    aria-invalid={Boolean(errors.mobile)}
+                    placeholder="10-digit mobile number"
+                    className={inputClasses}
+                  />
+                </div>
+                {errors.mobile ? (
+                  <p
+                    role="alert"
+                    className="mt-1 text-xs font-medium text-red-600"
+                  >
+                    {errors.mobile}
+                  </p>
+                ) : null}
+              </label>
+
+              {errors.submit ? (
+                <p role="alert" className="text-sm text-red-600">
+                  {errors.submit}
+                </p>
+              ) : null}
+
+              <button
+                type="submit"
+                disabled={state === "submitting"}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-3.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-60"
+              >
+                <Phone className="h-4 w-4" />
+                {state === "submitting" ? "Sending…" : "Request a call back"}
+              </button>
+
+              <p className="flex items-center justify-center gap-1.5 text-center text-xs font-medium text-green-700">
+                <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                No spam. Your details stay private.
+              </p>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /** Circular Gen EV Score ring (green). */
 function ScoreRing({ score }: { score: number }) {
@@ -44,10 +240,14 @@ function ScoreRing({ score }: { score: number }) {
  *  Tour price includes/excludes). */
 export function PackageDetail({ pkg }: { pkg: PackageContent }) {
   const [activeDay, setActiveDay] = useState(pkg.days[0]?.day ?? 1);
+  const [mitrOpen, setMitrOpen] = useState(false);
   const day = pkg.days.find((d) => d.day === activeDay) ?? pkg.days[0];
 
   return (
     <main className="bg-[#fdf7f2] pt-20 md:pt-24">
+      {mitrOpen ? (
+        <TalkToMitrModal pkg={pkg} onClose={() => setMitrOpen(false)} />
+      ) : null}
       <div className="mx-auto max-w-[1192px] px-4 py-8">
         <Link
           href="/#destinations"
@@ -263,19 +463,14 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
               <p className="font-display mt-1 text-4xl font-bold">
                 ₹{pkg.priceFromInr.toLocaleString("en-IN")}
               </p>
-              <Link
-                href="/#plan-your-trip"
-                className="mt-5 flex items-center justify-center gap-2 rounded-full border border-black/20 bg-white py-3 text-sm font-semibold transition hover:border-black/40"
+              <button
+                type="button"
+                onClick={() => setMitrOpen(true)}
+                className="bg-brand hover:bg-brand-deep mt-5 flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white transition"
               >
                 <Phone className="h-4 w-4" />
                 Talk to a Travel Mitr
-              </Link>
-              <Link
-                href="/#plan-your-trip"
-                className="bg-brand hover:bg-brand-deep mt-3 flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white transition"
-              >
-                Book Now
-              </Link>
+              </button>
             </div>
           </div>
         </div>

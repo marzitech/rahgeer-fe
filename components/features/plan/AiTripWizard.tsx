@@ -78,34 +78,35 @@ const DAY_PACES = [
 const WALK_STRETCHES = ["Under 15 mins", "15-30 mins", "Over 30 mins"];
 
 const EXPERIENCES = [
-  { name: "Religious & Spiritual", image: "/images/home/review-trip-1.jpg" },
-  { name: "Nature & Wellness", image: "/images/destinations/kerala.jpg" },
+  {
+    name: "Religious & Spiritual",
+    image: "/images/plan/experience-religious.jpg",
+  },
+  { name: "Nature & Wellness", image: "/images/plan/experience-nature.jpg" },
   {
     name: "Exploration & Sightseeing",
-    image: "/images/destinations/rajasthan.jpg",
+    image: "/images/plan/experience-sightseeing.jpg",
   },
 ];
 
-/* TODO(assets): hotel-room photos per the design need a Figma export —
-   scenery stand-ins until then. */
 const STAY_TYPES = [
   {
     name: "Homestay",
-    tier: "₹ Budget",
+    tier: "Budget",
     blurb: "Authentic local stays with cozy, personal comfort.",
-    image: "/images/destinations/vietnam.jpg",
+    image: "/images/plan/stay-homestay.jpg",
   },
   {
     name: "Comfortable 3-Star",
-    tier: "₹₹ Mid-Range",
+    tier: "Mid-Range",
     blurb: "Reliable stays with comfort and essential amenities.",
-    image: "/images/destinations/europe.jpg",
+    image: "/images/plan/stay-3-star.jpg",
   },
   {
     name: "Luxury 5-Star",
-    tier: "₹₹₹ Luxury",
+    tier: "Luxury",
     blurb: "Premium stays with luxury and exceptional service.",
-    image: "/images/destinations/japan.jpg",
+    image: "/images/plan/stay-5-star.jpg",
   },
 ];
 
