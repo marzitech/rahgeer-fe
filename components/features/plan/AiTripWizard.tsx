@@ -25,6 +25,12 @@ import {
   type ItineraryIntake,
 } from "@/lib/api/endpoints";
 import { streamItineraryProgress } from "@/lib/api/stream";
+import {
+  reverseGeocodeCity,
+  searchDestinations,
+  type DestinationSuggestion,
+} from "@/lib/geocode";
+import { hasInAppHistory } from "@/lib/navDepth";
 import { TripPlanDossier } from "@/components/features/plan/TripPlanDossier";
 
 /** AI trip-planner wizard (design: Step 1 of 9 — destination picker).
@@ -1177,6 +1183,133 @@ export function AiTripWizard() {
   const filtered = DESTINATIONS.filter((d) =>
     d.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
+
+  /* Live destination search (Photon/OpenStreetMap) — debounced, aborts
+     stale requests, minimum 2 characters. */
+  const [suggestions, setSuggestions] = useState<DestinationSuggestion[]>([]);
+  const [searching, setSearching] = useState(false);
+  const trimmedQuery = query.trim().replace(/\s+/g, " ");
+
+  useEffect(() => {
+    if (trimmedQuery.length < 2) {
+      setSuggestions([]);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        setSuggestions(
+          await searchDestinations(trimmedQuery, { signal: controller.signal }),
+        );
+        setSearching(false);
+      } catch {
+        /* Photon down or aborted — the free-text option still works. */
+        if (!controller.signal.aborted) {
+          setSuggestions([]);
+          setSearching(false);
+        }
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [trimmedQuery]);
+
+  /* Departure-city search — same live suggestions, restricted to India
+     since Marzi trips depart from Indian cities. */
+  const [departureSuggestions, setDepartureSuggestions] = useState<
+    DestinationSuggestion[]
+  >([]);
+  const trimmedDepartureQuery = departureQuery.trim().replace(/\s+/g, " ");
+
+  useEffect(() => {
+    if (step !== 3 || trimmedDepartureQuery.length < 2) {
+      setDepartureSuggestions([]);
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        setDepartureSuggestions(
+          await searchDestinations(trimmedDepartureQuery, {
+            signal: controller.signal,
+            country: "India",
+          }),
+        );
+      } catch {
+        /* Typed text already counts as the departure city. */
+        if (!controller.signal.aborted) setDepartureSuggestions([]);
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [step, trimmedDepartureQuery]);
+
+  /* "Current Location" chip: browser geolocation (asks permission) →
+     reverse-geocode → autofill the departure city. */
+  const [locating, setLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
+
+  function fillCurrentLocation() {
+    setLocationError("");
+    if (typeof navigator === "undefined" || !("geolocation" in navigator)) {
+      setLocationError(
+        "Location isn't available on this device — please type your city.",
+      );
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const city = await reverseGeocodeCity(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+          if (city) {
+            setDeparture(city);
+            setDepartureQuery(city);
+          } else {
+            setLocationError(
+              "We couldn't identify your city — please type it instead.",
+            );
+          }
+        } catch {
+          setLocationError(
+            "We couldn't identify your city — please type it instead.",
+          );
+        } finally {
+          setLocating(false);
+        }
+      },
+      () => {
+        setLocating(false);
+        setLocationError(
+          "Location access was denied — please type your city instead.",
+        );
+      },
+      { timeout: 10_000, maximumAge: 300_000 },
+    );
+  }
+
+  /* Free-text fallback so any destination can be chosen even when the
+     geocoder has no match (or is unreachable). */
+  const customOption =
+    trimmedQuery.length >= 2 &&
+    !filtered.some((d) => d.name.toLowerCase() === trimmedQuery.toLowerCase()) &&
+    !suggestions.some(
+      (s) =>
+        s.value.toLowerCase() === trimmedQuery.toLowerCase() ||
+        s.label.toLowerCase() === trimmedQuery.toLowerCase(),
+    )
+      ? trimmedQuery
+      : null;
+
   const monthOptions = buildMonthOptions();
 
   const canContinue =
@@ -1216,8 +1349,14 @@ export function AiTripWizard() {
   }
 
   function goBack() {
-    if (step === 1) router.back();
-    else setStep(step - 1);
+    if (step > 1) {
+      setStep(step - 1);
+      return;
+    }
+    // Deep links / new tabs have no in-app history to go back to — send
+    // those users home instead of a dead Back button.
+    if (hasInAppHistory()) router.back();
+    else router.push("/");
   }
 
   /* Close any live SSE subscription when the wizard unmounts. */
@@ -1378,7 +1517,95 @@ export function AiTripWizard() {
             />
           </div>
 
-          {/* Destination cards — horizontal scroll, single select */}
+          {/* Selected destination chip — for picks that aren't one of the
+              featured cards (search suggestions / free text). */}
+          {destination && !DESTINATIONS.some((d) => d.name === destination) ? (
+            <div className="mt-4">
+              <span className="border-brand text-brand inline-flex items-center gap-2 rounded-full border-2 bg-[#fdeaf3] px-4 py-2 text-sm font-semibold">
+                <MapPin className="h-4 w-4" />
+                {destination}
+                <button
+                  type="button"
+                  onClick={() => setDestination(null)}
+                  aria-label={`Remove ${destination}`}
+                  className="hover:bg-brand/10 -mr-1 rounded-full p-0.5"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </span>
+            </div>
+          ) : null}
+
+          {/* Live suggestions + free-text option while typing */}
+          {suggestions.length > 0 || customOption || searching ? (
+            <div className="mt-4 overflow-hidden rounded-2xl border border-black/10 bg-white">
+              {suggestions.map((s) => {
+                const selected = destination === s.value;
+                return (
+                  <button
+                    key={s.label}
+                    type="button"
+                    onClick={() => setDestination(selected ? null : s.value)}
+                    aria-pressed={selected}
+                    className={`flex w-full items-center gap-3 border-b border-black/5 px-4 py-3 text-left text-sm transition last:border-b-0 ${
+                      selected
+                        ? "text-brand bg-[#fdeaf3] font-semibold"
+                        : "hover:bg-black/[0.03]"
+                    }`}
+                  >
+                    <MapPin
+                      className={`h-4 w-4 shrink-0 ${
+                        selected ? "text-brand" : "text-foreground/40"
+                      }`}
+                    />
+                    <span className="flex-1">{s.label}</span>
+                    {selected ? (
+                      <Check className="text-brand h-4 w-4" strokeWidth={3} />
+                    ) : null}
+                  </button>
+                );
+              })}
+              {customOption ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setDestination(
+                      destination === customOption ? null : customOption,
+                    )
+                  }
+                  aria-pressed={destination === customOption}
+                  className={`flex w-full items-center gap-3 border-b border-black/5 px-4 py-3 text-left text-sm transition last:border-b-0 ${
+                    destination === customOption
+                      ? "text-brand bg-[#fdeaf3] font-semibold"
+                      : "hover:bg-black/[0.03]"
+                  }`}
+                >
+                  <Search
+                    className={`h-4 w-4 shrink-0 ${
+                      destination === customOption
+                        ? "text-brand"
+                        : "text-foreground/40"
+                    }`}
+                  />
+                  <span className="flex-1">
+                    Plan a trip to &ldquo;{customOption}&rdquo;
+                  </span>
+                  {destination === customOption ? (
+                    <Check className="text-brand h-4 w-4" strokeWidth={3} />
+                  ) : null}
+                </button>
+              ) : null}
+              {searching && suggestions.length === 0 && !customOption ? (
+                <p className="text-foreground/50 px-4 py-3 text-sm">
+                  Searching…
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+
+          {/* Featured destination cards — horizontal scroll, single select.
+              Hidden while typing yields no card match; the live suggestion
+              list above covers everything else. */}
           <div className="mt-6 flex snap-x [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
             {filtered.map((d) => {
               const selected = destination === d.name;
@@ -1418,12 +1645,6 @@ export function AiTripWizard() {
                 </button>
               );
             })}
-            {filtered.length === 0 ? (
-              <p className="text-foreground/60 py-6 text-sm">
-                No matches — but your Travel Mitr can plan anywhere. Try another
-                spelling.
-              </p>
-            ) : null}
           </div>
         </>
       ) : step === 2 ? (
@@ -1539,9 +1760,52 @@ export function AiTripWizard() {
             />
           </div>
 
+          {/* Live departure-city suggestions (India only) */}
+          {departureSuggestions.length > 0 ? (
+            <div className="mt-3 overflow-hidden rounded-2xl border border-black/10 bg-white">
+              {departureSuggestions.map((s) => {
+                const selected = departure === s.value;
+                return (
+                  <button
+                    key={s.label}
+                    type="button"
+                    onClick={() => {
+                      setDeparture(s.value);
+                      setDepartureQuery(s.value);
+                    }}
+                    aria-pressed={selected}
+                    className={`flex w-full items-center gap-3 border-b border-black/5 px-4 py-3 text-left text-sm transition last:border-b-0 ${
+                      selected
+                        ? "text-brand bg-[#fdeaf3] font-semibold"
+                        : "hover:bg-black/[0.03]"
+                    }`}
+                  >
+                    <MapPin
+                      className={`h-4 w-4 shrink-0 ${
+                        selected ? "text-brand" : "text-foreground/40"
+                      }`}
+                    />
+                    <span className="flex-1">{s.label}</span>
+                    {selected ? (
+                      <Check className="text-brand h-4 w-4" strokeWidth={3} />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+
           <div className="mt-4 flex flex-wrap gap-2.5">
-            {["Current Location", ...DEPARTURE_CITIES].map((city) => {
-              const isCurrentLocation = city === "Current Location";
+            <button
+              type="button"
+              onClick={fillCurrentLocation}
+              disabled={locating}
+              className="text-brand flex items-center gap-1.5 rounded-full border border-black/15 bg-white px-4 py-2 text-xs font-medium transition hover:border-black/30 disabled:opacity-60"
+            >
+              <MapPin className="h-3.5 w-3.5" />
+              {locating ? "Locating…" : "Current Location"}
+            </button>
+            {DEPARTURE_CITIES.map((city) => {
               const selected = departure === city;
               return (
                 <button
@@ -1555,19 +1819,19 @@ export function AiTripWizard() {
                   className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-medium transition ${
                     selected
                       ? "border-brand text-brand bg-[#fdeaf3]"
-                      : isCurrentLocation
-                        ? "text-brand border-black/15 bg-white hover:border-black/30"
-                        : "border-black/15 bg-white hover:border-black/30"
+                      : "border-black/15 bg-white hover:border-black/30"
                   }`}
                 >
-                  {isCurrentLocation ? (
-                    <MapPin className="h-3.5 w-3.5" />
-                  ) : null}
                   {city}
                 </button>
               );
             })}
           </div>
+          {locationError ? (
+            <p role="alert" className="mt-2.5 text-xs font-medium text-red-600">
+              {locationError}
+            </p>
+          ) : null}
         </>
       ) : step === 4 ? (
         <>

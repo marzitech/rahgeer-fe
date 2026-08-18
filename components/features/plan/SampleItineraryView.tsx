@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
 import { ItineraryResult } from "@/components/features/plan/AiTripWizard";
 import { getSampleItinerary, type Itinerary } from "@/lib/api/endpoints";
 
@@ -74,12 +74,12 @@ export function SampleItineraryView({ slug }: { slug: string }) {
         <p className="text-foreground/70 mt-3 text-sm">
           We couldn&apos;t load this sample. Please try another destination.
         </p>
-        <Link
+        <BackLink
           href="/#destinations"
           className="text-brand mt-6 inline-flex items-center gap-2 text-sm font-semibold hover:underline"
         >
           <ArrowLeft className="h-4 w-4" /> Back to destinations
-        </Link>
+        </BackLink>
       </div>
     );
   }
@@ -106,12 +106,12 @@ export function SampleItineraryView({ slug }: { slug: string }) {
 
   return (
     <div className="mx-auto max-w-[1192px] px-4 py-8 print:p-0">
-      <Link
+      <BackLink
         href="/#destinations"
         className="text-brand mb-4 inline-flex items-center gap-2 text-sm font-semibold hover:underline print:hidden"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Travel
-      </Link>
+        <ArrowLeft className="h-4 w-4" /> Back to destinations
+      </BackLink>
       <ItineraryResult
         itinerary={itinerary}
         heroImage={HERO[slug] ?? "/images/home/hero-koh-tao.jpg"}

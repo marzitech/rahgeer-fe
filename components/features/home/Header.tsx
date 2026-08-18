@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,6 +15,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { PLAY_STORE_URL } from "@/lib/appStores";
 import { cn } from "@/lib/utils";
 
 /**
@@ -58,13 +60,32 @@ const MENU_ITEMS = [
   },
 ];
 
-const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=marzi.app&pcampaignid=web_share";
+/* QR modal loads on demand — qrcode.react stays out of the initial bundle. */
+const DownloadAppModal = dynamic(
+  () =>
+    import("@/components/features/home/DownloadAppModal").then(
+      (m) => m.DownloadAppModal,
+    ),
+  { ssr: false },
+);
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [qrModalOpen, setQrModalOpen] = useState(false);
   const pathname = usePathname();
+
+  /* Same behaviour as marzi-web's header: Android goes straight to the
+     Play Store; desktop/iOS get the QR modal with both store buttons. */
+  function handleDownloadClick() {
+    const isAndroid =
+      typeof navigator !== "undefined" && /android/i.test(navigator.userAgent);
+    if (isAndroid) {
+      window.open(PLAY_STORE_URL, "_blank");
+      return;
+    }
+    setQrModalOpen(true);
+  }
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -141,10 +162,9 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-3 md:gap-4">
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noreferrer noopener"
+            <button
+              type="button"
+              onClick={handleDownloadClick}
               className={cn(
                 "bg-brand group relative hidden items-center gap-2 overflow-hidden rounded-full py-2.5 text-sm font-bold text-white transition-all sm:flex",
                 isScrolled ? "px-4 shadow-lg hover:px-6" : "px-6",
@@ -154,7 +174,7 @@ export function Header() {
               <span>Download App</span>
               {/* Shine sweep */}
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-            </a>
+            </button>
 
             {/* Mobile menu trigger — 44px min tap target */}
             <button
@@ -291,18 +311,24 @@ export function Header() {
 
           {/* Drawer footer CTA */}
           <div className="border-t border-black/5 p-4">
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="bg-brand flex items-center justify-center gap-2 rounded-2xl py-4 font-bold text-white shadow-lg active:scale-[0.98]"
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                handleDownloadClick();
+              }}
+              className="bg-brand flex w-full items-center justify-center gap-2 rounded-2xl py-4 font-bold text-white shadow-lg active:scale-[0.98]"
             >
               <Download className="h-5 w-5" />
               Download the App
-            </a>
+            </button>
           </div>
         </div>
       </div>
+
+      {qrModalOpen ? (
+        <DownloadAppModal onClose={() => setQrModalOpen(false)} />
+      ) : null}
     </>
   );
 }
