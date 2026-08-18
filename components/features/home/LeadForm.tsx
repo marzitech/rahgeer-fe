@@ -43,7 +43,9 @@ const DOMESTIC_HINTS = [
   "rishikesh",
 ];
 
-function guessTripScope(destination: string): "domestic" | "international" {
+export function guessTripScope(
+  destination: string,
+): "domestic" | "international" {
   const lower = destination.toLowerCase();
   return DOMESTIC_HINTS.some((hint) => lower.includes(hint))
     ? "domestic"
