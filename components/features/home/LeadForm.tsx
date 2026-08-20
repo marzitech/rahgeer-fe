@@ -138,6 +138,8 @@ type LeadFormProps = {
   audience?: "yourself" | "parents";
   /** Show the OR divider + AI Trip planner button (planning pages). */
   showAiPlanner?: boolean;
+  /** Overrides the ops-sheet Form column value (defaults from audience). */
+  formName?: string;
 };
 
 /** The Marzi lead form → backend enquiry. Used by the home hero and the
@@ -146,6 +148,7 @@ export function LeadForm({
   heading,
   audience,
   showAiPlanner = false,
+  formName,
 }: LeadFormProps) {
   const [destination, setDestination] = useState("");
   const [month, setMonth] = useState("");
@@ -227,11 +230,12 @@ export function LeadForm({
         // Which form converted — tracked as the Form column in the
         // ops leads Google Sheet.
         form:
-          audience === "yourself"
+          formName ??
+          (audience === "yourself"
             ? "plan-yourself"
             : audience === "parents"
               ? "plan-parents"
-              : "home-hero",
+              : "home-hero"),
       });
       setState("success");
     } catch (error) {
