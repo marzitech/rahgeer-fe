@@ -12,13 +12,23 @@ export const metadata: Metadata = {
     "Tell us where you want to go and your Travel Mitr will call you to plan the whole trip — flights, hotels, visas and transfers.",
 };
 
-export default function EnquiryPage() {
+export default async function EnquiryPage({
+  searchParams,
+}: PageProps<"/enquiry">) {
+  // The mobile app links here with ?source=app so its leads are
+  // channelled separately from organic website traffic in the ops sheet.
+  const { source } = await searchParams;
+  const fromApp = source === "app";
+
   return (
     <>
       <Header />
       <main className="bg-[#fdf7f2] pt-20 md:pt-24">
         <div className="mx-auto max-w-[560px] px-4 py-8 md:py-12">
-          <LeadForm formName="enquiry" />
+          <LeadForm
+            formName="Website Landing Page"
+            source={fromApp ? "app" : "website"}
+          />
         </div>
       </main>
       <Footer />
