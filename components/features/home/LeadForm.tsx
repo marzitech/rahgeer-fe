@@ -140,6 +140,8 @@ type LeadFormProps = {
   showAiPlanner?: boolean;
   /** Overrides the ops-sheet Form column value (defaults from audience). */
   formName?: string;
+  /** Lead channel — "app" when the page was opened from the mobile app. */
+  source?: "website" | "app";
 };
 
 /** The Marzi lead form → backend enquiry. Used by the home hero and the
@@ -149,6 +151,7 @@ export function LeadForm({
   audience,
   showAiPlanner = false,
   formName,
+  source = "website",
 }: LeadFormProps) {
   const [destination, setDestination] = useState("");
   const [month, setMonth] = useState("");
@@ -226,7 +229,7 @@ export function LeadForm({
         destination: destination.trim(),
         trip_scope: guessTripScope(destination),
         message: messageParts.join(" "),
-        source: "website",
+        source,
         // Which form converted — tracked as the Form column in the
         // ops leads Google Sheet.
         form:
