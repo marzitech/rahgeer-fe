@@ -4,1013 +4,1136 @@
  */
 
 export interface paths {
-  "/api/v1/auth/claim/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/auth/claim/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/auth/claim/ — JWT required, X-Guest-Session header.
+         *
+         *     The signup-completion step of the guest-first funnel: transfers the
+         *     session's itineraries to the authenticated account.
+         */
+        post: operations["v1_auth_claim_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/auth/claim/ — JWT required, X-Guest-Session header.
-     *
-     *     The signup-completion step of the guest-first funnel: transfers the
-     *     session's itineraries to the authenticated account.
-     */
-    post: operations["v1_auth_claim_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/auth/me/preferences/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/auth/me/preferences/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET /api/v1/auth/me/preferences/ — learned preferences for intake
+         *     pre-fill (JWT). profile is null until the user has a generated trip.
+         */
+        get: operations["v1_auth_me_preferences_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * @description GET /api/v1/auth/me/preferences/ — learned preferences for intake
-     *     pre-fill (JWT). profile is null until the user has a generated trip.
-     */
-    get: operations["v1_auth_me_preferences_retrieve"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/auth/register/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/auth/register/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/auth/register/ -> 201 + JWT pair.
+         *
+         *     Returns tokens immediately so the frontend can chain straight into
+         *     /auth/claim/ without a second login round-trip.
+         */
+        post: operations["v1_auth_register_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/auth/register/ -> 201 + JWT pair.
-     *
-     *     Returns tokens immediately so the frontend can chain straight into
-     *     /auth/claim/ without a second login round-trip.
-     */
-    post: operations["v1_auth_register_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/auth/token/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/auth/token/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Takes a set of user credentials and returns an access and refresh JSON web
+         *     token pair to prove the authentication of those credentials.
+         */
+        post: operations["v1_auth_token_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description Takes a set of user credentials and returns an access and refresh JSON web
-     *     token pair to prove the authentication of those credentials.
-     */
-    post: operations["v1_auth_token_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/auth/token/refresh/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/auth/token/refresh/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Takes a refresh type JSON web token and returns an access type JSON web
+         *     token if the refresh token is valid.
+         */
+        post: operations["v1_auth_token_refresh_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description Takes a refresh type JSON web token and returns an access type JSON web
-     *     token if the refresh token is valid.
-     */
-    post: operations["v1_auth_token_refresh_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/enquiries/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/enquiries/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description One URL, two behaviors:
+         *
+         *     POST /api/v1/enquiries/  — public (the site form), rate-limited
+         *     GET  /api/v1/enquiries/  — ops only (JWT), filterable, cursor-paginated
+         */
+        get: operations["v1_enquiries_list"];
+        put?: never;
+        /**
+         * @description One URL, two behaviors:
+         *
+         *     POST /api/v1/enquiries/  — public (the site form), rate-limited
+         *     GET  /api/v1/enquiries/  — ops only (JWT), filterable, cursor-paginated
+         */
+        post: operations["v1_enquiries_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * @description One URL, two behaviors:
-     *
-     *     POST /api/v1/enquiries/  — public (the site form), rate-limited
-     *     GET  /api/v1/enquiries/  — ops only (JWT), filterable, cursor-paginated
-     */
-    get: operations["v1_enquiries_list"];
-    put?: never;
-    /**
-     * @description One URL, two behaviors:
-     *
-     *     POST /api/v1/enquiries/  — public (the site form), rate-limited
-     *     GET  /api/v1/enquiries/  — ops only (JWT), filterable, cursor-paginated
-     */
-    post: operations["v1_enquiries_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/itineraries/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/itineraries/ -> 202 Accepted + id to poll.
+         *
+         *     202, not 201: the resource exists but the itinerary itself is still
+         *     being generated (§6.2). Strictest rate limit in the app — every call
+         *     ends in a paid LLM generation.
+         */
+        post: operations["v1_itineraries_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/itineraries/ -> 202 Accepted + id to poll.
-     *
-     *     202, not 201: the resource exists but the itinerary itself is still
-     *     being generated (§6.2). Strictest rate limit in the app — every call
-     *     ends in a paid LLM generation.
-     */
-    post: operations["v1_itineraries_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/itineraries/{id}/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET /api/v1/itineraries/{uuid}/ — the polling + share endpoint.
+         *
+         *     Access control v0: the unguessable UUID is the capability (guest-first;
+         *     same model the old backend used for shared itineraries).
+         */
+        get: operations["v1_itineraries_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * @description GET /api/v1/itineraries/{uuid}/ — the polling + share endpoint.
-     *
-     *     Access control v0: the unguessable UUID is the capability (guest-first;
-     *     same model the old backend used for shared itineraries).
-     */
-    get: operations["v1_itineraries_retrieve"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/itineraries/{id}/days/{day_number}/regenerate/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/{id}/days/{day_number}/regenerate/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/itineraries/{uuid}/days/{n}/regenerate/ -> 202.
+         *
+         *     Optional body: {"feedback": "less temples, more beaches"}.
+         *     Progress arrives on the same SSE channel (day_regenerating ->
+         *     day_completed | day_failed); the detail endpoint reflects the new day.
+         */
+        post: operations["v1_itineraries_days_regenerate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/itineraries/{uuid}/days/{n}/regenerate/ -> 202.
-     *
-     *     Optional body: {"feedback": "less temples, more beaches"}.
-     *     Progress arrives on the same SSE channel (day_regenerating ->
-     *     day_completed | day_failed); the detail endpoint reflects the new day.
-     */
-    post: operations["v1_itineraries_days_regenerate_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/itineraries/{id}/versions/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/{id}/lead/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/itineraries/{uuid}/lead/ — the download gate.
+         *
+         *     'Where should we send your plan?': persists the traveller's contact on
+         *     the itinerary (email is new information — the wizard only collects
+         *     name + phone) and alerts the travel desk. The FE then opens the
+         *     print/save-as-PDF dialog.
+         */
+        post: operations["v1_itineraries_lead_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description GET /api/v1/itineraries/{uuid}/versions/ — newest first. */
-    get: operations["v1_itineraries_versions_list"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/itineraries/{id}/versions/{version}/restore/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/{id}/versions/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description GET /api/v1/itineraries/{uuid}/versions/ — newest first. */
+        get: operations["v1_itineraries_versions_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/itineraries/{uuid}/versions/{version}/restore/
-     *
-     *     Restores the snapshot as current — recorded as a new version, so the
-     *     restore itself can be undone.
-     */
-    post: operations["v1_itineraries_versions_restore_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/package-requests/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/{id}/versions/{version}/restore/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/itineraries/{uuid}/versions/{version}/restore/
+         *
+         *     Restores the snapshot as current — recorded as a new version, so the
+         *     restore itself can be undone.
+         */
+        post: operations["v1_itineraries_versions_restore_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /**
-     * @description POST /api/v1/package-requests/ — creates the lead AND returns instant
-     *     matches so the frontend can show packages immediately.
-     */
-    post: operations["v1_package_requests_create"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/packages/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/itineraries/samples/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET /api/v1/itineraries/samples/{slug}/ — a curated sample itinerary.
+         *
+         *     Backs the Explore-destinations cards: fetch by destination slug rather
+         *     than an opaque UUID. Only successfully-built samples are exposed.
+         */
+        get: operations["v1_itineraries_samples_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description Public browse: GET /api/v1/packages/ */
-    get: operations["v1_packages_list"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/api/v1/search/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/api/v1/package-requests/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST /api/v1/package-requests/ — creates the lead AND returns instant
+         *     matches so the frontend can show packages immediately.
+         */
+        post: operations["v1_package_requests_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** @description GET /api/v1/search/?q=honeymoon+beach&type=destination,package */
-    get: operations["v1_search_retrieve"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
+    "/api/v1/packages/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Public browse: GET /api/v1/packages/ */
+        get: operations["v1_packages_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/search/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description GET /api/v1/search/?q=honeymoon+beach&type=destination,package */
+        get: operations["v1_search_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /**
-     * @description * `hotel` - Hotel
-     *     * `resort` - Resort
-     *     * `villa_homestay` - Villa / Homestay
-     * @enum {string}
-     */
-    AccommodationEnum: "hotel" | "resort" | "villa_homestay";
-    /**
-     * @description * `pending` - Pending
-     *     * `processing` - Processing
-     *     * `success` - Success
-     *     * `failure` - Failure
-     * @enum {string}
-     */
-    AiStatusEnum: "pending" | "processing" | "success" | "failure";
-    /**
-     * @description * `budget` - Budget
-     *     * `comfort` - Comfort
-     *     * `luxury` - Luxury
-     * @enum {string}
-     */
-    BudgetLevelEnum: "budget" | "comfort" | "luxury";
-    ClaimResponse: {
-      claimed_itineraries: number;
-    };
-    /**
-     * @description Input for a single-day regeneration — the traveler's feedback steers
-     *     what the replacement day emphasizes.
-     */
-    DayRegenerate: {
-      /** @default  */
-      feedback: string;
-    };
-    /** @description Read serializer for the authenticated ops list. */
-    Enquiry: {
-      /** Format: uuid */
-      readonly id: string;
-      full_name: string;
-      phone: string;
-      email?: string;
-      age?: number | null;
-      trip_scope: components["schemas"]["TripScopeEnum"];
-      destination?: string;
-      message?: string;
-      source?: components["schemas"]["SourceEnum"];
-      status?: components["schemas"]["Status029Enum"];
-      notes?: string;
-      /** Format: date-time */
-      readonly created: string;
-      /** Format: date-time */
-      readonly modified: string;
-    };
-    /**
-     * @description The public intake — the input firewall.
-     *
-     *     Note what is NOT here: `notes` is absent and `status` is read-only; a
-     *     submitter must never be able to set ops-owned fields. Whitelisting is
-     *     the serializer's security job.
-     */
-    EnquiryCreate: {
-      /** Format: uuid */
-      readonly id: string;
-      full_name: string;
-      phone: string;
-      email?: string;
-      age?: number | null;
-      trip_scope: components["schemas"]["TripScopeEnum"];
-      destination?: string;
-      message?: string;
-      source?: components["schemas"]["SourceEnum"];
-      readonly status: components["schemas"]["Status029Enum"];
-      /** Format: date-time */
-      readonly created: string;
-    };
-    /**
-     * @description * `any` - Anything
-     *     * `veg` - Vegetarian
-     *     * `non_veg` - Non-vegetarian
-     *     * `vegan` - Vegan
-     * @enum {string}
-     */
-    FoodPreferenceEnum: "any" | "veg" | "non_veg" | "vegan";
-    /**
-     * @description * `solo` - Solo
-     *     * `couple` - Couple
-     *     * `family` - Family
-     *     * `friends` - Friends
-     * @enum {string}
-     */
-    GroupTypeEnum: "solo" | "couple" | "family" | "friends";
-    ItineraryDay: {
-      day_number: number;
-      /** Format: date */
-      date?: string | null;
-      title: string;
-      blocks?: unknown;
-    };
-    ItineraryVersion: {
-      version: number;
-      ai_model?: string;
-      readonly title: string;
-      readonly total_estimated_cost_inr: string;
-      /** Format: date-time */
-      readonly created: string;
-    };
-    MyPreferencesResponse: {
-      profile: components["schemas"]["PreferenceProfile"];
-    };
-    /**
-     * @description * `relaxed` - Relaxed
-     *     * `balanced` - Balanced
-     *     * `packed` - Packed
-     * @enum {string}
-     */
-    PaceEnum: "relaxed" | "balanced" | "packed";
-    Package: {
-      /** Format: uuid */
-      readonly id: string;
-      slug: string;
-      display_name: string;
-      destination: string;
-      summary?: string;
-      content?: unknown;
-      default_duration_nights?: number | null;
-      price_from_inr?: number | null;
-    };
-    PackageRequestCreate: {
-      /** Format: uuid */
-      readonly id: string;
-      full_name: string;
-      phone: string;
-      email?: string;
-      destination: string;
-      travel_month?: string;
-      pax?: number | null;
-      budget?: string;
-      message?: string;
-      readonly status: components["schemas"]["PackageRequestCreateStatusEnum"];
-      /** Format: date-time */
-      readonly created: string;
-    };
-    /**
-     * @description * `new` - New
-     *     * `contacted` - Contacted
-     *     * `quoted` - Quoted
-     *     * `converted` - Converted
-     *     * `closed` - Closed
-     * @enum {string}
-     */
-    PackageRequestCreateStatusEnum:
-      "new" | "contacted" | "quoted" | "converted" | "closed";
-    PaginatedEnquiryList: {
-      /**
-       * Format: uri
-       * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
-       */
-      next?: string | null;
-      /**
-       * Format: uri
-       * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-       */
-      previous?: string | null;
-      results: components["schemas"]["Enquiry"][];
-    };
-    PaginatedPackageList: {
-      /**
-       * Format: uri
-       * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
-       */
-      next?: string | null;
-      /**
-       * Format: uri
-       * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-       */
-      previous?: string | null;
-      results: components["schemas"]["Package"][];
-    };
-    PreferenceProfile: {
-      pace: string;
-      budget_level: string;
-      food_preference: string;
-      accommodation: string;
-      trip_type: string;
-      group_type: string;
-      top_interests: string[];
-      visited_destinations: string[];
-      trip_count: number;
-    };
-    /**
-     * @description Minimal signup: username + password (+ optional email).
-     *
-     *     Phone/OTP login can replace this later without touching the claim flow —
-     *     claiming only needs *an authenticated user*, however they signed up.
-     */
-    Register: {
-      /** Format: uuid */
-      readonly id: string;
-      /** @description Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
-      username: string;
-      /** Email address */
-      email?: string;
-      password: string;
-    };
-    SearchResponse: {
-      results: components["schemas"]["SearchResult"][];
-    };
-    SearchResult: {
-      content: string;
-      source_type: string;
-      source_id: string;
-      chunk_index: number;
-      metadata: {
-        [key: string]: unknown;
-      };
-      /** Format: double */
-      score: number;
-    };
-    /**
-     * @description * `website` - Website
-     *     * `instagram` - Instagram
-     *     * `whatsapp` - WhatsApp
-     *     * `referral` - Referral
-     *     * `other` - Other
-     * @enum {string}
-     */
-    SourceEnum: "website" | "instagram" | "whatsapp" | "referral" | "other";
-    /**
-     * @description * `new` - New
-     *     * `contacted` - Contacted
-     *     * `converted` - Converted
-     *     * `closed` - Closed
-     * @enum {string}
-     */
-    Status029Enum: "new" | "contacted" | "converted" | "closed";
-    TokenObtainPair: {
-      username: string;
-      password: string;
-      readonly access: string;
-      readonly refresh: string;
-    };
-    TokenRefresh: {
-      readonly access: string;
-      refresh: string;
-    };
-    /**
-     * @description Public intake (mirrors the 9-step form + contact). AI/ownership
-     *     fields are server-controlled.
-     */
-    TripItineraryCreate: {
-      /** Format: uuid */
-      readonly id: string;
-      traveler_name: string;
-      phone: string;
-      email?: string;
-      destination: string;
-      country?: string;
-      travel_month: number;
-      duration_nights: number;
-      /** Format: date */
-      start_date?: string | null;
-      departure_city: string;
-      group_type?: components["schemas"]["GroupTypeEnum"];
-      pax?: number;
-      food_preference?: components["schemas"]["FoodPreferenceEnum"];
-      pace?: components["schemas"]["PaceEnum"];
-      walking_capacity?: components["schemas"]["WalkingCapacityEnum"];
-      trip_type?: components["schemas"]["TripTypeEnum"];
-      accommodation?: components["schemas"]["AccommodationEnum"];
-      interests?: unknown;
-      special_requests?: string;
-      readonly ai_status: components["schemas"]["AiStatusEnum"];
-      /** Format: date-time */
-      readonly created: string;
-    };
-    /** @description The polling/detail view: intake echo + AI state + generated days. */
-    TripItineraryDetail: {
-      /** Format: uuid */
-      readonly id: string;
-      traveler_name: string;
-      group_type?: components["schemas"]["GroupTypeEnum"];
-      pax?: number;
-      departure_city: string;
-      destination: string;
-      country?: string;
-      travel_month: number;
-      duration_nights: number;
-      /** Format: date */
-      start_date?: string | null;
-      budget_level?: components["schemas"]["BudgetLevelEnum"];
-      pace?: components["schemas"]["PaceEnum"];
-      walking_capacity?: components["schemas"]["WalkingCapacityEnum"];
-      trip_type?: components["schemas"]["TripTypeEnum"];
-      accommodation?: components["schemas"]["AccommodationEnum"];
-      food_preference?: components["schemas"]["FoodPreferenceEnum"];
-      interests?: unknown;
-      ai_status?: components["schemas"]["AiStatusEnum"];
-      ai_output?: unknown;
-      ai_error?: string;
-      readonly days: components["schemas"]["ItineraryDay"][];
-      /** Format: date-time */
-      readonly created: string;
-    };
-    /**
-     * @description * `domestic` - Domestic
-     *     * `international` - International
-     * @enum {string}
-     */
-    TripScopeEnum: "domestic" | "international";
-    /**
-     * @description * `sightseeing` - Classic sightseeing
-     *     * `adventure` - Adventure & experiences
-     *     * `relaxation` - Relaxation & leisure
-     * @enum {string}
-     */
-    TripTypeEnum: "sightseeing" | "adventure" | "relaxation";
-    /**
-     * @description * `short` - Up to 30 min at a stretch
-     *     * `moderate` - 30–60 min at a stretch
-     *     * `long` - 60+ min at a stretch
-     * @enum {string}
-     */
-    WalkingCapacityEnum: "short" | "moderate" | "long";
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
-}
-export type $defs = Record<string, never>;
-export interface operations {
-  v1_auth_claim_create: {
-    parameters: {
-      query?: never;
-      header: {
-        /** @description Guest session id returned by itinerary creation */
-        "X-Guest-Session": string;
-      };
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    schemas: {
+        /**
+         * @description * `hotel` - Hotel
+         *     * `resort` - Resort
+         *     * `villa_homestay` - Villa / Homestay
+         * @enum {string}
+         */
+        AccommodationEnum: "hotel" | "resort" | "villa_homestay";
+        /**
+         * @description * `pending` - Pending
+         *     * `processing` - Processing
+         *     * `success` - Success
+         *     * `failure` - Failure
+         * @enum {string}
+         */
+        AiStatusEnum: "pending" | "processing" | "success" | "failure";
+        /**
+         * @description * `budget` - Budget
+         *     * `comfort` - Comfort
+         *     * `luxury` - Luxury
+         * @enum {string}
+         */
+        BudgetLevelEnum: "budget" | "comfort" | "luxury";
+        ClaimResponse: {
+            claimed_itineraries: number;
         };
-        content: {
-          "application/json": components["schemas"]["ClaimResponse"];
+        /**
+         * @description Input for a single-day regeneration — the traveler's feedback steers
+         *     what the replacement day emphasizes.
+         */
+        DayRegenerate: {
+            /** @default  */
+            feedback: string;
         };
-      };
-    };
-  };
-  v1_auth_me_preferences_retrieve: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        /** @description Read serializer for the authenticated ops list. */
+        Enquiry: {
+            /** Format: uuid */
+            readonly id: string;
+            full_name: string;
+            phone: string;
+            email?: string;
+            age?: number | null;
+            trip_scope: components["schemas"]["TripScopeEnum"];
+            destination?: string;
+            message?: string;
+            source?: components["schemas"]["SourceEnum"];
+            form?: string;
+            utm_source?: string;
+            utm_medium?: string;
+            utm_campaign?: string;
+            attribution?: unknown;
+            status?: components["schemas"]["Status029Enum"];
+            notes?: string;
+            /** Format: date-time */
+            readonly created: string;
+            /** Format: date-time */
+            readonly modified: string;
         };
-        content: {
-          "application/json": components["schemas"]["MyPreferencesResponse"];
+        /**
+         * @description The public intake — the input firewall.
+         *
+         *     Note what is NOT here: `notes` is absent and `status` is read-only; a
+         *     submitter must never be able to set ops-owned fields. Whitelisting is
+         *     the serializer's security job.
+         */
+        EnquiryCreate: {
+            /** Format: uuid */
+            readonly id: string;
+            full_name: string;
+            phone: string;
+            email?: string;
+            age?: number | null;
+            trip_scope: components["schemas"]["TripScopeEnum"];
+            destination?: string;
+            message?: string;
+            source?: components["schemas"]["SourceEnum"];
+            form?: string;
+            attribution?: {
+                [key: string]: string;
+            };
+            readonly status: components["schemas"]["Status029Enum"];
+            /** Format: date-time */
+            readonly created: string;
         };
-      };
-    };
-  };
-  v1_auth_register_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Register"];
-        "application/x-www-form-urlencoded": components["schemas"]["Register"];
-        "multipart/form-data": components["schemas"]["Register"];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
+        /**
+         * @description * `any` - Anything
+         *     * `veg` - Vegetarian
+         *     * `non_veg` - Non-vegetarian
+         *     * `vegan` - Vegan
+         * @enum {string}
+         */
+        FoodPreferenceEnum: "any" | "veg" | "non_veg" | "vegan";
+        /**
+         * @description * `solo` - Solo
+         *     * `couple` - Couple
+         *     * `family` - Family
+         *     * `friends` - Friends
+         * @enum {string}
+         */
+        GroupTypeEnum: "solo" | "couple" | "family" | "friends";
+        ItineraryDay: {
+            day_number: number;
+            /** Format: date */
+            date?: string | null;
+            title: string;
+            blocks?: unknown;
         };
-        content: {
-          "application/json": components["schemas"]["Register"];
+        /**
+         * @description 'Where should we send your plan?' — contact capture gating the
+         *     dossier download (port of the old dossier-lead form).
+         */
+        ItineraryLead: {
+            name: string;
+            email?: string;
+            whatsapp: string;
         };
-      };
-    };
-  };
-  v1_auth_token_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenObtainPair"];
-        "application/x-www-form-urlencoded": components["schemas"]["TokenObtainPair"];
-        "multipart/form-data": components["schemas"]["TokenObtainPair"];
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        ItineraryVersion: {
+            version: number;
+            ai_model?: string;
+            readonly title: string;
+            readonly total_estimated_cost_inr: string;
+            /** Format: date-time */
+            readonly created: string;
         };
-        content: {
-          "application/json": components["schemas"]["TokenObtainPair"];
+        MyPreferencesResponse: {
+            profile: components["schemas"]["PreferenceProfile"];
         };
-      };
-    };
-  };
-  v1_auth_token_refresh_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenRefresh"];
-        "application/x-www-form-urlencoded": components["schemas"]["TokenRefresh"];
-        "multipart/form-data": components["schemas"]["TokenRefresh"];
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        /**
+         * @description * `relaxed` - Relaxed
+         *     * `balanced` - Balanced
+         *     * `packed` - Packed
+         * @enum {string}
+         */
+        PaceEnum: "relaxed" | "balanced" | "packed";
+        Package: {
+            /** Format: uuid */
+            readonly id: string;
+            slug: string;
+            display_name: string;
+            destination: string;
+            summary?: string;
+            content?: unknown;
+            default_duration_nights?: number | null;
+            price_from_inr?: number | null;
         };
-        content: {
-          "application/json": components["schemas"]["TokenRefresh"];
+        PackageRequestCreate: {
+            /** Format: uuid */
+            readonly id: string;
+            full_name: string;
+            phone: string;
+            email?: string;
+            destination: string;
+            travel_month?: string;
+            pax?: number | null;
+            budget?: string;
+            message?: string;
+            readonly status: components["schemas"]["PackageRequestCreateStatusEnum"];
+            /** Format: date-time */
+            readonly created: string;
         };
-      };
-    };
-  };
-  v1_enquiries_list: {
-    parameters: {
-      query?: {
-        /** @description The pagination cursor value. */
-        cursor?: string;
-        /** @description Number of results to return per page. */
-        page_size?: number;
+        /**
+         * @description * `new` - New
+         *     * `contacted` - Contacted
+         *     * `quoted` - Quoted
+         *     * `converted` - Converted
+         *     * `closed` - Closed
+         * @enum {string}
+         */
+        PackageRequestCreateStatusEnum: "new" | "contacted" | "quoted" | "converted" | "closed";
+        PaginatedEnquiryList: {
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Enquiry"][];
+        };
+        PaginatedPackageList: {
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Package"][];
+        };
+        PreferenceProfile: {
+            pace: string;
+            budget_level: string;
+            food_preference: string;
+            accommodation: string;
+            trip_type: string;
+            group_type: string;
+            top_interests: string[];
+            visited_destinations: string[];
+            trip_count: number;
+        };
+        /**
+         * @description Minimal signup: username + password (+ optional email).
+         *
+         *     Phone/OTP login can replace this later without touching the claim flow —
+         *     claiming only needs *an authenticated user*, however they signed up.
+         */
+        Register: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+            username: string;
+            /** Email address */
+            email?: string;
+            password: string;
+        };
+        SearchResponse: {
+            results: components["schemas"]["SearchResult"][];
+        };
+        SearchResult: {
+            content: string;
+            source_type: string;
+            source_id: string;
+            chunk_index: number;
+            metadata: {
+                [key: string]: unknown;
+            };
+            /** Format: double */
+            score: number;
+        };
         /**
          * @description * `website` - Website
+         *     * `app` - App
          *     * `instagram` - Instagram
          *     * `whatsapp` - WhatsApp
          *     * `referral` - Referral
          *     * `other` - Other
+         * @enum {string}
          */
-        source?: "instagram" | "other" | "referral" | "website" | "whatsapp";
+        SourceEnum: "website" | "app" | "instagram" | "whatsapp" | "referral" | "other";
         /**
          * @description * `new` - New
          *     * `contacted` - Contacted
          *     * `converted` - Converted
          *     * `closed` - Closed
+         * @enum {string}
          */
-        status?: "closed" | "contacted" | "converted" | "new";
+        Status029Enum: "new" | "contacted" | "converted" | "closed";
+        TokenObtainPair: {
+            username: string;
+            password: string;
+            readonly access: string;
+            readonly refresh: string;
+        };
+        TokenRefresh: {
+            readonly access: string;
+            refresh: string;
+        };
+        /**
+         * @description Public intake (mirrors the 9-step form). AI/ownership fields are
+         *     server-controlled.
+         *
+         *     Contact is NOT collected at intake — generation is anonymous (guest
+         *     session). The traveller's details are captured later at the
+         *     download-gate ('Where should we send your plan?'), so name/phone are
+         *     optional here and default to blank.
+         */
+        TripItineraryCreate: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @default  */
+            traveler_name: string;
+            /** @default  */
+            phone: string;
+            email?: string;
+            destination: string;
+            country?: string;
+            travel_month: number;
+            duration_nights: number;
+            /** Format: date */
+            start_date?: string | null;
+            departure_city: string;
+            group_type?: components["schemas"]["GroupTypeEnum"];
+            pax?: number;
+            food_preference?: components["schemas"]["FoodPreferenceEnum"];
+            pace?: components["schemas"]["PaceEnum"];
+            walking_capacity?: components["schemas"]["WalkingCapacityEnum"];
+            trip_type?: components["schemas"]["TripTypeEnum"];
+            accommodation?: components["schemas"]["AccommodationEnum"];
+            interests?: unknown;
+            special_requests?: string;
+            readonly ai_status: components["schemas"]["AiStatusEnum"];
+            /** Format: date-time */
+            readonly created: string;
+        };
+        /** @description The polling/detail view: intake echo + AI state + generated days. */
+        TripItineraryDetail: {
+            /** Format: uuid */
+            readonly id: string;
+            traveler_name: string;
+            group_type?: components["schemas"]["GroupTypeEnum"];
+            pax?: number;
+            departure_city: string;
+            destination: string;
+            country?: string;
+            travel_month: number;
+            duration_nights: number;
+            /** Format: date */
+            start_date?: string | null;
+            budget_level?: components["schemas"]["BudgetLevelEnum"];
+            pace?: components["schemas"]["PaceEnum"];
+            walking_capacity?: components["schemas"]["WalkingCapacityEnum"];
+            trip_type?: components["schemas"]["TripTypeEnum"];
+            accommodation?: components["schemas"]["AccommodationEnum"];
+            food_preference?: components["schemas"]["FoodPreferenceEnum"];
+            interests?: unknown;
+            ai_status?: components["schemas"]["AiStatusEnum"];
+            ai_output?: unknown;
+            ai_error?: string;
+            readonly days: components["schemas"]["ItineraryDay"][];
+            /** Format: date-time */
+            readonly created: string;
+        };
         /**
          * @description * `domestic` - Domestic
          *     * `international` - International
+         * @enum {string}
          */
-        trip_scope?: "domestic" | "international";
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
+        TripScopeEnum: "domestic" | "international";
+        /**
+         * @description * `sightseeing` - Classic sightseeing
+         *     * `adventure` - Adventure & experiences
+         *     * `relaxation` - Relaxation & leisure
+         * @enum {string}
+         */
+        TripTypeEnum: "sightseeing" | "adventure" | "relaxation";
+        /**
+         * @description * `short` - Up to 30 min at a stretch
+         *     * `moderate` - 30–60 min at a stretch
+         *     * `long` - 60+ min at a stretch
+         * @enum {string}
+         */
+        WalkingCapacityEnum: "short" | "moderate" | "long";
     };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    v1_auth_claim_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Guest session id returned by itinerary creation */
+                "X-Guest-Session": string;
+            };
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["PaginatedEnquiryList"];
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClaimResponse"];
+                };
+            };
         };
-      };
     };
-  };
-  v1_enquiries_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["EnquiryCreate"];
-        "application/x-www-form-urlencoded": components["schemas"]["EnquiryCreate"];
-        "multipart/form-data": components["schemas"]["EnquiryCreate"];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
+    v1_auth_me_preferences_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["EnquiryCreate"];
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MyPreferencesResponse"];
+                };
+            };
         };
-      };
     };
-  };
-  v1_itineraries_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TripItineraryCreate"];
-        "application/x-www-form-urlencoded": components["schemas"]["TripItineraryCreate"];
-        "multipart/form-data": components["schemas"]["TripItineraryCreate"];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
+    v1_auth_register_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["TripItineraryCreate"];
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Register"];
+                "application/x-www-form-urlencoded": components["schemas"]["Register"];
+                "multipart/form-data": components["schemas"]["Register"];
+            };
         };
-      };
-    };
-  };
-  v1_itineraries_retrieve: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Register"];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["TripItineraryDetail"];
+    };
+    v1_auth_token_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
-    };
-  };
-  v1_itineraries_days_regenerate_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        day_number: number;
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "application/json": components["schemas"]["DayRegenerate"];
-        "application/x-www-form-urlencoded": components["schemas"]["DayRegenerate"];
-        "multipart/form-data": components["schemas"]["DayRegenerate"];
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenObtainPair"];
+                "application/x-www-form-urlencoded": components["schemas"]["TokenObtainPair"];
+                "multipart/form-data": components["schemas"]["TokenObtainPair"];
+            };
         };
-        content: {
-          "application/json": components["schemas"]["DayRegenerate"];
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenObtainPair"];
+                };
+            };
         };
-      };
     };
-  };
-  v1_itineraries_versions_list: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    v1_auth_token_refresh_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["ItineraryVersion"][];
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenRefresh"];
+                "application/x-www-form-urlencoded": components["schemas"]["TokenRefresh"];
+                "multipart/form-data": components["schemas"]["TokenRefresh"];
+            };
         };
-      };
-    };
-  };
-  v1_itineraries_versions_restore_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        id: string;
-        version: number;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TripItineraryDetail"];
-        "application/x-www-form-urlencoded": components["schemas"]["TripItineraryDetail"];
-        "multipart/form-data": components["schemas"]["TripItineraryDetail"];
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenRefresh"];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["TripItineraryDetail"];
+    };
+    v1_enquiries_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /**
+                 * @description * `website` - Website
+                 *     * `app` - App
+                 *     * `instagram` - Instagram
+                 *     * `whatsapp` - WhatsApp
+                 *     * `referral` - Referral
+                 *     * `other` - Other
+                 */
+                source?: "app" | "instagram" | "other" | "referral" | "website" | "whatsapp";
+                /**
+                 * @description * `new` - New
+                 *     * `contacted` - Contacted
+                 *     * `converted` - Converted
+                 *     * `closed` - Closed
+                 */
+                status?: "closed" | "contacted" | "converted" | "new";
+                /**
+                 * @description * `domestic` - Domestic
+                 *     * `international` - International
+                 */
+                trip_scope?: "domestic" | "international";
+                utm_campaign?: string;
+                utm_medium?: string;
+                utm_source?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-      };
-    };
-  };
-  v1_package_requests_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PackageRequestCreate"];
-        "application/x-www-form-urlencoded": components["schemas"]["PackageRequestCreate"];
-        "multipart/form-data": components["schemas"]["PackageRequestCreate"];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedEnquiryList"];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["PackageRequestCreate"];
-        };
-      };
     };
-  };
-  v1_packages_list: {
-    parameters: {
-      query?: {
-        /** @description The pagination cursor value. */
-        cursor?: string;
-        destination?: string;
-        /** @description Number of results to return per page. */
-        page_size?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    v1_enquiries_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["PaginatedPackageList"];
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnquiryCreate"];
+                "application/x-www-form-urlencoded": components["schemas"]["EnquiryCreate"];
+                "multipart/form-data": components["schemas"]["EnquiryCreate"];
+            };
         };
-      };
-    };
-  };
-  v1_search_retrieve: {
-    parameters: {
-      query: {
-        q: string;
-        top_k?: number;
-        type?: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EnquiryCreate"];
+                };
+            };
         };
-        content: {
-          "application/json": components["schemas"]["SearchResponse"];
-        };
-      };
     };
-  };
+    v1_itineraries_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TripItineraryCreate"];
+                "application/x-www-form-urlencoded": components["schemas"]["TripItineraryCreate"];
+                "multipart/form-data": components["schemas"]["TripItineraryCreate"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripItineraryCreate"];
+                };
+            };
+        };
+    };
+    v1_itineraries_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripItineraryDetail"];
+                };
+            };
+        };
+    };
+    v1_itineraries_days_regenerate_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                day_number: number;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DayRegenerate"];
+                "application/x-www-form-urlencoded": components["schemas"]["DayRegenerate"];
+                "multipart/form-data": components["schemas"]["DayRegenerate"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DayRegenerate"];
+                };
+            };
+        };
+    };
+    v1_itineraries_lead_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ItineraryLead"];
+                "application/x-www-form-urlencoded": components["schemas"]["ItineraryLead"];
+                "multipart/form-data": components["schemas"]["ItineraryLead"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItineraryLead"];
+                };
+            };
+        };
+    };
+    v1_itineraries_versions_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItineraryVersion"][];
+                };
+            };
+        };
+    };
+    v1_itineraries_versions_restore_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                version: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TripItineraryDetail"];
+                "application/x-www-form-urlencoded": components["schemas"]["TripItineraryDetail"];
+                "multipart/form-data": components["schemas"]["TripItineraryDetail"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripItineraryDetail"];
+                };
+            };
+        };
+    };
+    v1_itineraries_samples_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripItineraryDetail"];
+                };
+            };
+        };
+    };
+    v1_package_requests_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PackageRequestCreate"];
+                "application/x-www-form-urlencoded": components["schemas"]["PackageRequestCreate"];
+                "multipart/form-data": components["schemas"]["PackageRequestCreate"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageRequestCreate"];
+                };
+            };
+        };
+    };
+    v1_packages_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                destination?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedPackageList"];
+                };
+            };
+        };
+    };
+    v1_search_retrieve: {
+        parameters: {
+            query: {
+                q: string;
+                top_k?: number;
+                type?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResponse"];
+                };
+            };
+        };
+    };
 }

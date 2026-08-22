@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
+import { getAttribution } from "@/lib/attribution";
 import {
   searchDestinations,
   type DestinationSuggestion,
@@ -239,6 +240,10 @@ export function LeadForm({
             : audience === "parents"
               ? "plan-parents"
               : "home-hero"),
+        // Campaign attribution: persisted utm_* (72h first-touch) merged
+        // with the live URL, plus promoter source/source_id — the backend
+        // hoists standard UTMs to columns and keeps the raw dict.
+        attribution: getAttribution(),
       });
       setState("success");
     } catch (error) {

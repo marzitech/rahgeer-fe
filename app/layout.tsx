@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
 import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
+import { AttributionCapture } from "@/components/AttributionCapture";
 import { HashScroll } from "@/components/HashScroll";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
 import { isAppWebView } from "@/lib/app-webview";
@@ -58,6 +59,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         <HashScroll />
         <NavDepthTracker />
+        <AttributionCapture />
         <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>
       </body>
     </html>
