@@ -82,89 +82,91 @@ const SOCIALS = [
 /** Purple footer: brand blurb, link columns, address, legal line. */
 export function Footer() {
   return (
-    <footer className="hide-in-app bg-marzi-purple text-white">
-      <div className="mx-auto max-w-[1192px] px-4 py-14">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
-          <div className="col-span-2 md:col-span-1">
-            <Image
-              src="/images/brand/marzi-logo.png"
-              alt="Marzi"
-              width={140}
-              height={48}
-              className="h-9 w-auto brightness-0 invert"
-            />
-            <p className="mt-4 max-w-[220px] text-sm text-white/70">
-              Empowering Generation Evergreen with meaningful connections and
-              curated experiences.
-            </p>
-            <div className="mt-5 flex gap-3">
-              {SOCIALS.map(({ name, href, Icon }) => (
-                <a
-                  key={name}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={name}
-                  className="flex size-8 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/25"
-                >
-                  <Icon />
-                </a>
-              ))}
+    <section id="footer">
+      <footer className="hide-in-app bg-marzi-purple text-white">
+        <div className="mx-auto max-w-[1192px] px-4 py-14">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
+            <div className="col-span-2 md:col-span-1">
+              <Image
+                src="/images/brand/marzi-logo.png"
+                alt="Marzi"
+                width={140}
+                height={48}
+                className="h-9 w-auto brightness-0 invert"
+              />
+              <p className="mt-4 max-w-[220px] text-sm text-white/70">
+                Empowering Generation Evergreen with meaningful connections and
+                curated experiences.
+              </p>
+              <div className="mt-5 flex gap-3">
+                {SOCIALS.map(({ name, href, Icon }) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    aria-label={name}
+                    className="flex size-8 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/25"
+                  >
+                    <Icon />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <nav>
+              <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+                Explore
+              </p>
+              <ul className="mt-4 space-y-2.5 text-sm">
+                {EXPLORE.map(({ label, href }) => (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      className="text-white/80 transition hover:text-white"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav>
+              <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+                Policies
+              </p>
+              <ul className="mt-4 space-y-2.5 text-sm">
+                {POLICIES.map(({ label, href }) => (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      className="text-white/80 transition hover:text-white"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="col-span-2 md:col-span-1">
+              <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+                Visit Us
+              </p>
+              <p className="mt-4 text-sm text-white/80">
+                22, HARA CHAMBER, 3rd Floor, KH Road, Shantinagar, Bengaluru —
+                560027
+              </p>
             </div>
           </div>
 
-          <nav>
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
-              Explore
-            </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {EXPLORE.map(({ label, href }) => (
-                <li key={label}>
-                  <Link
-                    href={href}
-                    className="text-white/80 transition hover:text-white"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav>
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
-              Policies
-            </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {POLICIES.map(({ label, href }) => (
-                <li key={label}>
-                  <Link
-                    href={href}
-                    className="text-white/80 transition hover:text-white"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="col-span-2 md:col-span-1">
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
-              Visit Us
-            </p>
-            <p className="mt-4 text-sm text-white/80">
-              22, HARA CHAMBER, 3rd Floor, KH Road, Shantinagar, Bengaluru —
-              560027
-            </p>
+          <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/15 pt-6 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+            <p>MARZI AGETECH PRIVATE LIMITED</p>
+            <p>© 2026 Marzi. All rights reserved.</p>
           </div>
         </div>
-
-        <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/15 pt-6 text-center text-xs text-white/50 sm:flex-row sm:text-left">
-          <p>MARZI AGETECH PRIVATE LIMITED</p>
-          <p>© 2026 Marzi. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </section>
   );
 }

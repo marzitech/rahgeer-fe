@@ -5,7 +5,7 @@ import { Phone } from "lucide-react";
  *  heading with soft-gold line, pink + outline button pair (per design). */
 export function CtaBanner() {
   return (
-    <section className="bg-cream pb-20">
+    <section id="ctabanner" className="bg-cream pb-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-6 py-12 text-center text-white md:px-8 md:py-16">
           {/* Circular pattern texture at 7% opacity (per design) */}

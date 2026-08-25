@@ -29,7 +29,7 @@ function Cross() {
  *  like the Figma mobile design) — no horizontal scrolling. */
 export function Comparison() {
   return (
-    <section className="bg-cream py-20">
+    <section id="comparison" className="bg-cream py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading eyebrow="Comparison" title="Why Marzi is different" />
 

@@ -23,7 +23,7 @@ const AUDIENCES = [
 /** "Who are you planning for?" — two large photo cards with CTAs. */
 export function PlanningFor() {
   return (
-    <section className="bg-cream py-20">
+    <section id="planningfor" className="bg-cream py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Book your trip"
