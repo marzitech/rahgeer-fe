@@ -2,7 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CARD_BLURB, type HomeDestination } from "./destinations.data";
+import {
+  CARD_BLURB,
+  destinationHref,
+  type HomeDestination,
+} from "./destinations.data";
 
 /** One destination photo card. `compact` shrinks the text/padding for the
  *  Explore grid (2-across, smaller on mobile); the full size is used by the
@@ -14,15 +18,9 @@ export function DestinationCard({
   destination: HomeDestination;
   compact?: boolean;
 }) {
-  // Priced trips are curated packages -> the package page; guides -> the
-  // sample-itinerary page (teaser + download lead-gate).
-  const href = destination.priceFromInr
-    ? `/packages/${destination.slug}`
-    : `/itineraries/${destination.slug}`;
-
   return (
     <Link
-      href={href}
+      href={destinationHref(destination)}
       className={cn(
         "group relative block w-full overflow-hidden rounded-2xl sm:rounded-3xl",
         // Explore grid: shorter/wider on desktop so the 2x2 fits one screen.
