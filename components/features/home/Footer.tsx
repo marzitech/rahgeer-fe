@@ -79,11 +79,76 @@ const SOCIALS = [
   { name: "LinkedIn", href: MARZI_SITE, Icon: LinkedinIcon },
 ];
 
-/** Purple footer: brand blurb, link columns, address, legal line. */
+/** Decorative landmark-skyline silhouette band above the footer content.
+ *  (CSS/SVG approximation of the design's skyline art — swap for the
+ *  exported Figma asset when available.) */
+function Skyline() {
+  return (
+    <div aria-hidden className="overflow-hidden">
+      <svg
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="xMidYMax slice"
+        className="h-20 w-full text-[#e3d5b3] md:h-28"
+        fill="currentColor"
+      >
+        {/* Ground line */}
+        <rect x="0" y="112" width="1440" height="8" />
+        {/* Generic low buildings */}
+        <rect x="0" y="72" width="70" height="48" />
+        <rect x="80" y="88" width="50" height="32" />
+        {/* India Gate style arch */}
+        <path d="M150 120v-52c0-16 12-28 27-28s27 12 27 28v52h-12v-48a15 15 0 0 0-30 0v48Z" />
+        <rect x="146" y="34" width="62" height="8" rx="2" />
+        {/* Mid buildings */}
+        <rect x="230" y="80" width="46" height="40" />
+        <rect x="286" y="64" width="34" height="56" />
+        {/* Taj-style dome */}
+        <path d="M360 120v-44c0-8 6-12 10-16-6-8-6-18 12-30 18 12 18 22 12 30 4 4 10 8 10 16v44Z" />
+        <rect x="346" y="60" width="6" height="60" />
+        <rect x="412" y="60" width="6" height="60" />
+        <circle cx="349" cy="56" r="4" />
+        <circle cx="415" cy="56" r="4" />
+        {/* Skyscraper cluster */}
+        <rect x="450" y="48" width="30" height="72" />
+        <rect x="488" y="70" width="42" height="50" />
+        <rect x="540" y="56" width="26" height="64" />
+        {/* Temple gopuram */}
+        <path d="M600 120v-30h-8l28-56 28 56h-8v30Z" />
+        {/* Buildings */}
+        <rect x="680" y="76" width="52" height="44" />
+        <rect x="742" y="60" width="30" height="60" />
+        <rect x="780" y="86" width="56" height="34" />
+        {/* Dome pavilion */}
+        <path d="M870 120v-36a28 28 0 0 1 56 0v36Z" />
+        <rect x="866" y="80" width="6" height="40" />
+        <rect x="924" y="80" width="6" height="40" />
+        {/* Tower with spire */}
+        <rect x="970" y="52" width="24" height="68" />
+        <path d="M970 52h24l-12-24Z" />
+        {/* Buildings */}
+        <rect x="1020" y="72" width="44" height="48" />
+        <rect x="1074" y="88" width="60" height="32" />
+        {/* Charminar-style block */}
+        <rect x="1160" y="56" width="70" height="64" />
+        <circle cx="1166" cy="52" r="6" />
+        <circle cx="1224" cy="52" r="6" />
+        <path d="M1180 120v-24a15 15 0 0 1 30 0v24Z" fill="#f6efdd" />
+        {/* Tail buildings */}
+        <rect x="1260" y="76" width="40" height="44" />
+        <rect x="1310" y="60" width="28" height="60" />
+        <rect x="1348" y="84" width="92" height="36" />
+      </svg>
+    </div>
+  );
+}
+
+/** Redesigned cream footer: skyline silhouette band, brand blurb, link
+ *  columns, address, legal line — dark text on warm paper. */
 export function Footer() {
   return (
-    <footer className="hide-in-app bg-marzi-purple text-white">
-      <div className="mx-auto max-w-[1192px] px-4 py-14">
+    <footer className="hide-in-app text-foreground bg-[#f6efdd]">
+      <Skyline />
+      <div className="mx-auto max-w-[1192px] px-4 pt-12 pb-8">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div className="col-span-2 md:col-span-1">
             <Image
@@ -91,9 +156,9 @@ export function Footer() {
               alt="Marzi"
               width={140}
               height={48}
-              className="h-9 w-auto brightness-0 invert"
+              className="h-9 w-auto"
             />
-            <p className="mt-4 max-w-[220px] text-sm text-white/70">
+            <p className="text-foreground/70 mt-4 max-w-[220px] text-sm">
               Empowering Generation Evergreen with meaningful connections and
               curated experiences.
             </p>
@@ -105,7 +170,7 @@ export function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={name}
-                  className="flex size-8 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/25"
+                  className="text-foreground/80 flex size-8 items-center justify-center rounded-full bg-black/5 transition hover:bg-black/15"
                 >
                   <Icon />
                 </a>
@@ -114,7 +179,7 @@ export function Footer() {
           </div>
 
           <nav>
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
               Explore
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -122,7 +187,7 @@ export function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-white/80 transition hover:text-white"
+                    className="text-foreground/75 hover:text-brand transition"
                   >
                     {label}
                   </Link>
@@ -132,7 +197,7 @@ export function Footer() {
           </nav>
 
           <nav>
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
               Policies
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -140,7 +205,7 @@ export function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-white/80 transition hover:text-white"
+                    className="text-foreground/75 hover:text-brand transition"
                   >
                     {label}
                   </Link>
@@ -150,17 +215,17 @@ export function Footer() {
           </nav>
 
           <div className="col-span-2 md:col-span-1">
-            <p className="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
               Visit Us
             </p>
-            <p className="mt-4 text-sm text-white/80">
+            <p className="text-foreground/75 mt-4 text-sm">
               22, HARA CHAMBER, 3rd Floor, KH Road, Shantinagar, Bengaluru —
               560027
             </p>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/15 pt-6 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+        <div className="text-foreground/50 mt-12 flex flex-col items-center justify-between gap-2 border-t border-black/10 pt-6 text-center text-xs sm:flex-row sm:text-left">
           <p>MARZI AGETECH PRIVATE LIMITED</p>
           <p>© 2026 Marzi. All rights reserved.</p>
         </div>
