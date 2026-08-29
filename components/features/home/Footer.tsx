@@ -148,9 +148,9 @@ export function Footer() {
   return (
     <footer className="hide-in-app text-foreground bg-[#f6efdd]">
       <Skyline />
-      <div className="mx-auto max-w-[1192px] px-4 pt-12 pb-8">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
-          <div className="col-span-2 md:col-span-1">
+      <div className="mx-auto max-w-[1192px] px-4 pt-10 pb-8 md:pt-12">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
+          <div className="sm:col-span-2 md:col-span-1">
             <Image
               src="/images/brand/marzi-logo.png"
               alt="Marzi"
@@ -179,7 +179,7 @@ export function Footer() {
           </div>
 
           <nav>
-            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
+            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
               Explore
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -197,7 +197,7 @@ export function Footer() {
           </nav>
 
           <nav>
-            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
+            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
               Policies
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
@@ -214,8 +214,8 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="col-span-2 md:col-span-1">
-            <p className="text-foreground/50 text-xs font-bold tracking-[0.2em] uppercase">
+          <div className="sm:col-span-2 md:col-span-1">
+            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
               Visit Us
             </p>
             <p className="text-foreground/75 mt-4 text-sm">
@@ -225,9 +225,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="text-foreground/50 mt-12 flex flex-col items-center justify-between gap-2 border-t border-black/10 pt-6 text-center text-xs sm:flex-row sm:text-left">
-          <p>MARZI AGETECH PRIVATE LIMITED</p>
-          <p>© 2026 Marzi. All rights reserved.</p>
+        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-black/10 pt-6 text-center text-xs sm:flex-row sm:text-left md:mt-12">
+          <p className="text-brand font-semibold">
+            MARZI AGETECH PRIVATE LIMITED
+          </p>
+          <p className="text-foreground/50">
+            © 2026 Marzi. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
