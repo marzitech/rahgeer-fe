@@ -33,11 +33,18 @@ export function GroupTours() {
           Trips you can join this month
         </h2>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 text-left sm:grid-cols-2 md:mt-10 lg:grid-cols-3">
-          {tours.map((tour) => (
-            <TourCard key={tour.slug} tour={tour} />
-          ))}
-          <AdvantagesCard />
+        {/* Tour cards scroll horizontally in a clipped rail (per the design);
+            the Marzi Advantages card stays pinned beside it on desktop and
+            drops below the rail on smaller screens. */}
+        <div className="mt-8 flex flex-col gap-6 text-left md:mt-10 lg:flex-row">
+          <div className="flex min-w-0 flex-1 snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] md:gap-6 [&::-webkit-scrollbar]:hidden">
+            {tours.map((tour) => (
+              <TourCard key={tour.slug} tour={tour} />
+            ))}
+          </div>
+          <div className="lg:w-[380px] lg:shrink-0">
+            <AdvantagesCard />
+          </div>
         </div>
       </div>
     </section>
@@ -48,7 +55,7 @@ function TourCard({ tour }: { tour: PackageContent }) {
   return (
     <Link
       href={`/packages/${tour.slug}`}
-      className="group overflow-hidden rounded-[26px] bg-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] ring-1 ring-black/5"
+      className="group w-[290px] shrink-0 snap-start overflow-hidden rounded-[26px] bg-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] ring-1 ring-black/5 sm:w-[340px]"
     >
       <div className="relative aspect-[4/3]">
         <Image
@@ -89,7 +96,7 @@ function TourCard({ tour }: { tour: PackageContent }) {
 
 function AdvantagesCard() {
   return (
-    <div className="flex flex-col items-center justify-center rounded-[26px] bg-[#f4eedd] p-6 py-10 text-center">
+    <div className="flex h-full flex-col items-center justify-center rounded-[26px] bg-[#f4eedd] p-6 py-10 text-center">
       <SparkleChip label="Marzi Advantages" className="bg-white/70" />
       <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
         {ADVANTAGES.map(({ Icon, label }) => (
