@@ -561,7 +561,7 @@ export function ItineraryResult({
                 </p>
               ) : null}
               <Link
-                href="/#plan-your-trip"
+                href="/enquiry"
                 className="mt-5 flex items-center justify-center gap-2 rounded-full border border-black/20 bg-white py-3 text-sm font-semibold transition hover:border-black/40 print:hidden"
               >
                 <Phone className="h-4 w-4" />

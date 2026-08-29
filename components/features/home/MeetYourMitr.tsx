@@ -59,7 +59,7 @@ export function MeetYourMitr() {
           </div>
 
           <a
-            href="#plan-your-trip"
+            href="/enquiry"
             className="mt-6 flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3.5 text-sm font-bold text-white transition hover:bg-black/85 md:mt-0 md:shrink-0"
           >
             <Phone className="h-4 w-4" fill="currentColor" strokeWidth={0} />

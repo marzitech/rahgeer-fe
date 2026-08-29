@@ -29,7 +29,7 @@ export function CtaBanner() {
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
               <a
-                href="#plan-your-trip"
+                href="/enquiry"
                 className="bg-marzi-pink flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition hover:brightness-110"
               >
                 <Phone
@@ -40,7 +40,7 @@ export function CtaBanner() {
                 Talk to a Travel Mitr
               </a>
               <a
-                href="#plan-your-trip"
+                href="/enquiry"
                 className="rounded-full border border-white/60 px-7 py-3.5 text-sm font-semibold transition hover:bg-white/10"
               >
                 Request a Callback

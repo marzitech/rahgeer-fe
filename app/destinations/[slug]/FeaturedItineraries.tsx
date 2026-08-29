@@ -68,7 +68,7 @@ export function FeaturedItineraries({
               you.
             </p>
             <Link
-              href="/#plan-your-trip"
+              href="/enquiry"
               className="bg-brand hover:bg-brand-deep mt-6 inline-block rounded-full px-7 py-3.5 text-sm font-semibold text-white transition"
             >
               Plan my trip
@@ -109,7 +109,7 @@ export function FeaturedItineraries({
                       </p>
                     </div>
                     <Link
-                      href="/#plan-your-trip"
+                      href="/enquiry"
                       className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85"
                     >
                       View Itinerary
