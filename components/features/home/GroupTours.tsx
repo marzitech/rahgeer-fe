@@ -37,7 +37,7 @@ export function GroupTours() {
             the Marzi Advantages card stays pinned beside it on desktop and
             drops below the rail on smaller screens. */}
         <div className="mt-8 flex flex-col gap-6 text-left md:mt-10 lg:flex-row">
-          <div className="flex min-w-0 flex-1 snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] md:gap-6 [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-0 flex-1 flex-col gap-5 [scrollbar-width:none] md:gap-6 lg:snap-x lg:snap-mandatory lg:flex-row lg:overflow-x-auto lg:pb-2 [&::-webkit-scrollbar]:hidden">
             {tours.map((tour) => (
               <TourCard key={tour.slug} tour={tour} />
             ))}
@@ -55,7 +55,7 @@ function TourCard({ tour }: { tour: PackageContent }) {
   return (
     <Link
       href={`/packages/${tour.slug}`}
-      className="group w-[290px] shrink-0 snap-start overflow-hidden rounded-[26px] bg-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] ring-1 ring-black/5 sm:w-[340px]"
+      className="group w-full overflow-hidden rounded-[26px] bg-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] ring-1 ring-black/5 lg:w-[340px] lg:shrink-0 lg:snap-start"
     >
       <div className="relative aspect-[4/3]">
         <Image
