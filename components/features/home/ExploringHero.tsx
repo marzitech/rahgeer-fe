@@ -74,15 +74,27 @@ function CloudsDivider() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none relative -mt-12 overflow-hidden md:-mt-24"
+      className="pointer-events-none relative -mt-10 h-36 overflow-hidden md:-mt-20 md:h-56"
     >
-      {/* Dashed flight path + planes in the transparent sky above the clouds
-          (desktop only) */}
+      {/* Cloud band — cropped to the band height (per the design's tight
+          ~170px strip); zoomed on mobile so the clouds stay dense */}
+      <Image
+        src="/images/home/hero-clouds.png"
+        alt=""
+        width={1264}
+        height={421}
+        sizes="100vw"
+        className="absolute top-0 left-1/2 h-auto w-[160%] max-w-none -translate-x-1/2 opacity-20 md:w-full"
+      />
+      {/* Fade the crop line into the white below */}
+      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent to-white" />
+
+      {/* Dashed flight path + planes in the sky gap (desktop only) */}
       <svg
         viewBox="0 0 1200 200"
         fill="none"
         preserveAspectRatio="none"
-        className="absolute inset-x-0 top-0 hidden h-2/5 w-full md:block"
+        className="absolute inset-x-0 top-0 hidden h-1/2 w-full md:block"
       >
         <path
           d="M80 170 C 320 40, 520 40, 600 100 C 680 160, 900 60, 1120 90"
@@ -92,29 +104,18 @@ function CloudsDivider() {
         />
       </svg>
       <Plane
-        className="absolute top-[28%] left-[5%] hidden size-6 -rotate-12 text-[#b9b2a6] md:block"
+        className="absolute top-[30%] left-[5%] hidden size-6 -rotate-12 text-[#b9b2a6] md:block"
         fill="currentColor"
         strokeWidth={0}
       />
       <Plane
-        className="absolute top-[12%] right-[6%] hidden size-6 rotate-12 text-[#b9b2a6] md:block"
+        className="absolute top-[14%] right-[6%] hidden size-6 rotate-12 text-[#b9b2a6] md:block"
         fill="currentColor"
         strokeWidth={0}
       />
 
-      {/* Cloud band — natural aspect on desktop; zoomed on mobile so the
-          clouds stay dense at narrow widths */}
-      <Image
-        src="/images/home/hero-clouds.png"
-        alt=""
-        width={1264}
-        height={421}
-        sizes="100vw"
-        className="relative -ml-[30%] h-auto w-[160%] max-w-none md:ml-0 md:w-full"
-      />
-
-      {/* Outlined watermark over the clouds, right above the Mitr card */}
-      <p className="font-display absolute inset-x-0 bottom-2 text-center text-[52px] leading-none font-bold whitespace-nowrap text-transparent [-webkit-text-stroke:2px_#d5cfc6] md:bottom-6 md:text-[120px]">
+      {/* Outlined watermark over the clouds, hugging the Mitr card below */}
+      <p className="font-display absolute inset-x-0 bottom-0 text-center text-[48px] leading-none font-bold whitespace-nowrap text-transparent [-webkit-text-stroke:2px_#d5cfc6] md:text-[110px]">
         Marzi Mitr
       </p>
     </div>
