@@ -67,29 +67,22 @@ function HeroCard({ destination }: { destination: HomeDestination }) {
   );
 }
 
-/** Decorative hand-off band: white cloud puffs fogging the card bottoms, a
- *  dashed flight path with planes, and the outlined serif watermark. (CSS
- *  approximation of the design's cloud art — swap for an exported asset if
- *  we get one.) */
+/** Decorative hand-off band: the cloud art fogging the card bottoms, a
+ *  dashed flight path with planes in the sky gap, and the outlined serif
+ *  watermark over the clouds. */
 function CloudsDivider() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none relative -mt-16 h-40 md:-mt-20 md:h-56"
+      className="pointer-events-none relative -mt-12 overflow-hidden md:-mt-24"
     >
-      {/* Cloud puffs overlapping the rail above */}
-      <div className="absolute -top-10 left-[6%] h-24 w-56 rounded-full bg-white blur-xl" />
-      <div className="absolute -top-4 left-[28%] h-28 w-72 rounded-full bg-white blur-2xl" />
-      <div className="absolute -top-8 right-[24%] h-24 w-64 rounded-full bg-white blur-xl" />
-      <div className="absolute -top-2 right-[4%] h-28 w-72 rounded-full bg-white blur-2xl" />
-      <div className="absolute inset-x-0 -top-6 h-24 bg-gradient-to-b from-transparent via-white/70 to-white" />
-
-      {/* Dashed flight path + planes (desktop only) */}
+      {/* Dashed flight path + planes in the transparent sky above the clouds
+          (desktop only) */}
       <svg
         viewBox="0 0 1200 200"
         fill="none"
         preserveAspectRatio="none"
-        className="absolute inset-0 hidden size-full md:block"
+        className="absolute inset-x-0 top-0 hidden h-2/5 w-full md:block"
       >
         <path
           d="M80 170 C 320 40, 520 40, 600 100 C 680 160, 900 60, 1120 90"
@@ -99,18 +92,29 @@ function CloudsDivider() {
         />
       </svg>
       <Plane
-        className="absolute top-[74%] left-[5%] hidden size-6 -rotate-12 text-[#b9b2a6] md:block"
+        className="absolute top-[28%] left-[5%] hidden size-6 -rotate-12 text-[#b9b2a6] md:block"
         fill="currentColor"
         strokeWidth={0}
       />
       <Plane
-        className="absolute top-[34%] right-[6%] hidden size-6 rotate-12 text-[#b9b2a6] md:block"
+        className="absolute top-[12%] right-[6%] hidden size-6 rotate-12 text-[#b9b2a6] md:block"
         fill="currentColor"
         strokeWidth={0}
       />
 
-      {/* Outlined watermark right above the Mitr card */}
-      <p className="font-display absolute inset-x-0 bottom-0 text-center text-[56px] leading-none font-bold whitespace-nowrap text-transparent [-webkit-text-stroke:2px_#e4ded4] md:text-[120px]">
+      {/* Cloud band — natural aspect on desktop; zoomed on mobile so the
+          clouds stay dense at narrow widths */}
+      <Image
+        src="/images/home/hero-clouds.png"
+        alt=""
+        width={1264}
+        height={421}
+        sizes="100vw"
+        className="relative -ml-[30%] h-auto w-[160%] max-w-none md:ml-0 md:w-full"
+      />
+
+      {/* Outlined watermark over the clouds, right above the Mitr card */}
+      <p className="font-display absolute inset-x-0 bottom-2 text-center text-[52px] leading-none font-bold whitespace-nowrap text-transparent [-webkit-text-stroke:2px_#d5cfc6] md:bottom-6 md:text-[120px]">
         Marzi Mitr
       </p>
     </div>
