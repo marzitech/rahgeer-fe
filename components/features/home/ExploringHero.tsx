@@ -20,8 +20,9 @@ export function ExploringHero() {
       </h1>
 
       {/* Card rail — horizontal snap scroll on every breakpoint; the left
-          padding lines the first card up with the 1192px content column. */}
-      <div className="mt-8 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto px-4 pb-10 md:mt-12 md:gap-6 md:px-[max(2.5rem,calc((100vw-1192px)/2))] [&::-webkit-scrollbar]:hidden">
+          padding lines the first card up with the 1192px content column.
+          z-10 keeps the cards above the cloud band pulled up behind them. */}
+      <div className="relative z-10 mt-8 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto px-4 pb-10 md:mt-12 md:gap-6 md:px-[max(2.5rem,calc((100vw-1192px)/2))] [&::-webkit-scrollbar]:hidden">
         {HERO_DESTINATIONS.map((destination) => (
           <HeroCard key={destination.slug} destination={destination} />
         ))}
@@ -76,18 +77,17 @@ function CloudsDivider() {
       aria-hidden
       className="pointer-events-none relative -mt-10 h-36 overflow-hidden md:-mt-20 md:h-56"
     >
-      {/* Cloud band — cropped to the band height (per the design's tight
-          ~170px strip); zoomed on mobile so the clouds stay dense */}
+      {/* Cloud band — anchored to the band's bottom edge so the dense cloud
+          mass fills the strip and hugs the Mitr chip below (per the design);
+          zoomed on mobile so the clouds stay dense */}
       <Image
         src="/images/home/hero-clouds.png"
         alt=""
         width={1264}
         height={421}
         sizes="100vw"
-        className="absolute top-0 left-1/2 h-auto w-[160%] max-w-none -translate-x-1/2 opacity-20 md:w-full"
+        className="absolute bottom-0 left-1/2 h-auto w-[160%] max-w-none -translate-x-1/2 opacity-30 md:w-full"
       />
-      {/* Fade the crop line into the white below */}
-      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent to-white" />
 
       {/* Dashed flight path + planes in the sky gap (desktop only) */}
       <svg
