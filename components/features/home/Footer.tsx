@@ -84,11 +84,11 @@ const SOCIALS = [
  *  exported Figma asset when available.) */
 function Skyline() {
   return (
-    <div aria-hidden className="overflow-hidden">
+    <div aria-hidden className="overflow-hidden bg-[#fbf5e6]">
       <svg
         viewBox="0 0 1440 120"
         preserveAspectRatio="xMidYMax slice"
-        className="h-20 w-full text-[#e3d5b3] md:h-28"
+        className="h-20 w-full text-[#ded2b4] md:h-28"
         fill="currentColor"
       >
         {/* Ground line */}
@@ -132,7 +132,7 @@ function Skyline() {
         <rect x="1160" y="56" width="70" height="64" />
         <circle cx="1166" cy="52" r="6" />
         <circle cx="1224" cy="52" r="6" />
-        <path d="M1180 120v-24a15 15 0 0 1 30 0v24Z" fill="#f6efdd" />
+        <path d="M1180 120v-24a15 15 0 0 1 30 0v24Z" fill="#fbf5e6" />
         {/* Tail buildings */}
         <rect x="1260" y="76" width="40" height="44" />
         <rect x="1310" y="60" width="28" height="60" />
@@ -142,15 +142,17 @@ function Skyline() {
   );
 }
 
-/** Redesigned cream footer: skyline silhouette band, brand blurb, link
- *  columns, address, legal line — dark text on warm paper. */
+/** Redesigned footer: skyline silhouette band over cream, then the tan
+ *  panel — serif brand headings, brand-filled square socials, Explore +
+ *  Policies side by side with Visit Us below on mobile (per the design),
+ *  four columns from md. */
 export function Footer() {
   return (
-    <footer className="hide-in-app text-foreground bg-[#f6efdd]">
+    <footer className="hide-in-app text-foreground bg-[#ded2b4]">
       <Skyline />
-      <div className="mx-auto max-w-[1192px] px-4 pt-10 pb-8 md:pt-12">
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
-          <div className="sm:col-span-2 md:col-span-1">
+      <div className="mx-auto max-w-[1192px] px-6 pt-8 pb-8 md:px-4 md:pt-12">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-[1.4fr_1fr_1fr_1.4fr] md:gap-y-10">
+          <div className="col-span-2 md:col-span-1">
             <Image
               src="/images/brand/marzi-logo.png"
               alt="Marzi"
@@ -158,11 +160,11 @@ export function Footer() {
               height={48}
               className="h-9 w-auto"
             />
-            <p className="text-foreground/70 mt-4 max-w-[220px] text-sm">
+            <p className="text-foreground/60 mt-4 max-w-[280px] text-sm">
               Empowering Generation Evergreen with meaningful connections and
               curated experiences.
             </p>
-            <div className="mt-5 flex gap-3">
+            <div className="mt-5 flex gap-2.5">
               {SOCIALS.map(({ name, href, Icon }) => (
                 <a
                   key={name}
@@ -170,7 +172,7 @@ export function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={name}
-                  className="text-foreground/80 flex size-8 items-center justify-center rounded-full bg-black/5 transition hover:bg-black/15"
+                  className="bg-brand hover:bg-brand-deep flex size-9 items-center justify-center rounded-lg text-white transition"
                 >
                   <Icon />
                 </a>
@@ -179,15 +181,13 @@ export function Footer() {
           </div>
 
           <nav>
-            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
-              Explore
-            </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <p className="font-display text-brand text-lg font-bold">Explore</p>
+            <ul className="mt-3.5 space-y-2.5 text-[13px] md:text-sm">
               {EXPLORE.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-foreground/75 hover:text-brand transition"
+                    className="text-foreground/80 hover:text-brand transition"
                   >
                     {label}
                   </Link>
@@ -197,15 +197,15 @@ export function Footer() {
           </nav>
 
           <nav>
-            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
+            <p className="font-display text-brand text-lg font-bold">
               Policies
             </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-3.5 space-y-2.5 text-[13px] md:text-sm">
               {POLICIES.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     href={href}
-                    className="text-foreground/75 hover:text-brand transition"
+                    className="text-foreground/80 hover:text-brand transition"
                   >
                     {label}
                   </Link>
@@ -214,22 +214,22 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="sm:col-span-2 md:col-span-1">
-            <p className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
+          <div className="col-span-2 md:col-span-1">
+            <p className="font-display text-brand text-lg font-bold">
               Visit Us
             </p>
-            <p className="text-foreground/75 mt-4 text-sm">
+            <p className="text-foreground/70 mt-3.5 max-w-[240px] text-[13px] italic md:text-sm">
               22, HARA CHAMBER, 3rd Floor, KH Road, Shantinagar, Bengaluru —
               560027
             </p>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-black/10 pt-6 text-center text-xs sm:flex-row sm:text-left md:mt-12">
-          <p className="text-brand font-semibold">
-            MARZI AGETECH PRIVATE LIMITED
+        <div className="mt-8 flex flex-col items-center justify-between gap-1.5 border-t border-black/15 pt-6 text-center sm:flex-row sm:text-left md:mt-12">
+          <p className="text-[11px] font-bold tracking-[0.18em] uppercase">
+            Marzi Agetech Private Limited
           </p>
-          <p className="text-foreground/50">
+          <p className="text-foreground/55 text-xs">
             © 2026 Marzi. All rights reserved.
           </p>
         </div>
