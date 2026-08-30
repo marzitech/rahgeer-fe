@@ -10,6 +10,7 @@ Next.js 16 (app router) · React 19 · TypeScript · Tailwind CSS 4
 
 ## Local development
 
+
 ```bash
 cp .env.local.example .env.local   # points at the local backend
 npm install
