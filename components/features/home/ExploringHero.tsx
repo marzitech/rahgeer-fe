@@ -1,31 +1,53 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ChevronRight, Plane, Users } from "lucide-react";
-import {
-  destinationHref,
-  HERO_DESTINATIONS,
-  type HomeDestination,
-} from "./destinations.data";
-import { SeniorFriendlyBadge } from "./SeniorFriendlyBadge";
+import { Plane } from "lucide-react";
 
-/** Redesigned hero: "Indian seniors are exploring…" over a horizontal rail
- *  of destination cards (photo, Senior Friendly dial, social proof, Explore
- *  Trip), dissolving into a cloud band with the outlined "Marzi Mitr"
- *  watermark that hands off to the Mitr card below. */
+/** Traveller story shown in the hero. Add entries to rotate stories —
+ *  the first one renders for now. */
+const STORIES = [
+  {
+    image: "/images/home/hero-story-paris.jpg",
+    names: "Mr. & Mrs. Mehta",
+    destination: "Paris",
+    occasion: "Anniversary",
+  },
+];
+
+/** Redesigned hero: "Indian seniors are exploring…" over a full-bleed
+ *  traveller-story photo with the caption card ("Mr. & Mrs. Mehta went to
+ *  Paris for their Anniversary."), dissolving into the cloud band with the
+ *  outlined "Marzi Mitr" watermark. */
 export function ExploringHero() {
-  return (
-    <section className="relative overflow-hidden bg-white pt-24 md:pt-36">
-      <h1 className="font-display px-4 text-center text-[30px] leading-tight font-bold text-balance md:text-[48px]">
-        <span className="text-brand">Indian seniors</span> are exploring...
-      </h1>
+  const story = STORIES[0];
 
-      {/* Card rail — horizontal snap scroll on every breakpoint; the left
-          padding lines the first card up with the 1192px content column.
-          z-10 keeps the cards above the cloud band pulled up behind them. */}
-      <div className="relative z-10 mt-8 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto px-4 pb-10 md:mt-12 md:gap-6 md:px-[max(2.5rem,calc((100vw-1192px)/2))] [&::-webkit-scrollbar]:hidden">
-        {HERO_DESTINATIONS.map((destination) => (
-          <HeroCard key={destination.slug} destination={destination} />
-        ))}
+  return (
+    <section className="overflow-hidden bg-white pt-16 md:pt-20">
+      <div className="relative">
+        {/* Mobile: headline on white above the photo. Desktop: overlaid on
+            the photo's sky (per the design). */}
+        <h1 className="font-display py-5 text-center text-[30px] leading-tight font-bold text-balance md:absolute md:inset-x-0 md:top-14 md:z-10 md:py-0 md:text-[48px] md:text-white">
+          <span className="text-gold">Indian seniors</span> are exploring...
+        </h1>
+
+        <div className="relative h-[400px] overflow-hidden md:h-[620px]">
+          <Image
+            src={story.image}
+            alt={`${story.names} in ${story.destination}`}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[72%_bottom]"
+          />
+          {/* Soften the bright sky behind the desktop headline */}
+          <div className="absolute inset-x-0 top-0 hidden h-40 bg-gradient-to-b from-black/25 to-transparent md:block" />
+
+          {/* Story caption card */}
+          <p className="absolute inset-x-0 bottom-7 mx-auto w-fit max-w-[90%] rounded-xl bg-white px-5 py-3 text-center text-sm leading-relaxed font-semibold shadow-lg md:bottom-9 md:text-[15px]">
+            {story.names} went to{" "}
+            <span className="text-brand font-bold">{story.destination}</span>
+            <br className="md:hidden" /> for their{" "}
+            <span className="text-brand font-bold">{story.occasion}.</span>
+          </p>
+        </div>
       </div>
 
       <CloudsDivider />
@@ -33,52 +55,16 @@ export function ExploringHero() {
   );
 }
 
-function HeroCard({ destination }: { destination: HomeDestination }) {
-  return (
-    <Link
-      href={destinationHref(destination)}
-      className="group relative block w-[230px] shrink-0 snap-center overflow-hidden rounded-[26px] border-[5px] border-white bg-white shadow-[0_18px_40px_rgba(0,0,0,0.18)] md:w-[252px] md:snap-start"
-    >
-      <div className="relative aspect-[10/13] overflow-hidden rounded-[21px]">
-        <Image
-          src={destination.image}
-          alt={destination.name}
-          fill
-          sizes="252px"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3.5 pt-20">
-          <h3 className="font-display text-xl font-semibold text-white">
-            {destination.name}
-          </h3>
-          <p className="mt-1 flex items-center gap-1.5 text-xs font-bold text-white">
-            <Users className="text-marzi-pink h-3.5 w-3.5" strokeWidth={2.5} />
-            {destination.seniorsTravelled} Seniors Travelled
-          </p>
-          <span className="bg-brand mt-3 flex items-center justify-center gap-1 rounded-full py-2.5 text-sm font-bold text-white transition group-hover:brightness-110">
-            Explore Trip
-            <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
-          </span>
-        </div>
-        <div className="absolute top-3 left-3">
-          <SeniorFriendlyBadge pct={destination.seniorFriendlyPct ?? 0} />
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-/** Decorative hand-off band: the cloud art fogging the card bottoms, a
- *  dashed flight path with planes in the sky gap, and the outlined serif
- *  watermark over the clouds. */
+/** Decorative hand-off band: the cloud art, a dashed flight path with
+ *  planes in the sky gap, and the outlined serif watermark. */
 function CloudsDivider() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none relative -mt-10 h-36 overflow-hidden md:-mt-20 md:h-56"
+      className="pointer-events-none relative h-36 overflow-hidden md:h-56"
     >
       {/* Cloud band — anchored to the band's bottom edge so the dense cloud
-          mass fills the strip and hugs the Mitr chip below (per the design);
+          mass fills the strip and hugs the Mitr card below (per the design);
           zoomed on mobile so the clouds stay dense */}
       <Image
         src="/images/home/hero-clouds.png"
