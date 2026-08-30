@@ -106,7 +106,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     stays: [
       { name: "Dal Lake houseboat & city hotel", city: "Srinagar", nights: 4 },
     ],
-    genEvScore: 82,
+    genEvScore: 90,
     priceFromInr: 34999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [
@@ -273,7 +273,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       { name: "Hand-picked comfortable hotel", city: "Ayodhya", nights: 1 },
       { name: "Hand-picked comfortable hotel", city: "Varanasi", nights: 3 },
     ],
-    genEvScore: 80,
+    genEvScore: 88,
     priceFromInr: 21999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [
@@ -448,7 +448,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     ],
     fromCity: "Bangalore",
     placesCovered: ["Sapa", "Halong Bay", "Hanoi", "Da Nang", "Hoi An"],
-    genEvScore: 79,
+    genEvScore: 87,
     priceFromInr: 164999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [

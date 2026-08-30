@@ -94,7 +94,7 @@ export function Faq() {
                 </div>
               </div>
               <a
-                href="/enquiry"
+                href="/travel-mitr"
                 className="mt-5 flex items-center justify-center gap-2 rounded-full bg-black py-3.5 text-sm font-bold text-white transition hover:bg-black/85"
               >
                 <Phone
