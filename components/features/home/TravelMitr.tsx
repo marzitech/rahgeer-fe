@@ -23,7 +23,7 @@ export function TravelMitr() {
         <div className="mt-10 flex flex-col items-center">
           <div className="relative size-[140px] overflow-hidden rounded-full ring-2 ring-white/30 md:size-[180px]">
             <Image
-              src="/images/home/travel-mitr.jpg"
+              src="/images/home/travel-mitr-portrait.jpg"
               alt="Your dedicated Travel Mitr"
               fill
               sizes="180px"

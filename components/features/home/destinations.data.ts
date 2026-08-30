@@ -22,7 +22,19 @@ export type HomeDestination = {
   tags: Tab[];
   cta: "View packages" | "Read travel guide" | "Plan this trip";
   priceFromInr?: number;
+  /** Redesigned hero rail: Senior Friendly dial score + social-proof line.
+   *  Cards without a score stay out of the rail. */
+  seniorFriendlyPct?: number;
+  seniorsTravelled?: string; // "10.2k"
 };
+
+/** Priced trips are curated packages -> the package page; guides -> the
+ *  sample-itinerary page (teaser + download lead-gate). */
+export function destinationHref(destination: HomeDestination): string {
+  return destination.priceFromInr
+    ? `/packages/${destination.slug}`
+    : `/itineraries/${destination.slug}`;
+}
 
 /** Home destination cards. Those with `priceFromInr` are curated packages
  *  (surfaced in "Curated Trips"); the rest are travel guides. All appear in
@@ -32,6 +44,8 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Kashmir",
     slug: "kashmir",
+    seniorFriendlyPct: 88,
+    seniorsTravelled: "9.1k",
     image: "/images/destinations/kashmir.jpg",
     tags: ["India", "Mountains"],
     cta: "View packages",
@@ -49,6 +63,8 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Vietnam",
     slug: "vietnam",
+    seniorFriendlyPct: 78,
+    seniorsTravelled: "3.1k",
     image: "/images/destinations/vietnam.jpg",
     tags: ["International", "First International Trip"],
     cta: "View packages",
@@ -67,27 +83,35 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Goa",
     slug: "goa",
-    image: "/images/destinations/vietnam.jpg",
+    seniorFriendlyPct: 86,
+    seniorsTravelled: "7.5k",
+    image: "/images/destinations/goa.jpg",
     tags: ["India", "Beaches"],
     cta: "Plan this trip",
   },
   {
     name: "Himachal",
     slug: "himachal",
-    image: "/images/destinations/kashmir.jpg",
+    seniorFriendlyPct: 84,
+    seniorsTravelled: "6.8k",
+    image: "/images/destinations/himachal.jpg",
     tags: ["India", "Mountains"],
     cta: "Plan this trip",
   },
   {
     name: "Karnataka & Coorg",
     slug: "karnataka-coorg",
-    image: "/images/home/review-trip-1.jpg",
+    seniorFriendlyPct: 82,
+    seniorsTravelled: "4.6k",
+    image: "/images/destinations/coorg.jpg",
     tags: ["India", "Wellness"],
     cta: "Plan this trip",
   },
   {
     name: "Rajasthan",
     slug: "rajasthan",
+    seniorFriendlyPct: 90,
+    seniorsTravelled: "8.4k",
     image: "/images/destinations/rajasthan.jpg",
     tags: ["India", "Spiritual"],
     cta: "Plan this trip",
@@ -116,6 +140,8 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Kerala",
     slug: "kerala",
+    seniorFriendlyPct: 91,
+    seniorsTravelled: "10.2k",
     image: "/images/destinations/kerala.jpg",
     tags: ["India", "Wellness", "Beaches"],
     cta: "Plan this trip",
@@ -167,3 +193,8 @@ export const PACKAGES: HomeDestination[] = DESTINATIONS.filter(
 export const GUIDES: HomeDestination[] = DESTINATIONS.filter(
   (d) => d.priceFromInr === undefined,
 );
+
+/** Hero rail cards ("Indian seniors are exploring…"), best score first. */
+export const HERO_DESTINATIONS: HomeDestination[] = DESTINATIONS.filter(
+  (d) => d.seniorFriendlyPct !== undefined,
+).sort((a, b) => (b.seniorFriendlyPct ?? 0) - (a.seniorFriendlyPct ?? 0));

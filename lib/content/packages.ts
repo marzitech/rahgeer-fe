@@ -18,6 +18,18 @@ export type PackageDay = {
   stops: PackageStop[];
 };
 
+export type PackagePlace = {
+  name: string;
+  blurb: string;
+  image: string;
+};
+
+export type PackageStay = {
+  name: string;
+  city: string;
+  nights: number;
+};
+
 export type PackageContent = {
   slug: string;
   name: string;
@@ -36,6 +48,13 @@ export type PackageContent = {
   days: PackageDay[];
   priceIncludes: string[];
   priceExcludes: string[];
+  // Redesigned detail page (destination view) fields.
+  about?: string;
+  tempLabel?: string; // "12°C – 28°C"
+  paceLabel?: string; // "Relaxed to Moderate"
+  nearAirport?: string; // "Srinagar International Airport (SXR)"
+  placesToVisit?: PackagePlace[];
+  stays?: PackageStay[];
 };
 
 // The same senior-first promises apply across every curated tour.
@@ -58,7 +77,36 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     packageType: "Land package only",
     mealsLabel: "All meals included",
     placesCovered: ["Srinagar", "Pahalgam", "Gulmarg"],
-    genEvScore: 82,
+    about:
+      "Kashmir is often called 'Paradise on Earth', and for good reason. Set in the Himalayas around Dal Lake and the meadows of Gulmarg and Pahalgam, it offers cool mountain air, gentle valley drives and some of India's most beautiful gardens.",
+    tempLabel: "12°C – 28°C",
+    paceLabel: "Relaxed to Moderate",
+    nearAirport: "Srinagar International Airport (SXR)",
+    // TODO(assets): per-place photos — all reuse the Kashmir hero for now.
+    placesToVisit: [
+      {
+        name: "Srinagar",
+        blurb:
+          "Dal Lake shikara rides, Mughal gardens and old-city markets at an easy pace.",
+        image: "/images/destinations/kashmir.jpg",
+      },
+      {
+        name: "Gulmarg",
+        blurb:
+          "Gondola ride over pine meadows — Himalayan views with no trekking needed.",
+        image: "/images/destinations/kashmir.jpg",
+      },
+      {
+        name: "Pahalgam",
+        blurb:
+          "Gentle drives through the Lidder valley to the Betaab and Aru viewpoints.",
+        image: "/images/destinations/kashmir.jpg",
+      },
+    ],
+    stays: [
+      { name: "Dal Lake houseboat & city hotel", city: "Srinagar", nights: 4 },
+    ],
+    genEvScore: 90,
     priceFromInr: 34999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [
@@ -195,7 +243,37 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     packageType: "Land package only",
     mealsLabel: "Breakfast & select meals",
     placesCovered: ["Ayodhya", "Varanasi", "Sarnath"],
-    genEvScore: 80,
+    about:
+      "Ayodhya, Varanasi and Sarnath together form one of India's most sacred circuits — the birthplace of Shri Ram, the eternal ghats of the Ganga, and the site of Buddha's first sermon, all travelled at a gentle, unhurried pace.",
+    tempLabel: "24°C – 34°C",
+    paceLabel: "Relaxed",
+    nearAirport: "Maharishi Valmiki International Airport, Ayodhya (AYJ)",
+    // TODO(assets): per-place photos — reusing the card art for now.
+    placesToVisit: [
+      {
+        name: "Ayodhya",
+        blurb:
+          "Shri Ram Janmabhoomi, Hanuman Garhi and the evening Saryu aarti.",
+        image: "/images/home/review-trip-1.jpg",
+      },
+      {
+        name: "Varanasi",
+        blurb:
+          "Sunrise boat ride past the ghats and darshan at Kashi Vishwanath.",
+        image: "/images/home/review-trip-1.jpg",
+      },
+      {
+        name: "Sarnath",
+        blurb:
+          "The Dhamek Stupa and museum where Buddha gave his first sermon.",
+        image: "/images/home/review-trip-1.jpg",
+      },
+    ],
+    stays: [
+      { name: "Hand-picked comfortable hotel", city: "Ayodhya", nights: 1 },
+      { name: "Hand-picked comfortable hotel", city: "Varanasi", nights: 3 },
+    ],
+    genEvScore: 88,
     priceFromInr: 21999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [
@@ -336,9 +414,41 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     datesLabel: "15 – 23 November",
     packageType: "Flights from Bangalore included",
     mealsLabel: "All meals & all flights included",
+    about:
+      "Vietnam pairs misty rice terraces and limestone bays with easy coastal towns. This journey links Sapa's mountains, an overnight Halong Bay cruise and the lantern-lit streets of Hoi An — with flights, transfers and pacing all handled.",
+    tempLabel: "24°C – 32°C",
+    paceLabel: "Relaxed to Moderate",
+    nearAirport: "Noi Bai International Airport, Hanoi (HAN)",
+    // TODO(assets): per-place photos — reusing the Vietnam hero for now.
+    placesToVisit: [
+      {
+        name: "Sapa",
+        blurb:
+          "Rice terraces and the Fansipan cable car — big views, no trekking.",
+        image: "/images/destinations/vietnam.jpg",
+      },
+      {
+        name: "Halong Bay",
+        blurb:
+          "An overnight cruise among the limestone karsts with easy boarding.",
+        image: "/images/destinations/vietnam.jpg",
+      },
+      {
+        name: "Hoi An",
+        blurb:
+          "The flat, walkable lantern-lit old town at a relaxed evening pace.",
+        image: "/images/destinations/vietnam.jpg",
+      },
+    ],
+    stays: [
+      { name: "Hand-picked city hotel", city: "Hanoi", nights: 1 },
+      { name: "Mountain-view hotel", city: "Sapa", nights: 2 },
+      { name: "Overnight cruise cabin", city: "Halong Bay", nights: 1 },
+      { name: "Beachside hotel", city: "Da Nang", nights: 3 },
+    ],
     fromCity: "Bangalore",
     placesCovered: ["Sapa", "Halong Bay", "Hanoi", "Da Nang", "Hoi An"],
-    genEvScore: 79,
+    genEvScore: 87,
     priceFromInr: 164999,
     whyTourWithMarzi: WHY_TOUR,
     highlights: [

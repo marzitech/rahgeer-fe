@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
 import { ItineraryResult } from "@/components/features/plan/AiTripWizard";
 import { getSampleItinerary, type Itinerary } from "@/lib/api/endpoints";
 
@@ -22,21 +22,26 @@ const MONTHS = [
 ];
 
 // Hero photo per sample destination (placeholders — swap in real photos).
+// Each slug gets a distinct image, matched to the destination as closely as
+// the current asset library allows.
+// TODO(assets): real photos wanted for tamil-nadu (Meenakshi/Ooty),
+// dharamshala-amritsar (Golden Temple), gujarat (Rann/Dwarka), ladakh,
+// nainital and the two Sikkim variants — stand-ins noted below.
 const HERO: Record<string, string> = {
-  "north-east": "/images/destinations/kerala.jpg",
-  goa: "/images/destinations/vietnam.jpg",
-  himachal: "/images/destinations/kashmir.jpg",
-  "karnataka-coorg": "/images/home/review-trip-1.jpg",
+  "north-east": "/images/home/review-trip-1.jpg", // misty tea hills + monastery
+  goa: "/images/destinations/goa.jpg",
+  himachal: "/images/destinations/himachal.jpg",
+  "karnataka-coorg": "/images/destinations/coorg.jpg",
   rajasthan: "/images/destinations/rajasthan.jpg",
-  gujarat: "/images/destinations/rajasthan.jpg",
-  "sikkim-darjeeling": "/images/home/review-trip-2.jpg",
-  "tamil-nadu": "/images/home/review-trip-1.jpg",
+  gujarat: "/images/destinations/vietnam.jpg", // stand-in: coastal boats
+  "sikkim-darjeeling": "/images/destinations/europe.jpg", // hilltop monastery + snow peak
+  "tamil-nadu": "/images/home/travel-with-family.jpg", // stand-in: no TN asset yet
   kerala: "/images/destinations/kerala.jpg",
-  "sri-lanka": "/images/destinations/vietnam.jpg",
-  ladakh: "/images/destinations/kashmir.jpg",
-  "dharamshala-amritsar": "/images/destinations/kashmir.jpg",
-  "sikkim-darjeeling-gangtok": "/images/home/review-trip-2.jpg",
-  nainital: "/images/destinations/europe.jpg",
+  "sri-lanka": "/images/home/hero-koh-tao.jpg", // tropical island bay
+  ladakh: "/images/destinations/kashmir.jpg", // Himalayan lake stand-in
+  "dharamshala-amritsar": "/images/home/travel-with-couple.jpg", // stand-in: no asset yet
+  "sikkim-darjeeling-gangtok": "/images/destinations/japan.jpg", // pagoda + snow peak stand-in
+  nainital: "/images/home/review-trip-2.jpg", // misty lake at dawn
 };
 
 /** Loads a curated sample itinerary by slug and renders the itinerary
@@ -69,12 +74,12 @@ export function SampleItineraryView({ slug }: { slug: string }) {
         <p className="text-foreground/70 mt-3 text-sm">
           We couldn&apos;t load this sample. Please try another destination.
         </p>
-        <Link
+        <BackLink
           href="/#destinations"
           className="text-brand mt-6 inline-flex items-center gap-2 text-sm font-semibold hover:underline"
         >
           <ArrowLeft className="h-4 w-4" /> Back to destinations
-        </Link>
+        </BackLink>
       </div>
     );
   }
@@ -101,12 +106,12 @@ export function SampleItineraryView({ slug }: { slug: string }) {
 
   return (
     <div className="mx-auto max-w-[1192px] px-4 py-8 print:p-0">
-      <Link
+      <BackLink
         href="/#destinations"
         className="text-brand mb-4 inline-flex items-center gap-2 text-sm font-semibold hover:underline print:hidden"
       >
-        <ArrowLeft className="h-4 w-4" /> Back to Travel
-      </Link>
+        <ArrowLeft className="h-4 w-4" /> Back to destinations
+      </BackLink>
       <ItineraryResult
         itinerary={itinerary}
         heroImage={HERO[slug] ?? "/images/home/hero-koh-tao.jpg"}

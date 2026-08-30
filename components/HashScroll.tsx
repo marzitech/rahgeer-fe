@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
 /** In-page anchor scrolling that stays out of the router's way.
@@ -17,8 +17,26 @@ import { usePathname } from "next/navigation";
 export function HashScroll() {
   const pathname = usePathname();
 
-  // (1) Re-scroll to the hash after the route mounts.
+  /* Back/forward navigations must NOT hash-scroll: the browser restores the
+     exact previous scroll position, and the URL may carry a stale hash from
+     an anchor clicked long before (job 2 stamps it via replaceState).
+     popstate fires before React re-renders, so the flag is set before the
+     pathname effect below runs. */
+  const isPopNavigation = useRef(false);
   useEffect(() => {
+    const onPop = () => {
+      isPopNavigation.current = true;
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // (1) Re-scroll to the hash after the route mounts — forward navs only.
+  useEffect(() => {
+    if (isPopNavigation.current) {
+      isPopNavigation.current = false;
+      return;
+    }
     const { hash } = window.location;
     if (!hash) return;
     const id = decodeURIComponent(hash.slice(1));

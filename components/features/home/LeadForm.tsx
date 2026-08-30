@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
+import { getAttribution } from "@/lib/attribution";
+import {
+  searchDestinations,
+  type DestinationSuggestion,
+} from "@/lib/geocode";
 
 const MONTHS = [
   "January",
@@ -38,7 +44,9 @@ const DOMESTIC_HINTS = [
   "rishikesh",
 ];
 
-function guessTripScope(destination: string): "domestic" | "international" {
+export function guessTripScope(
+  destination: string,
+): "domestic" | "international" {
   const lower = destination.toLowerCase();
   return DOMESTIC_HINTS.some((hint) => lower.includes(hint))
     ? "domestic"
@@ -111,9 +119,9 @@ function backendFieldErrors(detail: unknown): FieldErrors {
 }
 
 const inputClasses =
-  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
+  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-3 md:py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none focus:ring-2 focus:ring-brand/30";
 const inputErrorClasses =
-  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none ring-2 ring-red-400 focus:ring-red-400";
+  "mt-2 w-full rounded-xl bg-[#f1f1f1] px-4 py-3 md:py-4 text-sm text-foreground placeholder:text-foreground/40 outline-none ring-2 ring-red-400 focus:ring-red-400";
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
@@ -131,6 +139,10 @@ type LeadFormProps = {
   audience?: "yourself" | "parents";
   /** Show the OR divider + AI Trip planner button (planning pages). */
   showAiPlanner?: boolean;
+  /** Overrides the ops-sheet Form column value (defaults from audience). */
+  formName?: string;
+  /** Lead channel — "app" when the page was opened from the mobile app. */
+  source?: "website" | "app";
 };
 
 /** The Marzi lead form → backend enquiry. Used by the home hero and the
@@ -139,6 +151,8 @@ export function LeadForm({
   heading,
   audience,
   showAiPlanner = false,
+  formName,
+  source = "website",
 }: LeadFormProps) {
   const [destination, setDestination] = useState("");
   const [month, setMonth] = useState("");
@@ -147,6 +161,42 @@ export function LeadForm({
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  /* Live destination suggestions (Photon geocoder) — debounced dropdown
+     under the destination input; picking one fills the field. */
+  const [destSuggestions, setDestSuggestions] = useState<
+    DestinationSuggestion[]
+  >([]);
+  const [destFocused, setDestFocused] = useState(false);
+  const skipSearchRef = useRef(false);
+
+  useEffect(() => {
+    // A just-picked suggestion shouldn't immediately re-open the dropdown.
+    if (skipSearchRef.current) {
+      skipSearchRef.current = false;
+      return;
+    }
+    const q = destination.trim();
+    if (q.length < 2) {
+      setDestSuggestions([]);
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        setDestSuggestions(
+          await searchDestinations(q, { signal: controller.signal }),
+        );
+      } catch {
+        /* Free text still submits fine without suggestions. */
+        if (!controller.signal.aborted) setDestSuggestions([]);
+      }
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [destination]);
 
   function clearFieldError(field: FieldName) {
     setFieldErrors((prev) => {
@@ -180,15 +230,20 @@ export function LeadForm({
         destination: destination.trim(),
         trip_scope: guessTripScope(destination),
         message: messageParts.join(" "),
-        source: "website",
+        source,
         // Which form converted — tracked as the Form column in the
         // ops leads Google Sheet.
         form:
-          audience === "yourself"
+          formName ??
+          (audience === "yourself"
             ? "plan-yourself"
             : audience === "parents"
               ? "plan-parents"
-              : "home-hero",
+              : "home-hero"),
+        // Campaign attribution: persisted utm_* (72h first-touch) merged
+        // with the live URL, plus promoter source/source_id — the backend
+        // hoists standard UTMs to columns and keeps the raw dict.
+        attribution: getAttribution(),
       });
       setState("success");
     } catch (error) {
@@ -210,8 +265,18 @@ export function LeadForm({
   // Planning pages use the design's warm card: butter-yellow top -> white
   // -> soft pink bottom. The hero card keeps its white-top variant.
   const cardClasses = showAiPlanner
-    ? "scroll-mt-24 rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_22%,#ffffff_78%,#f9d9e9_100%)] p-7 shadow-2xl"
-    : "scroll-mt-24 rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-7 shadow-2xl";
+    ? "scroll-mt-24 rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_22%,#ffffff_78%,#f9d9e9_100%)] p-5 md:p-7 shadow-2xl"
+    : "scroll-mt-24 rounded-[28px] bg-gradient-to-b from-white via-white to-[#fce1ef] p-5 md:p-7 shadow-2xl";
+
+  function resetForm() {
+    setDestination("");
+    setMonth("");
+    setFullName("");
+    setMobile("");
+    setFieldErrors({});
+    setErrorMessage("");
+    setState("idle");
+  }
 
   if (state === "success") {
     return (
@@ -223,6 +288,13 @@ export function LeadForm({
           Your Travel Mitr will call you shortly to start planning your trip to{" "}
           {destination}.
         </p>
+        <button
+          type="button"
+          onClick={resetForm}
+          className="mt-6 w-full rounded-full border border-black/20 bg-white py-4 text-sm font-semibold transition hover:border-black/40"
+        >
+          Plan Another Trip
+        </button>
       </div>
     );
   }
@@ -234,29 +306,56 @@ export function LeadForm({
       noValidate
       className={cardClasses}
     >
-      <h3 className="font-display text-brand text-[28px] font-bold">
+      <h3 className="font-display text-brand text-2xl font-bold md:text-[28px]">
         {heading ?? "Plan Your Trip — Free"}
       </h3>
 
-      <div className="mt-6 space-y-5">
+      <div className="mt-4 space-y-3.5 md:mt-6 md:space-y-5">
         <label className="block">
           <span className="text-[13px] font-semibold">
             Where would you like to go?
           </span>
-          <input
-            required
-            value={destination}
-            onChange={(e) => {
-              setDestination(e.target.value.replace(/[^a-zA-Z\s,.&'-]/g, ""));
-              clearFieldError("destination");
-            }}
-            aria-invalid={Boolean(fieldErrors.destination)}
-            aria-describedby="destination-error"
-            placeholder="e.g. Switzerland, Kerala, Bhutan"
-            className={
-              fieldErrors.destination ? inputErrorClasses : inputClasses
-            }
-          />
+          <div className="relative">
+            <input
+              required
+              value={destination}
+              onChange={(e) => {
+                setDestination(e.target.value.replace(/[^a-zA-Z\s,.&'-]/g, ""));
+                clearFieldError("destination");
+              }}
+              onFocus={() => setDestFocused(true)}
+              onBlur={() => setDestFocused(false)}
+              aria-invalid={Boolean(fieldErrors.destination)}
+              aria-describedby="destination-error"
+              autoComplete="off"
+              placeholder="e.g. Switzerland, Kerala, Bhutan"
+              className={
+                fieldErrors.destination ? inputErrorClasses : inputClasses
+              }
+            />
+            {destFocused && destSuggestions.length > 0 ? (
+              <div className="absolute top-full right-0 left-0 z-20 mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white shadow-lg">
+                {destSuggestions.map((s) => (
+                  <button
+                    key={s.label}
+                    type="button"
+                    /* onMouseDown so the pick lands before the input blurs */
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      skipSearchRef.current = true;
+                      setDestination(s.value);
+                      setDestSuggestions([]);
+                      clearFieldError("destination");
+                    }}
+                    className="flex w-full items-center gap-2.5 border-b border-black/5 px-4 py-3 text-left text-sm font-normal transition last:border-b-0 hover:bg-black/[0.03]"
+                  >
+                    <MapPin className="text-foreground/40 h-4 w-4 shrink-0" />
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <FieldError
             id="destination-error"
             message={fieldErrors.destination}
@@ -330,7 +429,7 @@ export function LeadForm({
         <button
           type="submit"
           disabled={state === "submitting"}
-          className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-4 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-3.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:opacity-60 md:py-4"
         >
           {/* Parents page CTA per design: "Request a Free Plan ›" */}
           {audience === "parents" ? (

@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
+import { SparkleChip } from "./SparkleChip";
 
 const AUTO_SCROLL_MS = 4000;
 
@@ -13,7 +13,7 @@ type Testimonial = {
   detail: string;
   quote: string;
   avatar?: string; // brand persona art; initials circle when absent
-  tripPhoto?: string;
+  tripPhoto: string;
   tripPhotoAlt?: string;
 };
 
@@ -23,18 +23,21 @@ const TESTIMONIALS: Testimonial[] = [
     detail: "Traveller · Age 65",
     quote:
       "Every detail perfect, every moment memorable, exceeded expectations completely.",
+    tripPhoto: "/images/home/review-trip-1.jpg",
   },
   {
     name: "Jayaram N",
     detail: "Traveller",
     quote:
       "My wife and I enjoyed the trip to Somnathpura, and Talakadu was very enjoyable.",
+    tripPhoto: "/images/home/review-trip-2.jpg",
   },
   {
     name: "Shajee Kozhukkunnon",
     detail: "Traveller",
     quote:
-      "Great selfless & positive group of Marzi. They are arranging trips without typical business intentions, which makes it more enjoyable.",
+      "Great selfless & positive group of Marzi. They are arranging trips, which makes it more enjoyable.",
+    tripPhoto: "/images/home/review-trip-3.jpg",
   },
 ];
 
@@ -73,20 +76,22 @@ function Avatar({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-/** "Trusted by travellers. Recommended by families." — review cards.
- *  Desktop (sm+): 2/3-column masonry. Mobile: horizontal snap carousel
- *  auto-advancing every 4s (pauses on touch/hover; dots sync). */
+/** "Trusted by travellers. Recommended by families." — redesigned review
+ *  carousel: trip photo + stars + quote + traveller cards in a horizontal
+ *  snap rail on every breakpoint (cards cut at the edges per the design),
+ *  auto-advancing on mobile where one card fills the track. */
 export function Testimonials() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-advance only when the track actually scrolls (mobile layout).
+  // Auto-advance only when one card fills the track (mobile layout).
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       const track = trackRef.current;
       if (!track || track.scrollWidth <= track.clientWidth) return;
+      if (track.clientWidth > 700) return; // desktop rail: let users browse
       setActiveIndex((index) => {
         const next = (index + 1) % TESTIMONIALS.length;
         track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
@@ -104,40 +109,40 @@ export function Testimonials() {
   }
 
   return (
-    <section className="bg-[#faf8f5] py-20">
-      <div className="mx-auto max-w-[1192px] px-4">
-        <SectionHeading
-          eyebrow="Reviews"
-          title="Trusted by travellers. Recommended by families."
-        />
+    <section className="overflow-hidden bg-white py-16 md:py-20">
+      <div className="text-center">
+        <SparkleChip label="Reviews" />
+        <h2 className="font-display mt-4 px-4 text-[28px] font-bold text-balance md:text-4xl">
+          Trusted by travellers. Recommended by families.
+        </h2>
+      </div>
 
-        <div
-          ref={trackRef}
-          onScroll={handleScroll}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          className="mt-12 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
-        >
-          {TESTIMONIALS.map((testimonial) => (
-            <figure
-              key={testimonial.name}
-              className="flex w-[88%] shrink-0 snap-center flex-col rounded-2xl border border-black/8 bg-white p-6 shadow-sm sm:h-full sm:w-auto sm:shrink"
-            >
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="mt-10 flex snap-x snap-mandatory [scrollbar-width:none] gap-5 overflow-x-auto px-4 pb-2 md:px-[max(2.5rem,calc((100vw-1192px)/2))] [&::-webkit-scrollbar]:hidden"
+      >
+        {TESTIMONIALS.map((testimonial) => (
+          <figure
+            key={testimonial.name}
+            className="flex w-[88%] shrink-0 snap-center flex-col gap-4 rounded-[24px] border border-[#eadfce] bg-white p-4 shadow-sm sm:w-[560px] sm:snap-start sm:flex-row"
+          >
+            <div className="relative h-44 w-full shrink-0 overflow-hidden rounded-2xl sm:h-auto sm:w-[45%]">
+              <Image
+                src={testimonial.tripPhoto}
+                alt={testimonial.tripPhotoAlt ?? ""}
+                fill
+                sizes="(max-width: 640px) 88vw, 252px"
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-1 flex-col px-1 py-1.5 sm:py-2">
               <Stars />
-              {testimonial.tripPhoto ? (
-                <div className="relative mt-4 h-44 w-full overflow-hidden rounded-xl">
-                  <Image
-                    src={testimonial.tripPhoto}
-                    alt={testimonial.tripPhotoAlt ?? ""}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 360px"
-                    className="object-cover"
-                  />
-                </div>
-              ) : null}
-              <blockquote className="text-foreground/80 mt-4 text-[15px] leading-relaxed">
+              <blockquote className="text-foreground/80 mt-3 text-[15px] leading-relaxed">
                 “{testimonial.quote}”
               </blockquote>
               <figcaption className="mt-auto flex items-center gap-3 pt-5">
@@ -149,33 +154,33 @@ export function Testimonials() {
                   </p>
                 </div>
               </figcaption>
-            </figure>
-          ))}
-        </div>
+            </div>
+          </figure>
+        ))}
+      </div>
 
-        {/* Carousel dots — mobile only */}
-        <div className="mt-6 flex justify-center gap-2 sm:hidden">
-          {TESTIMONIALS.map((testimonial, index) => (
-            <button
-              key={testimonial.name}
-              type="button"
-              aria-label={`Go to review by ${testimonial.name}`}
-              onClick={() => {
-                const track = trackRef.current;
-                if (!track) return;
-                setActiveIndex(index);
-                track.scrollTo({
-                  left: index * track.clientWidth,
-                  behavior: "smooth",
-                });
-              }}
-              className={cn(
-                "h-2 rounded-full transition-all",
-                index === activeIndex ? "bg-brand w-6" : "w-2 bg-black/20",
-              )}
-            />
-          ))}
-        </div>
+      {/* Carousel dots — mobile only */}
+      <div className="mt-6 flex justify-center gap-2 sm:hidden">
+        {TESTIMONIALS.map((testimonial, index) => (
+          <button
+            key={testimonial.name}
+            type="button"
+            aria-label={`Go to review by ${testimonial.name}`}
+            onClick={() => {
+              const track = trackRef.current;
+              if (!track) return;
+              setActiveIndex(index);
+              track.scrollTo({
+                left: index * track.clientWidth,
+                behavior: "smooth",
+              });
+            }}
+            className={cn(
+              "h-2 rounded-full transition-all",
+              index === activeIndex ? "bg-brand w-6" : "w-2 bg-black/20",
+            )}
+          />
+        ))}
       </div>
     </section>
   );

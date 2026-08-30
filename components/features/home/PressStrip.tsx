@@ -23,7 +23,7 @@ const ARTICLES = [
 /** "Featured in" — auto-scrolling press-outlet marquee (pauses on hover). */
 export function PressStrip() {
   return (
-    <section className="bg-cream overflow-hidden py-12">
+    <section className="overflow-hidden bg-white py-12">
       <p className="text-foreground/50 text-center text-xs font-semibold tracking-[0.25em] uppercase">
         Featured in
       </p>
