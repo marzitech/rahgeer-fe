@@ -332,8 +332,8 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     name: "Vietnam",
     title: "Vietnam — Sapa, Halong Bay, Hanoi, Da Nang & Hoi An",
     image: "/images/destinations/vietnam.jpg",
-    durationLabel: "7 Nights · 8 Days",
-    datesLabel: "15 – 23 November",
+    durationLabel: "8 Nights · 9 Days",
+    datesLabel: "17 – 26 November",
     packageType: "Flights from Bangalore included",
     mealsLabel: "All meals & all flights included",
     fromCity: "Bangalore",
@@ -366,131 +366,139 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     days: [
       {
         day: 1,
-        title: "Bangalore → Hanoi",
+        title: "Welcome to Vietnam",
         stops: [
           {
-            time: "Evening",
-            title: "Arrive Hanoi",
+            time: "On arrival",
+            title: "Bangalore → Hanoi | Private airport transfer",
             description:
-              "Flight from Bangalore, private transfer to your hotel, and rest.",
+              "Begin your Vietnam adventure with a comfortable flight from Bangalore to Hanoi. On arrival, enjoy a seamless private transfer from the airport to your hotel. Check in, settle into your room, and take the rest of the day to relax and recharge after your journey. Your Vietnamese adventure begins at an easy, unhurried pace.",
           },
         ],
       },
       {
         day: 2,
-        title: "Hanoi → Sapa",
+        title: "Discover the Charm of Hanoi",
         stops: [
           {
             time: "9:00 AM",
-            title: "Hanoi city tour",
+            title: "Hanoi Old Quarter & lakeside",
             description:
-              "An easy tour of the Old Quarter and lakeside at a gentle pace.",
-          },
-          {
-            time: "2:00 PM",
-            title: "Comfortable transfer to Sapa",
-            description:
-              "A scenic drive to Sapa with a rest stop; check in and relax.",
+              "Start your Vietnam experience with a gentle exploration of Hanoi's iconic Old Quarter. Discover its atmospheric streets, traditional architecture, colourful storefronts, local cafés, and lively neighbourhoods. Continue towards the peaceful lakeside, taking in the contrast between Hanoi's vibrant streets and tranquil surroundings. The day is designed at a comfortable pace, giving you time to experience the character of Vietnam's capital without feeling rushed.",
           },
         ],
       },
       {
         day: 3,
-        title: "Sapa",
+        title: "From Hanoi to the Mountains of Sapa",
         stops: [
           {
-            time: "10:00 AM",
-            title: "Rice terraces & viewpoints",
-            description:
-              "The terraced valleys from comfortable, accessible viewpoints.",
-          },
-          {
             time: "2:00 PM",
-            title: "Fansipan cable car",
+            title: "Comfortable transfer to Sapa",
             description:
-              "Ascend by cable car for panoramic views — no climbing required.",
+              "Leave the energy of Hanoi behind as you travel towards the spectacular mountain landscapes of Sapa. Enjoy a scenic and comfortable road journey through the Vietnamese countryside, with a convenient rest stop along the way. Watch the landscape gradually transform as you approach the mountains. On arrival in Sapa, check in to your hotel, unwind, and enjoy a peaceful evening surrounded by beautiful mountain scenery.",
           },
         ],
       },
       {
         day: 4,
-        title: "Sapa → Halong Bay",
+        title: "Sapa's Rice Terraces and Fansipan",
         stops: [
           {
-            time: "Morning",
-            title: "Transfer to Halong",
-            description: "A comfortable drive to Halong Bay via Hanoi.",
+            time: "10:00 AM",
+            title: "Rice terraces & scenic viewpoints",
+            description:
+              "Discover the breathtaking landscapes that make Sapa one of Vietnam's most beautiful destinations. Visit comfortable and accessible viewpoints overlooking the region's famous rice terraces, where layers of green valleys unfold across dramatic mountain slopes. Take your time to admire the scenery, capture photographs, and enjoy the peaceful atmosphere without the need for strenuous hiking.",
           },
           {
-            time: "1:00 PM",
-            title: "Board the overnight cruise",
+            time: "2:00 PM",
+            title: "Fansipan cable car experience",
             description:
-              "Easy boarding onto your cruise among the limestone karsts.",
+              "Experience Vietnam's highest mountain in comfort with a spectacular cable car ride to Fansipan. As the cable car rises above the mountains, enjoy sweeping views across Sapa's valleys and surrounding peaks. Reach the summit area without the challenge of climbing and take in the remarkable panoramic scenery from above.",
           },
         ],
       },
       {
         day: 5,
-        title: "Halong Bay → Da Nang",
+        title: "Journey to Magical Halong Bay",
         stops: [
           {
             time: "Morning",
-            title: "Bay cruising & caves",
+            title: "Sapa → Halong Bay via Hanoi",
             description:
-              "Gentle cruising past the islands, with accessible stops.",
+              "After breakfast, begin your journey from the mountains towards the coast. Travel comfortably through the changing landscapes of northern Vietnam, returning via Hanoi before continuing towards Halong Bay.",
           },
           {
-            time: "Afternoon",
-            title: "Fly to Da Nang",
+            time: "1:00 PM",
+            title: "Board your overnight Halong Bay cruise",
             description:
-              "Disembark and a short flight to Da Nang; check in and relax.",
+              "Step aboard your cruise and settle into your floating retreat among Halong Bay's towering limestone karsts. As the cruise glides across the emerald waters, relax on board and enjoy the spectacular scenery surrounding you. Spend the evening taking in the peaceful beauty of Halong Bay and enjoy the unique experience of staying overnight on the water.",
           },
         ],
       },
       {
         day: 6,
-        title: "Da Nang",
+        title: "From Halong Bay to Da Nang",
         stops: [
           {
-            time: "9:30 AM",
-            title: "Ba Na Hills & Golden Bridge",
+            time: "Morning",
+            title: "Bay cruising & caves",
             description:
-              "Reach the hills comfortably by cable car for the iconic Golden Bridge.",
+              "Wake up to the spectacular scenery of Halong Bay and enjoy a gentle morning cruise through its emerald waters. Glide past towering limestone islands and discover fascinating caves and natural formations along the way, with comfortable and accessible stops to experience the bay up close.",
           },
           {
-            time: "4:00 PM",
-            title: "Da Nang beach leisure",
-            description: "Relaxed time by the seafront at your own pace.",
+            time: "Afternoon",
+            title: "Fly to Da Nang",
+            description:
+              "After disembarking from the cruise, continue your journey south with a short flight to Da Nang. On arrival, transfer to your hotel, check in, and relax. Enjoy a peaceful evening by the coast and take in the laid-back atmosphere of central Vietnam.",
           },
         ],
       },
       {
         day: 7,
-        title: "Hoi An",
+        title: "Golden Bridge and the Magic of Hoi An",
         stops: [
           {
-            time: "10:00 AM",
-            title: "Hoi An old town",
+            time: "9:30 AM",
+            title: "Ba Na Hills & Golden Bridge",
             description:
-              "The flat, walkable heritage town with tailors, cafes and river views.",
+              "Begin the day with a comfortable cable car journey up to Ba Na Hills, travelling above the forested mountains and clouds. Discover the iconic Golden Bridge, famous for its striking design and spectacular mountain setting. Enjoy panoramic views across the surrounding landscape without the need for a strenuous climb.",
           },
           {
-            time: "6:00 PM",
-            title: "Lantern-lit evening",
+            time: "4:00 PM",
+            title: "Da Nang beach leisure",
             description:
-              "The lantern streets and riverside at a gentle evening pace.",
+              "Return to Da Nang for a relaxed afternoon by the sea. Enjoy some unhurried time along the seafront, take in the ocean views, relax at your hotel, or simply enjoy the peaceful coastal atmosphere at your own pace.",
           },
         ],
       },
       {
         day: 8,
+        title: "Hoi An and a Lantern-Lit Farewell",
+        stops: [
+          {
+            time: "10:00 AM",
+            title: "Hoi An Old Town",
+            description:
+              "Step into the timeless charm of Hoi An, one of Vietnam's most atmospheric heritage towns. Explore its flat and walkable streets lined with colourful buildings, traditional houses, charming cafés, local boutiques, and tailor shops. Stroll along the river and enjoy the relaxed rhythm of this beautifully preserved town.",
+          },
+          {
+            time: "6:00 PM",
+            title: "Lantern-lit evening",
+            description:
+              "As evening arrives, Hoi An takes on a magical character as its streets and riverside glow with colourful lanterns. Enjoy a gentle evening stroll through the illuminated old town, pause at a riverside café, and soak in the enchanting atmosphere before returning to your hotel.",
+          },
+        ],
+      },
+      {
+        day: 9,
         title: "Da Nang → Bangalore",
         stops: [
           {
             time: "Morning",
             title: "Check-out & flight home",
             description:
-              "A relaxed breakfast before your transfer and return flight to Bangalore.",
+              "Enjoy a relaxed breakfast before checking out. Your private transfer will take you to the airport for your return journey to Bangalore, bringing your Vietnam adventure to a memorable close.",
           },
         ],
       },
@@ -498,7 +506,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     priceIncludes: [
       "Return economy flights from Bangalore.",
       "All meals throughout the tour.",
-      "Accommodation on twin-sharing basis for 7 nights.",
+      "Accommodation on twin-sharing basis for 8 nights.",
       "Halong Bay overnight cruise and all private transfers.",
       "All sightseeing listed, with dedicated travel-desk support.",
     ],

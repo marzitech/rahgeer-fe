@@ -9,14 +9,14 @@ const STEPS = [
   {
     title: "Tell us about your holiday",
     description:
-      "Where do you want to go? When do you want to travel? Tell us what's important to you.",
+      "Where do you want to go? How many people? Tell your Travel Mitr.",
     image: "/images/home/how-marzi-works.png",
     alt: "A senior couple sharing their holiday wishes over a map and guidebook",
   },
   {
     title: "Receive a personalised plan",
     description:
-      "We'll recommend flights, hotels, sightseeing, restaurants and a comfortable itinerary designed around you.",
+      "We will recommend flights, hotels, sightseeing, restaurants, and a comfortable itinerary designed around your group.",
     image: "/images/home/book-senior-travellers.jpg",
     alt: "A senior couple reviewing their personalised printed itinerary",
   },
@@ -38,7 +38,7 @@ const STEPS = [
 
 const STEP_INTERVAL_MS = 4000;
 
-/** "Simple. Personal. Yours." — crimson band; auto-advancing stepper with
+/** "Simplified. Personalised. Group travel." — crimson band; auto-advancing stepper with
  *  expanding descriptions (pauses on hover, clickable) + consultant photo. */
 export function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
@@ -67,7 +67,7 @@ export function HowItWorks() {
         <SectionHeading
           dark
           eyebrow="How Marzi works"
-          title="Simple. Personal. Yours."
+          title="Simplified. Personalised. Group travel."
         />
 
         <div className="mt-12 grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_640px]">

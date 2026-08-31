@@ -11,7 +11,7 @@ const AUDIENCES = [
     href: "/plan/yourself",
   },
   {
-    title: "Book for parents",
+    title: "Gift your parents",
     description:
       "Curated itineraries designed for their pace, comfort and safety.",
     image: "/images/home/book-parents.jpg", // adult son on a call, parents' portrait behind
