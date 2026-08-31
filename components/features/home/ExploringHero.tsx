@@ -20,11 +20,10 @@ export function ExploringHero() {
   const story = STORIES[0];
 
   return (
-    <section className="overflow-hidden bg-white pt-16 md:pt-20">
+    <section className="overflow-hidden bg-white">
       <div className="relative">
-        {/* Mobile: headline on white above the photo. Desktop: overlaid on
-            the photo's sky (per the design). */}
-        <h1 className="font-display py-5 text-center text-[30px] leading-tight font-bold text-balance md:absolute md:inset-x-0 md:top-14 md:z-10 md:py-0 md:text-[48px] md:text-white">
+        {/* Headline overlaid on the photo's sky on every breakpoint */}
+        <h1 className="font-display absolute inset-x-0 top-8 z-10 px-4 text-center text-[30px] leading-tight font-bold text-balance text-white md:top-14 md:text-[48px]">
           <span className="text-gold">Indian seniors</span> are exploring...
         </h1>
 
@@ -37,8 +36,8 @@ export function ExploringHero() {
             sizes="100vw"
             className="object-cover object-[72%_bottom]"
           />
-          {/* Soften the bright sky behind the desktop headline */}
-          <div className="absolute inset-x-0 top-0 hidden h-40 bg-gradient-to-b from-black/25 to-transparent md:block" />
+          {/* Soften the bright sky behind the headline */}
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/25 to-transparent" />
 
           {/* Story caption card */}
           <p className="absolute inset-x-0 bottom-7 mx-auto w-fit max-w-[90%] rounded-xl bg-white px-5 py-3 text-center text-sm leading-relaxed font-semibold shadow-lg md:bottom-9 md:text-[15px]">

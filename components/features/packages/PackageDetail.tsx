@@ -55,8 +55,8 @@ function SeniorFriendlyCard({ score }: { score: number }) {
       </div>
       <p className="font-display mt-2.5 text-xl font-bold">Senior Friendly</p>
       <p className="text-foreground/60 mt-1.5 text-xs leading-relaxed">
-        Scored across 50+ parameters — comfort, accessibility, safety, and
-        value for money.
+        Scored across 50+ parameters — comfort, accessibility, safety, and value
+        for money.
       </p>
     </div>
   );
@@ -82,7 +82,7 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
       {/* Sticky bottom CTA bar (per the design): mobile stacks a full-bleed
           cream download strip over the brand pill; desktop centers the
           outlined + filled pill pair on white. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white print:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white [padding-bottom:env(safe-area-inset-bottom)] print:hidden">
         <button
           type="button"
           onClick={() => window.print()}
@@ -227,7 +227,7 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
                 <h2 className="font-display text-xl font-bold">
                   Place to Visit in {pkg.name}
                 </h2>
-                <div className="mt-4 flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="mt-4 flex snap-x [scrollbar-width:none] gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
                   {pkg.placesToVisit.map((place) => (
                     <div
                       key={place.name}
@@ -288,7 +288,7 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
             <section className="rounded-[24px] bg-white p-6 shadow-sm md:p-7">
               <h2 className="font-display text-xl font-bold">Your Itinerary</h2>
               {pkg.days.length > 1 ? (
-                <div className="mt-4 flex max-w-full gap-1.5 overflow-x-auto rounded-full bg-[#fdeef5] p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="mt-4 flex max-w-full [scrollbar-width:none] gap-1.5 overflow-x-auto rounded-full bg-[#fdeef5] p-1 [&::-webkit-scrollbar]:hidden">
                   {pkg.days.map((d) => (
                     <button
                       key={d.day}

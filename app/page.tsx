@@ -15,7 +15,9 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main>
+      {/* Header offset lives on <main> so the app WebView's
+          `[data-app] main { padding-top: 0 }` reset applies. */}
+      <main className="pt-16 md:pt-20">
         <ExploringHero />
         <MeetYourMitr />
         <GroupTours />

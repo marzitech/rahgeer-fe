@@ -410,8 +410,8 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     name: "Vietnam",
     title: "Vietnam — Sapa, Halong Bay, Hanoi, Da Nang & Hoi An",
     image: "/images/destinations/vietnam.jpg",
-    durationLabel: "7 Nights · 8 Days",
-    datesLabel: "15 – 23 November",
+    durationLabel: "8 Nights · 9 Days",
+    datesLabel: "17 – 26 November",
     packageType: "Flights from Bangalore included",
     mealsLabel: "All meals & all flights included",
     about:

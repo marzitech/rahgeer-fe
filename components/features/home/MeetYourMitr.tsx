@@ -45,9 +45,11 @@ export function MeetYourMitr() {
           <div className="text-center lg:text-left">
             <SparkleChip label="Meet Your Marzi Mitr" />
             <h2 className="font-display mt-4 text-[26px] leading-tight font-bold text-balance md:text-[32px]">
-              <span className="text-gold">Travel Confidently</span>
+              <span className="text-gold">Travel Confidently.</span>
               <br />
-              with your Marzi Mitr
+              Your Marzi Travel Mitr
+              <br />
+              Takes care of everything.
             </h2>
 
             <div className="mt-7 space-y-5">
