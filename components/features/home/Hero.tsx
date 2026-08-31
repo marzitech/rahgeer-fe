@@ -52,14 +52,16 @@ export function Hero() {
           </div>
 
           <h1 className="font-display mt-4 text-[28px] leading-[1.2] font-bold text-white md:mt-6 md:text-[44px] lg:mt-8 lg:text-[52px] lg:leading-[1.15]">
-            Travel Confidently
+            Travel Confidently.
             <br />
-            Your <span className="text-gold">Travel Mitr</span> takes care of{" "}
-            <span className="text-gold">Everything</span>
+            Your <span className="text-gold">Marzi Travel Mitr</span>
+            <br />
+            takes care of <span className="text-gold">everything</span>.
           </h1>
           <p className="mt-3 max-w-xl text-sm text-white/85 md:mt-4 md:text-lg lg:mt-6">
-            Marzi is India&apos;s first dedicated travel platform for people
-            above 50 – from planning to booking.
+            Indian seniors traveling more than ever.
+            <br />
+            Join them in style, with Marzi.
           </p>
         </div>
 

@@ -16,7 +16,7 @@ const AUDIENCES = {
     imagePosition: "object-[center_35%]",
   },
   parents: {
-    title: "Book for parents",
+    title: "Gift your parents",
     image: "/images/home/book-parents.jpg",
     imagePosition: "object-center",
   },
