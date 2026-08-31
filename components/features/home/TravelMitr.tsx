@@ -16,7 +16,10 @@ const SERVICES = [
  *  outline service chips. */
 export function TravelMitr() {
   return (
-    <section className="overflow-hidden bg-gradient-to-b from-[#140006] via-[#57062b] to-[#a11550] py-16 text-white">
+    <section
+      id="tarvelmitr"
+      className="overflow-hidden bg-gradient-to-b from-[#140006] via-[#57062b] to-[#a11550] py-16 text-white"
+    >
       <div className="mx-auto max-w-[1192px] px-4 text-center">
         <MitrHeading />
 

@@ -8,7 +8,7 @@ export function CuratedTrips() {
   if (PACKAGES.length === 0) return null;
 
   return (
-    <section className="bg-white py-20">
+    <section id="curatedtrips" className="bg-white py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Trips"

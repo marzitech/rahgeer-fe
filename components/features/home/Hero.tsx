@@ -13,7 +13,10 @@ const TRUSTED_AVATARS = [
  *  legibility, trusted-by pill, serif headline, lead form card right. */
 export function Hero() {
   return (
-    <section className="relative flex items-center overflow-hidden lg:min-h-screen">
+    <section
+      id="hero"
+      className="relative flex items-center overflow-hidden lg:min-h-screen"
+    >
       <Image
         src="/images/home/hero-koh-tao.jpg"
         alt=""
