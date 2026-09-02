@@ -82,7 +82,10 @@ export function Destinations() {
   const activePage = Math.min(page, Math.max(0, slides.length - 1));
 
   return (
-    <section id="destinations" className="bg-cream scroll-mt-24 py-12 lg:py-14">
+    <section
+      id="destinations"
+      className="hide-in-app bg-cream scroll-mt-24 py-12 lg:py-14"
+    >
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Explore destinations"

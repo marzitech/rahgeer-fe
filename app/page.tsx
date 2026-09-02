@@ -4,6 +4,7 @@ import { CuratedTrips } from "@/components/features/home/CuratedTrips";
 import { Destinations } from "@/components/features/home/Destinations";
 import { Faq } from "@/components/features/home/Faq";
 import { Footer } from "@/components/features/home/Footer";
+import { GroupTripsCta } from "@/components/features/home/GroupTripsCta";
 import { Header } from "@/components/features/home/Header";
 import { Hero } from "@/components/features/home/Hero";
 import { HowItWorks } from "@/components/features/home/HowItWorks";
@@ -21,6 +22,7 @@ export default function HomePage() {
         <TravelMitr />
         <PlanningFor />
         <CuratedTrips />
+        <GroupTripsCta />
         <Destinations />
         <PressStrip />
         <HowItWorks />
