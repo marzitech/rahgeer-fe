@@ -2,10 +2,11 @@ import { Phone } from "lucide-react";
 
 /** "Let's Plan Your Next Holiday Together" — closing CTA card on cream:
  *  black-plum → pink-crimson gradient with faint concentric rings, serif
- *  heading with soft-gold line, pink + outline button pair (per design). */
+ *  heading with soft-gold line, pink + outline button pair (per design).
+ *  Not part of the in-app page — the app design closes on the FAQ. */
 export function CtaBanner() {
   return (
-    <section className="bg-cream pb-20">
+    <section className="hide-in-app bg-cream pb-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[#170309] via-[#6d1039] to-[#c02460] px-6 py-12 text-center text-white md:px-8 md:py-16">
           {/* Circular pattern texture at 7% opacity (per design) */}

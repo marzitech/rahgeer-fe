@@ -31,6 +31,7 @@ import {
   type DestinationSuggestion,
 } from "@/lib/geocode";
 import { hasInAppHistory } from "@/lib/navDepth";
+import { useIsAppWebView } from "@/components/providers/AppWebViewProvider";
 import { TripPlanDossier } from "@/components/features/plan/TripPlanDossier";
 
 /** AI trip-planner wizard (design: Step 1 of 9 — destination picker).
@@ -237,6 +238,10 @@ export function ItineraryResult({
   /* The download gate: "Where should we send your plan?" — a lead-capture
      modal; only after the contact is saved does the print dialog open. */
   const [leadOpen, setLeadOpen] = useState(false);
+  // In-app the homepage renders no lead form, so the anchor has no target.
+  const talkHref = useIsAppWebView()
+    ? "/enquiry?source=app"
+    : "/#plan-your-trip";
   const showFull = SHOW_FULL_DOSSIER;
   const activeDay =
     itinerary.days.find((d) => d.day_number === activeDayNumber) ??
@@ -561,7 +566,7 @@ export function ItineraryResult({
                 </p>
               ) : null}
               <Link
-                href="/#plan-your-trip"
+                href={talkHref}
                 className="mt-5 flex items-center justify-center gap-2 rounded-full border border-black/20 bg-white py-3 text-sm font-semibold transition hover:border-black/40 print:hidden"
               >
                 <Phone className="h-4 w-4" />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { LeadForm } from "@/components/features/home/LeadForm";
+import { isAppWebView } from "@/lib/app-webview";
 
 /** Standalone lead-capture landing page (campaign traffic) — just the
  *  planning lead form, nothing else. */
@@ -19,11 +20,14 @@ export default async function EnquiryPage({
   // channelled separately from organic website traffic in the ops sheet.
   const { source } = await searchParams;
   const fromApp = source === "app";
+  // The fixed header is hidden inside the app WebView — drop the top
+  // padding that exists only to clear it.
+  const isApp = await isAppWebView();
 
   return (
     <>
       <Header />
-      <main className="bg-[#fdf7f2] pt-20 md:pt-24">
+      <main className={isApp ? "bg-[#fdf7f2]" : "bg-[#fdf7f2] pt-20 md:pt-24"}>
         <div className="mx-auto max-w-[560px] px-4 py-8 md:py-12">
           <LeadForm
             formName="Website Landing Page"
