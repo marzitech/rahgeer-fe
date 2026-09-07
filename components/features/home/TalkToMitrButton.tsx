@@ -15,12 +15,21 @@ export function TalkToMitrButton({
   label = "Talk to a Travel Mitr",
   form,
   className,
+  destination = "",
+  tripScope = "domestic",
+  context,
 }: {
   label?: string;
   /** Sheet "Form" column value — which CTA converted (e.g. "app-hero"). */
   form: string;
   /** Full button styling — variants differ per section. */
   className: string;
+  /** Enquiry destination, when the CTA is about a specific trip. */
+  destination?: string;
+  /** Backend trip_scope value — "domestic" | "international". */
+  tripScope?: string;
+  /** Extra first line for the sheet message (e.g. which package). */
+  context?: string;
 }) {
   const router = useRouter();
   const [state, setState] = useState<
@@ -52,9 +61,10 @@ export function TalkToMitrButton({
         full_name: user.fullName,
         phone: user.phone,
         ...(age !== null ? { age } : {}),
-        trip_scope: "domestic",
-        destination: "",
+        trip_scope: tripScope,
+        destination,
         message: [
+          context ?? "",
           `Tapped "${label}" in the app.`,
           user.dob ? `DOB: ${user.dob}` : "",
         ]

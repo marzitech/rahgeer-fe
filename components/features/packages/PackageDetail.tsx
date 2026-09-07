@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Calendar, Check, Clock, MapPin, Phone, X } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { guessTripScope } from "@/components/features/home/LeadForm";
+import { TalkToMitrButton } from "@/components/features/home/TalkToMitrButton";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
 import type { PackageContent } from "@/lib/content/packages";
@@ -466,11 +467,22 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
               <button
                 type="button"
                 onClick={() => setMitrOpen(true)}
-                className="bg-brand hover:bg-brand-deep mt-5 flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white transition"
+                className="bg-brand hover:bg-brand-deep hide-in-app mt-5 flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white transition"
               >
                 <Phone className="h-4 w-4" />
                 Talk to a Travel Mitr
               </button>
+              {/* App WebView: the injected user makes this one tap + the
+                  "Request received!" toast — no Name/Mobile modal. */}
+              <div className="show-in-app mt-5">
+                <TalkToMitrButton
+                  form="app-package"
+                  destination={pkg.name}
+                  tripScope={guessTripScope(pkg.name)}
+                  context={`Package enquiry: ${pkg.title} (${pkg.datesLabel}).`}
+                  className="bg-brand hover:bg-brand-deep flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold text-white transition disabled:opacity-70"
+                />
+              </div>
             </div>
           </div>
         </div>
