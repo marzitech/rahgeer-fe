@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Calendar, Check, Clock, MapPin, Phone, X } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
@@ -244,6 +244,32 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
   const [mitrOpen, setMitrOpen] = useState(false);
   const day = pkg.days.find((d) => d.day === activeDay) ?? pkg.days[0];
 
+  const heroImages =
+    pkg.heroImages && pkg.heroImages.length > 0 ? pkg.heroImages : [pkg.image];
+  // A clone of the first photo after the last lets the loop glide forward
+  // continuously: scroll onto the clone, then jump invisibly back to slide 0.
+  const heroSlides =
+    heroImages.length > 1 ? [...heroImages, heroImages[0]] : heroImages;
+  const [heroIndex, setHeroIndex] = useState(0);
+  const heroScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollHeroTo = (i: number) => {
+    const el = heroScrollRef.current;
+    el?.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  };
+
+  // Auto-advance every 3s in a circle — always moving forward.
+  useEffect(() => {
+    if (heroImages.length < 2) return;
+    const id = setInterval(() => {
+      const el = heroScrollRef.current;
+      if (!el) return;
+      const current = Math.round(el.scrollLeft / el.clientWidth);
+      scrollHeroTo(Math.min(current + 1, heroSlides.length - 1));
+    }, 3000);
+    return () => clearInterval(id);
+  }, [heroImages.length, heroSlides.length]);
+
   return (
     <main className="bg-[#fdf7f2] pt-20 md:pt-24">
       {mitrOpen ? (
@@ -257,18 +283,59 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
           <span aria-hidden>←</span> Back to destinations
         </BackLink>
 
-        {/* Hero banner */}
+        {/* Hero banner — horizontally scrollable photos, one full-width per snap */}
         <div className="relative mt-4 overflow-hidden rounded-2xl">
-          <Image
-            src={pkg.image}
-            alt={pkg.name}
-            width={1160}
-            height={420}
-            className="h-[240px] w-full object-cover md:h-[300px]"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/45" />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+          <div
+            ref={heroScrollRef}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              const w = el.clientWidth;
+              // Landed on the cloned first slide → snap back to the real one.
+              if (
+                heroSlides.length > heroImages.length &&
+                el.scrollLeft >= (heroSlides.length - 1) * w - 1
+              ) {
+                el.scrollLeft = 0;
+                setHeroIndex(0);
+                return;
+              }
+              setHeroIndex(Math.round(el.scrollLeft / w) % heroImages.length);
+            }}
+            className="flex h-[240px] w-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] md:h-[300px] [&::-webkit-scrollbar]:hidden"
+          >
+            {heroSlides.map((src, i) => (
+              <div
+                key={`${src}-${i}`}
+                className="relative h-full w-full shrink-0 snap-center"
+              >
+                <Image
+                  src={src}
+                  alt={`${pkg.name} — photo ${(i % heroImages.length) + 1}`}
+                  fill
+                  sizes="(min-width: 1192px) 1160px, 100vw"
+                  className="object-cover"
+                  priority={i === 0}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="pointer-events-none absolute inset-0 bg-black/45" />
+          {heroImages.length > 1 ? (
+            <div className="absolute right-4 bottom-4 flex gap-1.5 md:right-6 md:bottom-6">
+              {heroImages.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  aria-label={`Photo ${i + 1}`}
+                  onClick={() => scrollHeroTo(i)}
+                  className={`h-2 w-2 rounded-full transition ${
+                    i === heroIndex ? "bg-white" : "bg-white/40"
+                  }`}
+                />
+              ))}
+            </div>
+          ) : null}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6 md:p-10">
             <span className="bg-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold">
               <Check className="h-3.5 w-3.5" strokeWidth={3} />
               Curated package · ready to book
@@ -324,9 +391,14 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
               </h2>
               <ul className="mt-4 space-y-2.5">
                 {pkg.whyTourWithMarzi.map((item) => (
-                  <li key={item} className="flex gap-2.5 text-sm">
+                  <li key={item.term} className="flex gap-2.5 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
-                    <span className="text-foreground/75">{item}</span>
+                    <span className="text-foreground/75">
+                      <strong className="text-foreground font-semibold">
+                        {item.term}
+                      </strong>{" "}
+                      – {item.description}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -381,6 +453,11 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
                   <p className="text-foreground/60 mt-4 text-sm font-semibold">
                     Day {day.day}: {day.title}
                   </p>
+                  {day.description ? (
+                    <p className="text-foreground/70 mt-2 text-sm">
+                      {day.description}
+                    </p>
+                  ) : null}
                   <div className="mt-4">
                     {day.stops.map((stop, index) => (
                       <div
