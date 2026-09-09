@@ -40,7 +40,7 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Ayodhya · Varanasi · Sarnath",
     slug: "ayodhya-varanasi-sarnath",
-    image: "/images/destinations/varanasi-ghats.jpg",
+    image: "/images/destinations/varanasi-aarti.jpg",
     tags: ["India", "Spiritual"],
     cta: "View packages",
     priceFromInr: 21999,
