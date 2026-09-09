@@ -40,8 +40,7 @@ export const DESTINATIONS: HomeDestination[] = [
   {
     name: "Ayodhya · Varanasi · Sarnath",
     slug: "ayodhya-varanasi-sarnath",
-    // TODO(assets): swap in a real Varanasi/Ganga-ghat photo.
-    image: "/images/home/review-trip-1.jpg",
+    image: "/images/destinations/varanasi-ghats.jpg",
     tags: ["India", "Spiritual"],
     cta: "View packages",
     priceFromInr: 21999,

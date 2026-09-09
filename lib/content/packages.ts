@@ -15,6 +15,8 @@ export type PackageStop = {
 export type PackageDay = {
   day: number;
   title: string;
+  /** Optional one-line intro shown under the day heading. */
+  description?: string;
   stops: PackageStop[];
 };
 
@@ -23,6 +25,8 @@ export type PackageContent = {
   name: string;
   title: string;
   image: string;
+  /** Optional extra hero photos — the detail hero cycles through these. */
+  heroImages?: string[];
   durationLabel: string; // "4 Nights · 5 Days"
   datesLabel: string; // "25 – 29 September 2026"
   packageType: string; // "Land package only" | "Flights from Bangalore included"
@@ -31,7 +35,7 @@ export type PackageContent = {
   placesCovered: string[];
   genEvScore: number;
   priceFromInr: number;
-  whyTourWithMarzi: string[];
+  whyTourWithMarzi: { term: string; description: string }[];
   highlights: { term: string; description: string }[];
   days: PackageDay[];
   priceIncludes: string[];
@@ -40,11 +44,36 @@ export type PackageContent = {
 
 // The same senior-first promises apply across every curated tour.
 const WHY_TOUR = [
-  "Hand-picked, comfortable hotels throughout the tour.",
-  "A dedicated Travel Mitr on call before and during your trip.",
-  "Private, comfortable transfers and sightseeing — no crowded coaches.",
-  "Unhurried pacing with rest built in after busy mornings.",
-  "Every detail — stays, transfers and sightseeing — handled for you.",
+  {
+    term: "Indian tour guide on every trip",
+    description:
+      "An experienced Travel Mitr is part of every trip — speaks both Hindi and English.",
+  },
+  {
+    term: "The right group, the right size",
+    description:
+      "Small, curated groups. Everyone on the trip is 50+, so you'll be with like-minded travelers at the same stage of life, all looking to explore, relax, and enjoy good company.",
+  },
+  {
+    term: "24x7 Doctor support",
+    description:
+      "A health check before the trip, and a doctor on call throughout.",
+  },
+  {
+    term: "Vegetarian food you'll enjoy",
+    description:
+      "All 3 meals (breakfast, lunch, dinner) are Indian and vegetarian-friendly.",
+  },
+  {
+    term: "Safe for solo travelers",
+    description:
+      "Traveling alone or a single woman? You'll be well looked after and never feel out of place.",
+  },
+  {
+    term: "Door to door",
+    description:
+      "International & domestic flights, visa, all private transfers, cabs from and to home, and guided sightseeing — everything is handled, you just show up and have fun.",
+  },
 ];
 
 export const PACKAGE_CONTENT: Record<string, PackageContent> = {
@@ -188,8 +217,12 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     slug: "ayodhya-varanasi-sarnath",
     name: "Ayodhya · Varanasi · Sarnath",
     title: "Ayodhya · Varanasi · Sarnath — A Spiritual Journey",
-    // TODO(assets): swap in a real Varanasi/Ganga-ghat photo.
-    image: "/images/home/review-trip-1.jpg",
+    image: "/images/destinations/ram-mandir.jpg",
+    heroImages: [
+      "/images/destinations/ram-mandir.jpg",
+      "/images/destinations/varanasi-ghats.jpg",
+      "/images/destinations/ayodhya-temples.jpg",
+    ],
     durationLabel: "4 Nights · 5 Days",
     datesLabel: "28 September – 2 October",
     packageType: "Land package only",
@@ -202,28 +235,30 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       {
         term: "Shri Ram Janmabhoomi darshan",
         description:
-          "A guided, unhurried visit to the Ram Mandir with assistance throughout.",
+          "Stand before one of India's most sacred sites, with an unhurried, guided visit that lets the moment truly sink in. 4.8/5 (TripAdvisor) — Top 4 place to visit!",
       },
       {
-        term: "Ganga & Saryu aarti",
+        term: "Ganga & Saryu aarti, front and centre",
         description:
-          "Reserved, comfortable seating for the evening aarti ceremonies.",
+          "As hundreds of oil lamps flicker across the water and chants rise into the evening air, you're seated comfortably — no jostling for a view, just the ceremony unfolding right in front of you. Varanasi's most-visited spot. 4.5/5 (TripAdvisor)",
       },
       {
-        term: "Sunrise boat ride, Varanasi",
+        term: "Sunrise on the Ganga",
         description:
-          "A gentle boat ride along the ghats as the sun rises over the Ganga.",
+          "Glide past centuries-old ghats as the city wakes and the sky turns gold — a quiet, boat-side start to the day that stays with you long after.",
       },
       {
         term: "Kashi Vishwanath & Sarnath",
         description:
-          "Temple darshan plus the peaceful Buddhist site at Sarnath.",
+          "From the energy of one of Shiva's holiest shrines to the stillness of the spot where Buddha gave his first sermon — two sides of India's spiritual soul, in one day. Travellers' Choice \"Best of the Best\" 2026.",
       },
     ],
     days: [
       {
         day: 1,
-        title: "Arrive Ayodhya",
+        title: "Arrive in Ayodhya",
+        description:
+          "Step into the sacred city of Ayodhya and begin an unforgettable journey filled with divine blessings, cherished moments, and the timeless spirit of Lord Ram.",
         stops: [
           {
             time: "Afternoon",
@@ -241,7 +276,9 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       },
       {
         day: 2,
-        title: "Ayodhya → Varanasi",
+        title: "Ayodhya to Varanasi",
+        description:
+          "After a beautiful morning of darshan in Ayodhya, journey onward to Varanasi — the ancient city where spirituality, tradition, and the Ganga come together.",
         stops: [
           {
             time: "9:00 AM",
@@ -259,7 +296,9 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       },
       {
         day: 3,
-        title: "Varanasi ghats & temples",
+        title: "Varanasi Ghats & Temples",
+        description:
+          "Wake up to the magical glow of dawn on the Ganga and immerse yourself in the sacred energy of Varanasi's iconic ghats and revered temples.",
         stops: [
           {
             time: "5:30 AM",
@@ -278,6 +317,8 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       {
         day: 4,
         title: "Varanasi & Sarnath",
+        description:
+          "Discover another side of Varanasi as sacred temples, serene Sarnath, and the spectacular Ganga Aarti come together for a truly unforgettable day.",
         stops: [
           {
             time: "9:30 AM",
@@ -302,6 +343,8 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       {
         day: 5,
         title: "Departure",
+        description:
+          "As your sacred journey comes to an end, enjoy a relaxed morning and depart with a heart full of blessings, beautiful memories, and moments to treasure forever.",
         stops: [
           {
             time: "Morning",
@@ -332,6 +375,11 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     name: "Vietnam",
     title: "Vietnam — Sapa, Halong Bay, Hanoi, Da Nang & Hoi An",
     image: "/images/destinations/vietnam.jpg",
+    heroImages: [
+      "/images/destinations/vietnam.jpg",
+      "/images/destinations/golden-bridge-danang.jpg",
+      "/images/destinations/halong-bay-dawn.jpg",
+    ],
     durationLabel: "8 Nights · 9 Days",
     datesLabel: "17 – 26 November",
     packageType: "Flights from Bangalore included",
@@ -343,24 +391,29 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     whyTourWithMarzi: WHY_TOUR,
     highlights: [
       {
-        term: "Sapa rice terraces",
+        term: "Ride to the \"Roof of Indochina\"",
         description:
-          "The famous terraced valleys, enjoyed from comfortable viewpoints.",
+          "Cable car up to Fansipan, Vietnam's highest peak — rated a \"must\" experience by travelers — then wander into Cat Cat Village to meet the Black H'Mong community amid waterfalls and mountain mist. 4.3/5 (TripAdvisor)",
       },
       {
-        term: "Halong Bay overnight cruise",
+        term: "Walk on glass, above the clouds",
         description:
-          "An overnight cruise among the limestone karsts with easy boarding.",
+          "Sapa's dramatic Glass Bridge and the artsy Moana viewpoints deliver panoramas you won't get anywhere else! 4.5/5 (TripAdvisor)",
       },
       {
-        term: "Hoi An lantern old town",
+        term: "Sleep among limestone giants",
         description:
-          "The flat, walkable lantern-lit old town at a relaxed evening pace.",
+          "An overnight-style Halong Bay cruise through thousands of karst islands rising out of emerald water — one of the world's most surreal seascapes. Travelers call it an absolute must-see and \"the definite highlight\" of their entire Vietnam trip. 4.5/5 (TripAdvisor)",
       },
       {
-        term: "Da Nang & the Golden Bridge",
+        term: "Golden hands in the sky",
         description:
-          "Beaches and Ba Na Hills, reached comfortably by cable car.",
+          "\"One of the most photographed spots in Vietnam\" — Ba Na Hills' iconic Golden Bridge is cradled by giant stone hands, plus a French Village and gardens waiting at the top of the cable car ride. 4.6/5 (TripAdvisor)",
+      },
+      {
+        term: "Lantern-lit nights on the Hoai River",
+        description:
+          "Drift through Hoi An's glowing old town on a traditional lantern boat, dress up like a traditional Vietnamese in 'Ao Dai' and experience the basket-boat ride through the Coconut Forest along the way. 4.5/5 (TripAdvisor)",
       },
     ],
     days: [
