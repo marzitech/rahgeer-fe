@@ -3,9 +3,8 @@
 /**
  * CallbackPopup — timed "Want us to call you?" card, ported from
  * marzi-web's components/CallbackPopup.tsx. Appears 5s after the visitor
- * lands on a browsing page (home, destinations, itineraries, packages);
- * skipped on the dedicated lead-form pages (/enquiry, /plan) where it
- * would compete with the main form.
+ * lands on a browsing page (home, destinations, itineraries, packages,
+ * plan); skipped on /enquiry, which is nothing but the lead form.
  *
  * Shows once per page VISIT — every navigation to (or reload of) an
  * eligible page starts a fresh 5s timer; dismissing it only silences it
@@ -30,7 +29,7 @@ const SUBMITTED_KEY = "marzi_callback_popup_submitted";
 const SHOW_DELAY_MS = 5_000;
 
 // Prefix-matched (covers detail pages, e.g. /destinations/[slug]).
-const ELIGIBLE_PREFIXES = ["/destinations", "/itineraries", "/packages"];
+const ELIGIBLE_PREFIXES = ["/destinations", "/itineraries", "/packages", "/plan"];
 
 function isEligible(pathname: string): boolean {
   if (pathname === "/") return true;
