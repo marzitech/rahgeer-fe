@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
 import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
 import { AttributionCapture } from "@/components/AttributionCapture";
+import { CallbackPopup } from "@/components/CallbackPopup";
 import { HashScroll } from "@/components/HashScroll";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
 import { isAppWebView } from "@/lib/app-webview";
@@ -61,6 +62,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <NavDepthTracker />
         <AttributionCapture />
         <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>
+        {/* Timed lead-capture popup — website only; app users are
+            already reachable, no popup inside the WebView. */}
+        {!isApp && <CallbackPopup />}
       </body>
     </html>
   );
