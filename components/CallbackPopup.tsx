@@ -97,6 +97,9 @@ export function CallbackPopup() {
         // these rows so ops knows the name is a placeholder.
         full_name: "Callback Request",
         phone: mobile,
+        // Required by the backend but unknowable here (no destination
+        // asked) — defaulted; the callback call clarifies the real scope.
+        trip_scope: "domestic",
         message: "Requested a callback via the timed popup.",
         source: "website",
         form: "callback-popup",
