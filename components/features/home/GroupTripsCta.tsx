@@ -7,7 +7,7 @@ import { TalkToMitrButton } from "./TalkToMitrButton";
  *  Mitr" pill). App WebView only; the website doesn't have this section. */
 export function GroupTripsCta() {
   return (
-    <section className="show-in-app overflow-hidden bg-[#a61d52] px-5 py-10 text-white">
+    <section id="grouptrips" className="show-in-app overflow-hidden bg-[#a61d52] px-5 py-10 text-white">
       <div className="mx-auto flex max-w-md flex-col items-center">
         <span className="flex items-center gap-1.5 rounded-full border border-black/20 bg-[#fff6d6] px-4 py-1 text-sm font-bold text-[#0a0a0a]">
           <Sparkle className="h-4 w-4" fill="currentColor" strokeWidth={0} />

@@ -104,7 +104,7 @@ export function Testimonials() {
   }
 
   return (
-    <section className="bg-[#faf8f5] py-20">
+    <section id="testimonials" className="bg-[#faf8f5] py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           eyebrow="Reviews"
