@@ -5,6 +5,7 @@ import { AttributionCapture } from "@/components/AttributionCapture";
 import { CallbackPopup } from "@/components/CallbackPopup";
 import { HashScroll } from "@/components/HashScroll";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { isAppWebView } from "@/lib/app-webview";
 import "./globals.css";
 
@@ -65,6 +66,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         {/* Timed lead-capture popup — website only; app users are
             already reachable, no popup inside the WebView. */}
         {!isApp && <CallbackPopup />}
+        {/* Floating WhatsApp chat — website only, same reasoning as the
+            popup: app users already have in-app channels. */}
+        {!isApp && <WhatsAppFloat />}
       </body>
     </html>
   );
