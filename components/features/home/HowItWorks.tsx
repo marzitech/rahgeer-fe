@@ -56,7 +56,7 @@ export function HowItWorks() {
   return (
     <section
       id="howitworks"
-      className="relative overflow-hidden bg-[#a02458] py-20 text-white"
+  className="hide-in-app relative overflow-hidden bg-[#a02458] py-20 text-white"
     >
       {/* Circular pattern texture at 7% opacity (per design) */}
       <div
