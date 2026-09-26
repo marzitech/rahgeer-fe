@@ -66,7 +66,7 @@ const FAQS = [
 /** FAQ accordion — native <details> keeps it dependency-free + accessible. */
 export function Faq() {
   return (
-    <section className="bg-white py-20">
+    <section id="faq" className="bg-white py-20">
       <div className="mx-auto max-w-[1192px] px-4">
         <SectionHeading
           align="left"

@@ -3,6 +3,7 @@ import { Lato, Playfair_Display } from "next/font/google";
 import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { CallbackPopup } from "@/components/CallbackPopup";
+import { GangadharTracker } from "@/components/GangadharTracker";
 import { HashScroll } from "@/components/HashScroll";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
@@ -60,6 +61,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <HashScroll />
+        <GangadharTracker />
         <NavDepthTracker />
         <AttributionCapture />
         <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>

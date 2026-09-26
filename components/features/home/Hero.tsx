@@ -20,7 +20,7 @@ const TRUSTED_AVATARS = [
 export async function Hero() {
   const isApp = await isAppWebView();
   return (
-    <section className="relative flex items-center overflow-hidden lg:min-h-screen">
+    <section id="hero" className="relative flex items-center overflow-hidden lg:min-h-screen">
       <Image
         src="/images/home/hero-koh-tao.jpg"
         alt=""

@@ -7,6 +7,7 @@ import { Footer } from "@/components/features/home/Footer";
 import { GroupTripsCta } from "@/components/features/home/GroupTripsCta";
 import { Header } from "@/components/features/home/Header";
 import { Hero } from "@/components/features/home/Hero";
+import { HomeTracking } from "@/components/features/home/HomeTracking";
 import { HowItWorks } from "@/components/features/home/HowItWorks";
 import { PlanningFor } from "@/components/features/home/PlanningFor";
 import { PressStrip } from "@/components/features/home/PressStrip";
@@ -16,6 +17,7 @@ import { TravelMitr } from "@/components/features/home/TravelMitr";
 export default function HomePage() {
   return (
     <>
+      <HomeTracking />
       <Header />
       <main>
         <Hero />
