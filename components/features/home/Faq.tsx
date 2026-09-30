@@ -1,4 +1,5 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { FaqItem } from "./FaqItem";
 
 const FAQS = [
   {
@@ -63,7 +64,7 @@ const FAQS = [
   },
 ];
 
-/** FAQ accordion — native <details> keeps it dependency-free + accessible. */
+/** FAQ accordion — rows are native <details> (see FaqItem). */
 export function Faq() {
   return (
     <section id="faq" className="bg-white py-20">
@@ -76,20 +77,11 @@ export function Faq() {
 
         <div className="mt-10 divide-y divide-black/10 rounded-2xl border border-black/10">
           {FAQS.map((faq) => (
-            <details key={faq.question} className="group px-6 py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between text-base font-medium">
-                {faq.question}
-                <span
-                  aria-hidden
-                  className="text-foreground/40 transition-transform group-open:rotate-180"
-                >
-                  ⌄
-                </span>
-              </summary>
+            <FaqItem key={faq.question} question={faq.question}>
               <p className="text-foreground/70 mt-3 max-w-3xl text-sm">
                 {faq.answer}
               </p>
-            </details>
+            </FaqItem>
           ))}
         </div>
       </div>

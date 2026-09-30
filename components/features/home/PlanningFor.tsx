@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/TrackedLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { EVENTS } from "@/lib/analytics/events";
 
 const AUDIENCES = [
   {
@@ -9,6 +10,7 @@ const AUDIENCES = [
     image: "/images/home/book-senior-travellers.jpg", // senior couple planning at a laptop
     imagePosition: "object-[center_35%]",
     href: "/plan/yourself",
+    event: EVENTS.BOOK_SELF_CTA,
   },
   {
     title: "Gift your parents",
@@ -17,6 +19,7 @@ const AUDIENCES = [
     image: "/images/home/book-parents.jpg", // adult son on a call, parents' portrait behind
     imagePosition: "object-center",
     href: "/plan/parents",
+    event: EVENTS.BOOK_PARENTS_CTA,
   },
 ];
 
@@ -50,12 +53,13 @@ export function PlanningFor() {
                 <p className="mt-1.5 text-sm text-white/85">
                   {audience.description}
                 </p>
-                <Link
+                <TrackedLink
                   href={audience.href}
+                  event={audience.event}
                   className="text-foreground hover:bg-cream mt-5 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold shadow transition group-hover:gap-3"
                 >
                   Start Planning <span aria-hidden>→</span>
-                </Link>
+                </TrackedLink>
               </div>
             </div>
           ))}

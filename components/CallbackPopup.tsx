@@ -22,6 +22,8 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Check, Loader2, Phone, ShieldCheck, X } from "lucide-react";
+import { track } from "@/lib/analytics";
+import { EVENTS } from "@/lib/analytics/events";
 import { createEnquiry } from "@/lib/api/endpoints";
 import { getAttribution } from "@/lib/attribution";
 
@@ -29,7 +31,12 @@ const SUBMITTED_KEY = "marzi_callback_popup_submitted";
 const SHOW_DELAY_MS = 5_000;
 
 // Prefix-matched (covers detail pages, e.g. /destinations/[slug]).
-const ELIGIBLE_PREFIXES = ["/destinations", "/itineraries", "/packages", "/plan"];
+const ELIGIBLE_PREFIXES = [
+  "/destinations",
+  "/itineraries",
+  "/packages",
+  "/plan",
+];
 
 function isEligible(pathname: string): boolean {
   if (pathname === "/") return true;
@@ -105,6 +112,9 @@ export function CallbackPopup() {
         form: "callback-popup",
         attribution: getAttribution(),
       });
+      // Only a delivered lead counts — firing before the await would report
+      // callbacks the backend rejected.
+      track(EVENTS.CALLBACK_REQUEST_FOOTER);
       try {
         sessionStorage.setItem(SUBMITTED_KEY, "1");
       } catch {
@@ -149,7 +159,7 @@ export function CallbackPopup() {
                 <Check className="h-6 w-6 text-white" strokeWidth={3} />
               </div>
             </div>
-            <h2 className="font-display text-2xl font-bold text-marzi-pink">
+            <h2 className="font-display text-marzi-pink text-2xl font-bold">
               Callback requested
             </h2>
             <p className="text-sm text-gray-700">
@@ -166,7 +176,7 @@ export function CallbackPopup() {
           </div>
         ) : (
           <>
-            <h2 className="font-display mb-6 text-2xl font-bold text-marzi-pink">
+            <h2 className="font-display text-marzi-pink mb-6 text-2xl font-bold">
               Want us to call you?
             </h2>
             <form onSubmit={handleSubmit} className="space-y-5">
