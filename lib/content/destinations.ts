@@ -117,7 +117,7 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
   japan: {
     name: "Japan",
     slug: "japan",
-    kind: "guide",
+    kind: "packages",
     image: "/images/destinations/japan.jpg",
     heroTagline:
       "Experience Japan through a thoughtfully planned journey that balances culture, comfort, sightseeing and time to relax.",
@@ -137,19 +137,11 @@ export const DESTINATION_CONTENT: Record<string, DestinationContent> = {
     knowBeforeYouGo: SHARED_QAS("Japan"),
     featured: [
       {
-        name: "Japan Essentials",
-        meta: "Tokyo, Kyoto & Osaka · 7 Days",
+        name: "Japan Cherry Blossom",
+        meta: "Tokyo, Osaka, Kyoto, Nara & Hiroshima · 9 Days",
         description:
-          "A slower journey with fewer hotel changes, scenic experiences and extra time to rest.",
-        priceFromInr: 56302,
-        image: "/images/destinations/japan.jpg",
-      },
-      {
-        name: "Japan at a Relaxed Pace",
-        meta: "Tokyo, Hakone & Kyoto · 9 Days",
-        description:
-          "A slower journey with fewer hotel changes, scenic experiences and extra time to rest.",
-        priceFromInr: 76412,
+          "Sakura season across five iconic cities — Mt. Fuji, Tokyo DisneySea and Miyajima's Grand Torii, all at a senior-friendly pace.",
+        priceFromInr: 390000,
         image: "/images/destinations/japan.jpg",
       },
     ],

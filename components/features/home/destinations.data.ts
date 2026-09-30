@@ -53,6 +53,14 @@ export const DESTINATIONS: HomeDestination[] = [
     cta: "View packages",
     priceFromInr: 164999,
   },
+  {
+    name: "Japan",
+    slug: "japan",
+    image: "/images/destinations/japan.jpg",
+    tags: ["International"],
+    cta: "View packages",
+    priceFromInr: 390000,
+  },
   // --- Travel guides / sample itineraries ---------------------------------
   // TODO(assets): most of these reuse placeholder photos — swap in real
   // destination images under public/images/destinations/.
