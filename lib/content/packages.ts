@@ -575,6 +575,11 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     name: "Japan",
     title: "Japan — Tokyo, Osaka, Kyoto, Nara & Hiroshima",
     image: "/images/destinations/japan.jpg",
+    heroImages: [
+      "/images/destinations/chureito-pagoda-fuji.jpg",
+      "/images/destinations/fuji-sakura-panorama.jpg",
+      "/images/destinations/japan.jpg",
+    ],
     durationLabel: "8 Nights · 9 Days",
     datesLabel: "Early April · Cherry Blossom Season",
     packageType: "Land package only",
