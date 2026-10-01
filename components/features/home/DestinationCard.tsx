@@ -10,9 +10,12 @@ import { CARD_BLURB, type HomeDestination } from "./destinations.data";
 export function DestinationCard({
   destination,
   compact = false,
+  tabIndex,
 }: {
   destination: HomeDestination;
   compact?: boolean;
+  /** -1 keeps the Curated Trips clone cards out of the tab order. */
+  tabIndex?: number;
 }) {
   // Priced trips are curated packages -> the package page; guides -> the
   // sample-itinerary page (teaser + download lead-gate).
@@ -23,6 +26,7 @@ export function DestinationCard({
   return (
     <Link
       href={href}
+      tabIndex={tabIndex}
       className={cn(
         "group relative block w-full overflow-hidden rounded-2xl sm:rounded-3xl",
         // Explore grid: shorter/wider on desktop so the 2x2 fits one screen.

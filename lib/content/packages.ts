@@ -570,4 +570,220 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "Travel insurance.",
     ],
   },
+  japan: {
+    slug: "japan",
+    name: "Japan",
+    title: "Japan — Tokyo, Osaka, Kyoto, Nara & Hiroshima",
+    image: "/images/destinations/japan.jpg",
+    heroImages: [
+      "/images/destinations/chureito-pagoda-fuji.jpg",
+      "/images/destinations/fuji-sakura-panorama.jpg",
+      "/images/destinations/japan.jpg",
+    ],
+    durationLabel: "8 Nights · 9 Days",
+    datesLabel: "Early April · Cherry Blossom Season",
+    packageType: "Land package only",
+    mealsLabel: "All meals included",
+    placesCovered: [
+      "Tokyo",
+      "Hakone",
+      "Osaka",
+      "Kyoto",
+      "Nara",
+      "Hiroshima",
+      "Miyajima",
+    ],
+    genEvScore: 91,
+    priceFromInr: 390000,
+    whyTourWithMarzi: WHY_TOUR,
+    highlights: [
+      {
+        term: "Cherry Blossom Season",
+        description:
+          "Travel in early April and catch the last of Japan's sakura — parks, temples and lakesides washed in pink.",
+      },
+      {
+        term: "5 iconic cities in one seamless trip",
+        description:
+          "Tokyo, Osaka, Kyoto, Nara & Hiroshima — connected by private coach and the Shinkansen bullet train, with no rushed changeovers.",
+      },
+      {
+        term: "Mt. Fuji & Hakone",
+        description:
+          "Lake Ashi Cruise, Owakudani Ropeway and Lake Kawaguchi — Fuji's most scenic viewpoints without any trekking.",
+      },
+      {
+        term: "Tokyo DisneySea included",
+        description:
+          "A full day at Tokyo DisneySea with the entry ticket and private round-trip transfers covered.",
+      },
+      {
+        term: "Nara, Kyoto & Miyajima",
+        description:
+          "Deer Park, ancient temples, the bamboo grove and the Grand Torii Gate rising out of the sea.",
+      },
+      {
+        term: "Senior-friendly travel",
+        description:
+          "Dedicated tour manager, Indian meals and a private coach throughout — every day paced for comfort.",
+      },
+    ],
+    days: [
+      {
+        day: 1,
+        title: "Welcome to Tokyo",
+        stops: [
+          {
+            time: "On arrival",
+            title: "Private airport transfer & Tokyo local market",
+            description:
+              "Arrive at Tokyo Airport, where your private transfer is waiting. Settle in with an easy visit to a local Tokyo market on the way — a gentle first taste of Japan without any rush.",
+          },
+          {
+            time: "Evening",
+            title: "Dinner at an Indian restaurant",
+            description:
+              "End your first day with a familiar, comforting Indian dinner before a restful night at your hotel.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Mt. Fuji & Hakone",
+        stops: [
+          {
+            time: "Full day",
+            title: "Hakone Shrine, Lake Ashi Cruise & Owakudani Ropeway",
+            description:
+              "Visit the lakeside Hakone Shrine, then board the Pirate Ship Cruise across Lake Ashi from Motohakone to Togendai. From Togendai, ride the Owakudani Ropeway over the volcanic valley, continue to the spring-fed ponds of Oshino Hakkai, and finish at Lake Kawaguchi with its classic Mt. Fuji views. Lake Ashi Cruise and Ropeway tickets are included.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Tokyo City Tour",
+        stops: [
+          {
+            time: "Full day",
+            title: "Ueno Park, Senso-ji, Skytree & Shibuya Crossing",
+            description:
+              "A comfortable day through Tokyo's icons: Ueno Park and the historic Senso-ji Temple, a photo stop at Shinjuku I-Land, then up the Tokyo Skytree's 350m observation deck (ticket included). Photo stop at Tokyo Tower before soaking in the famous Shibuya Crossing.",
+          },
+        ],
+      },
+      {
+        day: 4,
+        title: "Tokyo DisneySea",
+        stops: [
+          {
+            time: "Full day",
+            title: "Tokyo DisneySea with transfers & entry included",
+            description:
+              "A full day at Tokyo DisneySea — the one-day passport and private round-trip transfers are both included. Enjoy the park entirely at your own pace.",
+          },
+        ],
+      },
+      {
+        day: 5,
+        title: "Tokyo → Osaka by Bullet Train",
+        stops: [
+          {
+            time: "Morning",
+            title: "Shinkansen to Osaka",
+            description:
+              "Private transfer to Tokyo Station to board the Shinkansen bullet train to Osaka (Ordinary Reserved Class) — one of Japan's great travel experiences, in comfort.",
+          },
+          {
+            time: "Afternoon",
+            title: "Osaka local market visit",
+            description:
+              "On arrival at Osaka Station, transfer to your hotel with an unhurried stop at a local Osaka market along the way.",
+          },
+        ],
+      },
+      {
+        day: 6,
+        title: "Nara & Kyoto",
+        stops: [
+          {
+            time: "Full day",
+            title: "Deer Park, ancient temples & the bamboo grove",
+            description:
+              "A full-day excursion to Nara and Kyoto with an English-speaking local guide — greet the friendly deer of Nara Park, wander ancient temples, and walk the famous bamboo grove at an easy pace.",
+          },
+        ],
+      },
+      {
+        day: 7,
+        title: "Hiroshima & Miyajima",
+        stops: [
+          {
+            time: "Early morning",
+            title: "Train to Hiroshima",
+            description:
+              "An early morning private transfer to Osaka Station to board the train to Hiroshima — settle in for a smooth, scenic ride west.",
+          },
+          {
+            time: "Full day",
+            title: "Miyajima Island, Grand Torii Gate & Peace Memorial",
+            description:
+              "Take the ferry across to Miyajima Island to see Itsukushima Shrine and its Grand Torii Gate standing in the sea, then visit the moving Atomic Bomb Dome and Peace Memorial Park. Return to Osaka by train with a private transfer to your hotel. Ferry and applicable entry tickets are included.",
+          },
+        ],
+      },
+      {
+        day: 8,
+        title: "Osaka City Tour",
+        stops: [
+          {
+            time: "Full day",
+            title: "Osaka Castle, Kuromon Market & Dotonbori",
+            description:
+              "A full-day Osaka city tour with an English-speaking local guide — Osaka Castle and its park, the bustling Kuromon Market, sweeping views from the Umeda Sky Observatory, and an easy evening stroll through neon-lit Dotonbori and Shinsaibashi. Osaka Castle and Umeda Sky Observatory tickets are included.",
+          },
+        ],
+      },
+      {
+        day: 9,
+        title: "Sayonara, Japan",
+        stops: [
+          {
+            time: "Morning",
+            title: "Check-out & airport transfer",
+            description:
+              "Enjoy a relaxed breakfast before checking out. Your private transfer takes you to Osaka Airport for your onward flight, closing out nine days of Japan in full bloom.",
+          },
+        ],
+      },
+    ],
+    priceIncludes: [
+      "Accommodation for 8 nights.",
+      "Japan visa.",
+      "Daily breakfast at hotels.",
+      "8 Indian lunches & 8 Indian dinners.",
+      "Private airport transfers in Tokyo & Osaka.",
+      "Vehicles for group transportation.",
+      "Tokyo city tour.",
+      "Tokyo Skytree admission (350m deck).",
+      "Tokyo DisneySea 1-Day Passport.",
+      "Mt. Fuji & Hakone tour.",
+      "Hakone Ropeway ride (one way).",
+      "Lake Ashi Cruise.",
+      "Shinkansen (bullet train) Tokyo → Osaka, Ordinary Reserved Class.",
+      "Kyoto & Nara full-day tour.",
+      "Hiroshima & Miyajima guided tour.",
+      "Osaka city tour.",
+      "English-speaking guide throughout the tour.",
+    ],
+    priceExcludes: [
+      "5% GST & 2% TCS (TCS is refundable in ITR).",
+      "Tips for guide & driver — USD 5 per guest per day.",
+      "New Year and Christmas gala dinner charges, if any.",
+      "Transfers and sightseeing other than specified.",
+      "Flights.",
+      "Any increase in airfare, fuel surcharge or airline taxes before flight tickets are issued, irrespective of booking date.",
+      "Peak-season surcharges.",
+      "Any other expenses of a personal nature.",
+    ],
+  },
 };
