@@ -708,17 +708,21 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
           },
         ],
       },
-      // Days 7-9 drafted from the inclusions list — swap in the operator's
-      // day-wise copy when it arrives.
       {
         day: 7,
         title: "Hiroshima & Miyajima",
         stops: [
           {
-            time: "Full day",
-            title: "Peace Memorial & the Grand Torii Gate",
+            time: "Early morning",
+            title: "Train to Hiroshima",
             description:
-              "A guided day tour to Hiroshima's moving Peace Memorial Park, then a short ferry across to Miyajima Island to see Itsukushima Shrine and its Grand Torii Gate standing in the sea.",
+              "An early morning private transfer to Osaka Station to board the train to Hiroshima — settle in for a smooth, scenic ride west.",
+          },
+          {
+            time: "Full day",
+            title: "Miyajima Island, Grand Torii Gate & Peace Memorial",
+            description:
+              "Take the ferry across to Miyajima Island to see Itsukushima Shrine and its Grand Torii Gate standing in the sea, then visit the moving Atomic Bomb Dome and Peace Memorial Park. Return to Osaka by train with a private transfer to your hotel. Ferry and applicable entry tickets are included.",
           },
         ],
       },
@@ -728,9 +732,9 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
         stops: [
           {
             time: "Full day",
-            title: "Osaka's castle, canals & food streets",
+            title: "Osaka Castle, Kuromon Market & Dotonbori",
             description:
-              "Explore Osaka at leisure — the grounds of Osaka Castle, and an easy evening stroll through the neon-lit Dotonbori canal district, Japan's liveliest food street.",
+              "A full-day Osaka city tour with an English-speaking local guide — Osaka Castle and its park, the bustling Kuromon Market, sweeping views from the Umeda Sky Observatory, and an easy evening stroll through neon-lit Dotonbori and Shinsaibashi. Osaka Castle and Umeda Sky Observatory tickets are included.",
           },
         ],
       },
@@ -742,7 +746,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
             time: "Morning",
             title: "Check-out & airport transfer",
             description:
-              "Enjoy a relaxed breakfast before checking out. Your private transfer takes you to the airport for your flight home, closing out nine days of Japan in full bloom.",
+              "Enjoy a relaxed breakfast before checking out. Your private transfer takes you to Osaka Airport for your onward flight, closing out nine days of Japan in full bloom.",
           },
         ],
       },
