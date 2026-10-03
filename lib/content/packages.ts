@@ -582,7 +582,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     ],
     durationLabel: "8 Nights · 9 Days",
     datesLabel: "Early April · Cherry Blossom Season",
-    packageType: "Land package only",
+    packageType: "Flights from Bangalore included",
     mealsLabel: "All meals included",
     placesCovered: [
       "Tokyo",
@@ -757,6 +757,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       },
     ],
     priceIncludes: [
+      "Return economy flights from Bangalore.",
       "Accommodation for 8 nights.",
       "Japan visa.",
       "Daily breakfast at hotels.",
@@ -780,8 +781,610 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "Tips for guide & driver — USD 5 per guest per day.",
       "New Year and Christmas gala dinner charges, if any.",
       "Transfers and sightseeing other than specified.",
-      "Flights.",
       "Any increase in airfare, fuel surcharge or airline taxes before flight tickets are issued, irrespective of booking date.",
+      "Peak-season surcharges.",
+      "Any other expenses of a personal nature.",
+    ],
+  },
+
+  gujarat: {
+    slug: "gujarat",
+    name: "Gujarat",
+    title: "Gujarat — Dwarka, Somnath, Diu, Sasan Gir & Ahmedabad",
+    image: "/images/destinations/somnath-temple-sunset.jpg",
+    heroImages: [
+      "/images/destinations/somnath-temple-sunset.jpg",
+      "/images/destinations/rann-utsav-tents.jpg",
+      "/images/destinations/rann-camel-caravan.jpg",
+    ],
+    durationLabel: "6 Nights · 7 Days",
+    datesLabel: "10 – 16 December 2026",
+    packageType: "Land package only",
+    mealsLabel: "Breakfast & dinner included",
+    fromCity: "Ahmedabad",
+    placesCovered: [
+      "Dwarka",
+      "Porbandar",
+      "Somnath",
+      "Diu",
+      "Sasan Gir",
+      "Ahmedabad",
+    ],
+    genEvScore: 84,
+    priceFromInr: 38400,
+    whyTourWithMarzi: WHY_TOUR,
+    highlights: [
+      {
+        term: "Two Jyotirlingas in one journey",
+        description:
+          "Darshan at Nageshwar and the great Somnath Jyotirlinga — two of the twelve, visited at an unhurried pace.",
+      },
+      {
+        term: "Dwarkadhish Temple & Bet Dwarka",
+        description:
+          "Morning Aarti at the Dwarkadhish Temple and a gentle ferry ride from Okha to Bet Dwarka.",
+      },
+      {
+        term: "Somnath Sound & Light Show",
+        description:
+          "An evening at the Somnath temple with its celebrated sound-and-light show — fully seated.",
+      },
+      {
+        term: "Diu's beaches & Portuguese heritage",
+        description:
+          "Diu Fort, Naida Caves, St. Paul's Church and a sunset at Nagoa Beach — easy, compact sightseeing.",
+      },
+      {
+        term: "Gir lion safari",
+        description:
+          "A safari through Gir National Park — the only home of the Asiatic lion — from the comfort of your vehicle.",
+      },
+      {
+        term: "Senior-friendly travel",
+        description:
+          "Private AC tempo traveller throughout, comfortable 3★–4★ stays and assistance at every arrival and departure point.",
+      },
+    ],
+    days: [
+      {
+        day: 1,
+        title: "Arrive Ahmedabad — drive to Dwarka",
+        stops: [
+          {
+            time: "On arrival",
+            title: "Ahmedabad pickup & drive to Dwarka",
+            description:
+              "Arrive at Ahmedabad airport or railway station, where your private vehicle is waiting. Settle in for a comfortable drive to Dwarka (around 440 km) with easy breaks en route.",
+          },
+          {
+            time: "Evening",
+            title: "Check-in & optional evening Aarti",
+            description:
+              "Check in to your hotel in Dwarka and rest, or join the evening Aarti at the Dwarkadhish Temple if you feel up to it.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Dwarka sightseeing",
+        stops: [
+          {
+            time: "Morning",
+            title: "Dwarkadhish Temple & Rukmini Devi Temple",
+            description:
+              "Begin with the morning Aarti at the Dwarkadhish Temple, followed by a visit to the Rukmini Devi Temple.",
+          },
+          {
+            time: "Afternoon",
+            title: "Nageshwar Jyotirlinga & Bet Dwarka",
+            description:
+              "Darshan at the Nageshwar Jyotirlinga, then a ferry ride from Okha to Bet Dwarka, with stops at Gopi Talav and Bhadkeshwar Mahadev Temple.",
+          },
+          {
+            time: "Evening",
+            title: "Leisure at Dwarka beach",
+            description:
+              "An easy evening by the sea or back at the temple — entirely at your own pace.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Dwarka to Somnath via Porbandar",
+        stops: [
+          {
+            time: "Morning",
+            title: "Drive to Somnath & Kirti Mandir",
+            description:
+              "A comfortable drive of about 250 km via Porbandar, stopping at Kirti Mandir — the birthplace of Mahatma Gandhi.",
+          },
+          {
+            time: "Afternoon",
+            title: "Somnath Jyotirlinga Temple",
+            description:
+              "Check in to your hotel, then darshan at the revered Somnath Jyotirlinga Temple.",
+          },
+          {
+            time: "Evening",
+            title: "Sound & Light Show",
+            description:
+              "A seated evening at the temple's celebrated sound-and-light show.",
+          },
+        ],
+      },
+      {
+        day: 4,
+        title: "Somnath to Diu",
+        stops: [
+          {
+            time: "Morning",
+            title: "Short drive to Diu",
+            description:
+              "An easy 90 km drive (2–3 hours) to the island town of Diu.",
+          },
+          {
+            time: "Afternoon",
+            title: "Diu Fort, Naida Caves & St. Paul's Church",
+            description:
+              "Compact, gentle sightseeing of Diu's Portuguese-era fort, the Naida Caves, St. Paul's Church and the INS Khukri Memorial.",
+          },
+          {
+            time: "Evening",
+            title: "Sunset at Nagoa Beach",
+            description:
+              "Unwind with a relaxed sunset on Diu's most beautiful beach.",
+          },
+        ],
+      },
+      {
+        day: 5,
+        title: "Diu to Sasan Gir",
+        stops: [
+          {
+            time: "Morning",
+            title: "Drive to Sasan Gir",
+            description:
+              "A short 65 km drive (about 1.5 hours) to Sasan Gir, gateway to the last home of the Asiatic lion.",
+          },
+          {
+            time: "Afternoon",
+            title: "Gir National Park safari",
+            description:
+              "A safari through Gir National Park (morning or afternoon slot, subject to booking), with a visit to Devaliya Park if open.",
+          },
+          {
+            time: "Evening",
+            title: "Relax at the resort",
+            description:
+              "Gentle nature walks and resort activities — an easy evening in the forest air.",
+          },
+        ],
+      },
+      {
+        day: 6,
+        title: "Sasan Gir to Ahmedabad",
+        stops: [
+          {
+            time: "Morning",
+            title: "Drive to Ahmedabad",
+            description:
+              "A comfortable drive of about 375 km back to Ahmedabad, with an optional en-route stop at Junagadh — Uparkot Fort and Mahabat Maqbara — if time permits.",
+          },
+          {
+            time: "Evening",
+            title: "Check-in at Ahmedabad",
+            description:
+              "Arrive in Ahmedabad by evening, check in and rest.",
+          },
+        ],
+      },
+      {
+        day: 7,
+        title: "Ahmedabad — departure",
+        stops: [
+          {
+            time: "Morning",
+            title: "Local sightseeing & departure",
+            description:
+              "After a relaxed breakfast, enjoy some easy local Ahmedabad sightseeing before your onward departure.",
+          },
+        ],
+      },
+    ],
+    priceIncludes: [
+      "Accommodation for 6 nights in 3★–4★ hotels (Dwarka, Somnath, Diu, Sasan Gir & Ahmedabad).",
+      "Daily breakfast and dinner at the hotels.",
+      "Private AC tempo traveller for all transfers and sightseeing.",
+      "All sightseeing as per the itinerary.",
+      "Assistance at all arrival and departure points.",
+      "All taxes included.",
+    ],
+    priceExcludes: [
+      "Airfare or train fare to and from Ahmedabad (land package only).",
+      "Lunches and meals other than specified.",
+      "Gir safari permit and jeep charges.",
+      "New Year, Christmas and Diwali gala dinner charges, if any.",
+      "Transfers and sightseeing other than specified.",
+      "Peak-season surcharges.",
+      "Any other expenses of a personal nature.",
+    ],
+  },
+
+  "sri-lanka": {
+    slug: "sri-lanka",
+    name: "Sri Lanka",
+    title: "Sri Lanka — Kandy, Nuwara Eliya, Bentota & Colombo",
+    image: "/images/destinations/sigiriya-rock-sunset.jpg",
+    heroImages: [
+      "/images/destinations/sigiriya-rock-sunset.jpg",
+      "/images/destinations/galle-lighthouse-coast.jpg",
+      "/images/destinations/ella-train-tea-country.jpg",
+    ],
+    durationLabel: "6 Nights · 7 Days",
+    datesLabel: "16 – 22 January 2026",
+    packageType: "Land package only",
+    mealsLabel: "Breakfast & dinner included",
+    fromCity: "Colombo",
+    placesCovered: ["Kandy", "Nuwara Eliya", "Bentota", "Colombo"],
+    genEvScore: 83,
+    priceFromInr: 42800,
+    whyTourWithMarzi: WHY_TOUR,
+    highlights: [
+      {
+        term: "Temple of the Tooth Relic",
+        description:
+          "Kandy's sacred Temple of the Tooth, the Royal Botanical Garden and a traditional cultural dance show.",
+      },
+      {
+        term: "Little England of Sri Lanka",
+        description:
+          "Nuwara Eliya's tea estates, waterfalls and colonial charm — Pedro Tea Factory, Gregory Lake and Victoria Park.",
+      },
+      {
+        term: "Two relaxed nights in Bentota",
+        description:
+          "A Madu River boat safari, the turtle hatchery and a full leisure day on golden beaches.",
+      },
+      {
+        term: "Pinnawala Elephant Orphanage",
+        description:
+          "An en-route stop to watch rescued elephants at one of the world's best-known orphanages.",
+      },
+      {
+        term: "Colombo in a day",
+        description:
+          "Galle Face Green, Gangaramaya Temple, Independence Square, Lotus Tower and easy mall stops.",
+      },
+      {
+        term: "Senior-friendly travel",
+        description:
+          "Private AC coach with an English-speaking guide throughout, comfortable hotels and an unhurried pace.",
+      },
+    ],
+    days: [
+      {
+        day: 1,
+        title: "Arrive Colombo — drive to Kandy",
+        stops: [
+          {
+            time: "On arrival",
+            title: "Airport welcome & drive to Kandy",
+            description:
+              "A warm welcome at Bandaranaike International Airport, then a comfortable private transfer to Kandy (about 101 km, under 3 hours).",
+          },
+          {
+            time: "En route",
+            title: "Pinnawala Elephant Orphanage",
+            description:
+              "Stop at the famous Pinnawala Elephant Orphanage to watch the elephants up close (entrance fee payable directly).",
+          },
+          {
+            time: "Evening",
+            title: "Check-in at Kandy",
+            description:
+              "Arrive in Kandy, check in to your hotel and relax for the evening.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Kandy city tour",
+        stops: [
+          {
+            time: "Morning",
+            title: "Temple of the Tooth & Royal Botanical Garden",
+            description:
+              "After breakfast, visit the Temple of the Tooth Relic Museum and stroll the Royal Botanical Garden at an easy pace.",
+          },
+          {
+            time: "Afternoon",
+            title: "Spice garden, viewpoints & craft centres",
+            description:
+              "A spice garden with a herbal massage, Kandy View Point, the gem museum, wood-carving centre and batik factory.",
+          },
+          {
+            time: "Evening",
+            title: "Cultural dance show",
+            description:
+              "A seated evening performance of traditional Kandyan dance before returning to your hotel.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Kandy to Nuwara Eliya",
+        stops: [
+          {
+            time: "Morning",
+            title: "Scenic drive to Little England",
+            description:
+              "Check out after breakfast and drive to Nuwara Eliya (about 76 km, 2.5 hours), stopping at Ramboda Waterfalls and the Pedro Tea Factory.",
+          },
+          {
+            time: "Afternoon",
+            title: "Nuwara Eliya city tour",
+            description:
+              "Victoria Park, Gregory Lake, the colonial-era post office, Seetha Amman and Hanuman temples, and a strawberry farm.",
+          },
+        ],
+      },
+      {
+        day: 4,
+        title: "Nuwara Eliya to Bentota",
+        stops: [
+          {
+            time: "Morning",
+            title: "Drive to the coast",
+            description:
+              "A comfortable private transfer to Bentota (about 211 km) with breaks en route, arriving to the beautiful coastal air.",
+          },
+          {
+            time: "Afternoon",
+            title: "Madu River boat safari & turtle hatchery",
+            description:
+              "A gentle boat safari on the Madu River, then the turtle hatchery and a cinnamon factory visit.",
+          },
+        ],
+      },
+      {
+        day: 5,
+        title: "Bentota at leisure",
+        stops: [
+          {
+            time: "All day",
+            title: "Beach day",
+            description:
+              "A full free day to relax by the beach, enjoy the resort or try optional water sports at your own pace.",
+          },
+        ],
+      },
+      {
+        day: 6,
+        title: "Bentota to Colombo",
+        stops: [
+          {
+            time: "Morning",
+            title: "Drive to Colombo",
+            description:
+              "Check out after breakfast for a short drive to Colombo (about 81 km, under 2 hours).",
+          },
+          {
+            time: "Afternoon",
+            title: "Colombo city tour",
+            description:
+              "Galle Face Green, Gangaramaya and Seema Malaka temples, Independence Square, the Red Mosque, Lotus Tower and relaxed shopping stops for Ceylon tea and handicrafts.",
+          },
+        ],
+      },
+      {
+        day: 7,
+        title: "Departure",
+        stops: [
+          {
+            time: "Morning",
+            title: "Check-out & airport transfer",
+            description:
+              "A relaxed breakfast before your private transfer to Bandaranaike International Airport (about 40 minutes) for your onward flight.",
+          },
+        ],
+      },
+    ],
+    priceIncludes: [
+      "Accommodation for 6 nights on double-sharing basis (Kandy, Nuwara Eliya, Bentota & Colombo).",
+      "Daily breakfast and dinner at the hotels.",
+      "All transfers in a private AC coach with an English-speaking tour guide.",
+      "Full city tours of Kandy, Nuwara Eliya, Bentota and Colombo.",
+      "One 500ml water bottle per person per day on tour.",
+      "Wheelchair assistance on request & 24-hour customer care.",
+    ],
+    priceExcludes: [
+      "Airfare to and from Colombo (land package only).",
+      "Entrance fees at monuments and attractions.",
+      "Lunches and meals other than specified.",
+      "2% TCS (refundable in your ITR).",
+      "New Year and Christmas gala dinner charges, if any.",
+      "Transfers and sightseeing other than specified.",
+      "Peak-season surcharges.",
+      "Any other expenses of a personal nature.",
+    ],
+  },
+
+  andaman: {
+    slug: "andaman",
+    name: "Andaman",
+    title: "Andaman — Port Blair, Havelock & Neil Island",
+    image: "/images/destinations/andaman-sunset-bay.jpg",
+    heroImages: [
+      "/images/destinations/andaman-sunset-bay.jpg",
+      "/images/destinations/andaman-island-pier.jpg",
+      "/images/destinations/andaman-beach-boat.jpg",
+    ],
+    durationLabel: "5 Nights · 6 Days",
+    datesLabel: "14 – 19 February 2027",
+    packageType: "Land package only",
+    mealsLabel: "Breakfast & dinner included",
+    fromCity: "Port Blair",
+    placesCovered: ["Port Blair", "Havelock", "Neil Island"],
+    genEvScore: 85,
+    priceFromInr: 63000,
+    whyTourWithMarzi: WHY_TOUR,
+    highlights: [
+      {
+        term: "Radhanagar Beach",
+        description:
+          "Havelock's world-famous white-sand beach — consistently rated among Asia's best — with two full nights on the island.",
+      },
+      {
+        term: "Cellular Jail Sound & Light Show",
+        description:
+          "The moving story of India's freedom struggle, told under the stars at the historic Cellular Jail — fully seated.",
+      },
+      {
+        term: "Island hopping by private ferry",
+        description:
+          "Comfortable cruise ferries (Makruzz / Nautika class) connect Port Blair, Havelock and Neil Island — no long drives.",
+      },
+      {
+        term: "Elephant Beach by speedboat",
+        description:
+          "A speedboat ride to Elephant Beach's clear waters and coral — water activities optional, at your own pace.",
+      },
+      {
+        term: "Neil Island & the Natural Bridge",
+        description:
+          "Laxmanpur and Bharatpur beaches and the famous Natural Bridge rock formation on laid-back Neil Island.",
+      },
+      {
+        term: "All permits handled",
+        description:
+          "Entry permits, tickets and forest permits are all arranged — 4★ stays and private vehicles throughout.",
+      },
+    ],
+    days: [
+      {
+        day: 1,
+        title: "Arrive Port Blair — Ross Island & Cellular Jail",
+        stops: [
+          {
+            time: "On arrival",
+            title: "Airport pickup & Ross Island",
+            description:
+              "Arrive at Port Blair airport and transfer to your hotel, then take a boat across to historic Ross Island.",
+          },
+          {
+            time: "Afternoon",
+            title: "Cellular Jail",
+            description:
+              "Visit the Cellular Jail, the poignant national memorial of India's freedom struggle.",
+          },
+          {
+            time: "Evening",
+            title: "Sound & Light Show",
+            description:
+              "A seated evening show at the Cellular Jail that brings its history to life.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Ferry to Havelock — Radhanagar Beach",
+        stops: [
+          {
+            time: "Morning",
+            title: "Private ferry to Havelock",
+            description:
+              "After breakfast, a comfortable cruise ferry to Havelock Island (about 1.5 hours).",
+          },
+          {
+            time: "Afternoon",
+            title: "Radhanagar Beach",
+            description:
+              "An easy afternoon at Radhanagar Beach — white sand, turquoise water and a spectacular sunset.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Elephant Beach",
+        stops: [
+          {
+            time: "Morning",
+            title: "Speedboat to Elephant Beach",
+            description:
+              "A short speedboat ride to Elephant Beach, known for its shallow coral and clear waters.",
+          },
+          {
+            time: "Afternoon",
+            title: "Beach at leisure",
+            description:
+              "Enjoy the beach and optional water activities at your own cost, then return to your Havelock resort.",
+          },
+        ],
+      },
+      {
+        day: 4,
+        title: "Ferry to Neil Island",
+        stops: [
+          {
+            time: "Morning",
+            title: "Private ferry to Neil Island",
+            description:
+              "After breakfast, a one-hour cruise ferry to quiet, green Neil Island.",
+          },
+          {
+            time: "Afternoon",
+            title: "Beaches & the Natural Bridge",
+            description:
+              "Visit Laxmanpur Beach, Bharatpur Beach and the famous Natural Bridge rock formation.",
+          },
+        ],
+      },
+      {
+        day: 5,
+        title: "Return to Port Blair — Chidiyatapu sunset",
+        stops: [
+          {
+            time: "Morning",
+            title: "Ferry back to Port Blair",
+            description:
+              "Check out and cruise back to Port Blair (about 1 hour 15 minutes).",
+          },
+          {
+            time: "Evening",
+            title: "Chidiyatapu Sunset Point",
+            description:
+              "Drive to Chidiyatapu, the 'bird island', for one of the Andamans' most beautiful sunsets.",
+          },
+        ],
+      },
+      {
+        day: 6,
+        title: "Departure",
+        stops: [
+          {
+            time: "Morning",
+            title: "Check-out & airport transfer",
+            description:
+              "A relaxed breakfast before your transfer to Port Blair airport for the onward journey home.",
+          },
+        ],
+      },
+    ],
+    priceIncludes: [
+      "5 nights in 4★ hotels on twin-sharing — Port Blair (2), Havelock (2) & Neil Island (1).",
+      "Buffet breakfast and dinner daily.",
+      "Private cruise ferries (Makruzz / Nautika / Green Ocean class) for all inter-island transfers.",
+      "Speedboat transfers to Elephant Beach.",
+      "All entry permits, tickets and forest-area permits (except camera fees).",
+      "Private AC vehicle for airport, harbour and sightseeing transfers.",
+    ],
+    priceExcludes: [
+      "Airfare to and from Port Blair (land package only).",
+      "Lunches and meals other than specified.",
+      "Water sports and activities at the beaches.",
+      "Camera fees at monuments and parks.",
+      "New Year and Christmas gala dinner charges, if any.",
+      "Transfers and sightseeing other than specified.",
       "Peak-season surcharges.",
       "Any other expenses of a personal nature.",
     ],

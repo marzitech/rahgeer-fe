@@ -61,6 +61,30 @@ export const DESTINATIONS: HomeDestination[] = [
     cta: "View packages",
     priceFromInr: 390000,
   },
+  {
+    name: "Gujarat",
+    slug: "gujarat",
+    image: "/images/destinations/somnath-temple-sunset.jpg",
+    tags: ["India", "Spiritual"],
+    cta: "View packages",
+    priceFromInr: 38400,
+  },
+  {
+    name: "Sri Lanka",
+    slug: "sri-lanka",
+    image: "/images/destinations/sigiriya-rock-sunset.jpg",
+    tags: ["International", "First International Trip", "Beaches"],
+    cta: "View packages",
+    priceFromInr: 42800,
+  },
+  {
+    name: "Andaman",
+    slug: "andaman",
+    image: "/images/destinations/andaman-sunset-bay.jpg",
+    tags: ["India", "Beaches"],
+    cta: "View packages",
+    priceFromInr: 63000,
+  },
   // --- Travel guides / sample itineraries ---------------------------------
   // TODO(assets): most of these reuse placeholder photos — swap in real
   // destination images under public/images/destinations/.
@@ -100,13 +124,6 @@ export const DESTINATIONS: HomeDestination[] = [
     cta: "Plan this trip",
   },
   {
-    name: "Gujarat",
-    slug: "gujarat",
-    image: "/images/destinations/rajasthan.jpg",
-    tags: ["India", "Spiritual"],
-    cta: "Plan this trip",
-  },
-  {
     name: "Sikkim & Darjeeling",
     slug: "sikkim-darjeeling",
     image: "/images/home/review-trip-2.jpg",
@@ -125,13 +142,6 @@ export const DESTINATIONS: HomeDestination[] = [
     slug: "kerala",
     image: "/images/destinations/kerala.jpg",
     tags: ["India", "Wellness", "Beaches"],
-    cta: "Plan this trip",
-  },
-  {
-    name: "Sri Lanka",
-    slug: "sri-lanka",
-    image: "/images/destinations/vietnam.jpg",
-    tags: ["International", "First International Trip", "Beaches"],
     cta: "Plan this trip",
   },
   {
