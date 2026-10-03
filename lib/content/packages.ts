@@ -28,7 +28,7 @@ export type PackageContent = {
   /** Optional extra hero photos — the detail hero cycles through these. */
   heroImages?: string[];
   durationLabel: string; // "4 Nights · 5 Days"
-  datesLabel: string; // "25 – 29 September 2026"
+  datesLabel: string; // Month only, e.g. "September" or "April · Cherry Blossom Season"
   packageType: string; // "Land package only" | "Flights from Bangalore included"
   mealsLabel: string; // "All meals included"
   fromCity?: string;
@@ -83,7 +83,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
     title: "Kashmir — Srinagar, Pahalgam & Gulmarg",
     image: "/images/destinations/kashmir.jpg",
     durationLabel: "4 Nights · 5 Days",
-    datesLabel: "25 – 29 September",
+    datesLabel: "September",
     packageType: "Land package only",
     mealsLabel: "All meals included",
     placesCovered: ["Srinagar", "Pahalgam", "Gulmarg"],
@@ -224,7 +224,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/ayodhya-riverfront.jpg",
     ],
     durationLabel: "4 Nights · 5 Days",
-    datesLabel: "28 September – 2 October",
+    datesLabel: "September – October",
     packageType: "Land package only",
     mealsLabel: "Breakfast & select meals",
     placesCovered: ["Ayodhya", "Varanasi", "Sarnath"],
@@ -381,7 +381,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/halong-bay-viewpoint.jpg",
     ],
     durationLabel: "8 Nights · 9 Days",
-    datesLabel: "17 – 26 November",
+    datesLabel: "November",
     packageType: "Flights from Bangalore included",
     mealsLabel: "All meals & all flights included",
     fromCity: "Bangalore",
@@ -581,7 +581,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/japan.jpg",
     ],
     durationLabel: "8 Nights · 9 Days",
-    datesLabel: "Early April · Cherry Blossom Season",
+    datesLabel: "April · Cherry Blossom Season",
     packageType: "Flights from Bangalore included",
     mealsLabel: "All meals included",
     placesCovered: [
@@ -798,7 +798,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/rann-camel-caravan.jpg",
     ],
     durationLabel: "6 Nights · 7 Days",
-    datesLabel: "10 – 16 December 2026",
+    datesLabel: "December · Rann of Kutch Season",
     packageType: "Land package only",
     mealsLabel: "Breakfast & dinner included",
     fromCity: "Ahmedabad",
@@ -1021,7 +1021,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/ella-train-tea-country.jpg",
     ],
     durationLabel: "6 Nights · 7 Days",
-    datesLabel: "16 – 22 January 2026",
+    datesLabel: "January",
     packageType: "Land package only",
     mealsLabel: "Breakfast & dinner included",
     fromCity: "Colombo",
@@ -1220,7 +1220,7 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "/images/destinations/andaman-beach-boat.jpg",
     ],
     durationLabel: "5 Nights · 6 Days",
-    datesLabel: "14 – 19 February 2027",
+    datesLabel: "February",
     packageType: "Land package only",
     mealsLabel: "Breakfast & dinner included",
     fromCity: "Port Blair",
@@ -1383,6 +1383,201 @@ export const PACKAGE_CONTENT: Record<string, PackageContent> = {
       "Lunches and meals other than specified.",
       "Water sports and activities at the beaches.",
       "Camera fees at monuments and parks.",
+      "New Year and Christmas gala dinner charges, if any.",
+      "Transfers and sightseeing other than specified.",
+      "Peak-season surcharges.",
+      "Any other expenses of a personal nature.",
+    ],
+  },
+
+  singapore: {
+    slug: "singapore",
+    name: "Singapore",
+    title: "Singapore with Cruise — City, Sentosa & Genting Dream",
+    image: "/images/destinations/singapore-merlion-sunset.jpg",
+    heroImages: [
+      "/images/destinations/singapore-merlion-sunset.jpg",
+      "/images/destinations/singapore-marina-bay.jpg",
+      "/images/destinations/singapore-gardens-bay.jpg",
+    ],
+    durationLabel: "6 Nights · 7 Days",
+    datesLabel: "March",
+    packageType: "Land package only",
+    mealsLabel: "All meals included",
+    fromCity: "Singapore",
+    placesCovered: [
+      "Singapore City",
+      "Sentosa Island",
+      "Universal Studios",
+      "Gardens by the Bay",
+      "Genting Dream Cruise",
+    ],
+    genEvScore: 88,
+    priceFromInr: 106800,
+    whyTourWithMarzi: WHY_TOUR,
+    highlights: [
+      {
+        term: "2-night Genting Dream cruise",
+        description:
+          "A Balcony Stateroom on the Genting Dream with all meals on board — including Indian and Jain options at The Lido.",
+      },
+      {
+        term: "Universal Studios Singapore",
+        description:
+          "A full day at Resorts World Sentosa's famous theme park, with a meal coupon included.",
+      },
+      {
+        term: "Singapore Night Safari",
+        description:
+          "A seated tram ride through the world's first nocturnal wildlife park on your very first evening.",
+      },
+      {
+        term: "Sentosa 4-in-1 experience",
+        description:
+          "Singapore Cable Car, Wings of Time and Madame Tussauds in one easy, well-paced day.",
+      },
+      {
+        term: "Gardens by the Bay & Marina Bay Sands",
+        description:
+          "Cloud Forest, Flower Dome and the Supertree Grove, plus the Marina Bay Sands SkyPark.",
+      },
+      {
+        term: "Visa & Indian meals handled",
+        description:
+          "Singapore visa included, daily Indian lunches and dinners, and private transfers throughout.",
+      },
+    ],
+    days: [
+      {
+        day: 1,
+        title: "Arrive Singapore — Night Safari",
+        stops: [
+          {
+            time: "On arrival",
+            title: "Airport welcome & hotel check-in",
+            description:
+              "Meet and greet at Singapore Airport, private transfer to your hotel, then time to settle in and relax.",
+          },
+          {
+            time: "Evening",
+            title: "Singapore Night Safari",
+            description:
+              "A gentle tram ride through the famous Night Safari to see nocturnal wildlife, followed by dinner at the Courtyard Restaurant.",
+          },
+        ],
+      },
+      {
+        day: 2,
+        title: "Universal Studios Singapore",
+        stops: [
+          {
+            time: "Morning",
+            title: "Full day at Universal Studios",
+            description:
+              "After breakfast, a full day at Universal Studios on Sentosa — rides, shows and themed zones at your own pace, with a SGD 20 meal coupon for lunch.",
+          },
+          {
+            time: "Evening",
+            title: "Indian dinner",
+            description:
+              "Dinner at an Indian restaurant before returning to your hotel.",
+          },
+        ],
+      },
+      {
+        day: 3,
+        title: "Sentosa Island 4-in-1",
+        stops: [
+          {
+            time: "Morning",
+            title: "Cable car to Sentosa",
+            description:
+              "Ride the Singapore Cable Car across to Sentosa and visit Madame Tussauds, with a SGD 20 meal coupon for lunch.",
+          },
+          {
+            time: "Evening",
+            title: "Wings of Time",
+            description:
+              "The spectacular seaside light-and-water show, fully seated, then dinner at an Indian restaurant.",
+          },
+        ],
+      },
+      {
+        day: 4,
+        title: "Gardens by the Bay & Marina Bay Sands",
+        stops: [
+          {
+            time: "Morning",
+            title: "Morning at leisure",
+            description:
+              "A relaxed morning to rest or explore the neighbourhood, with lunch at an Indian restaurant.",
+          },
+          {
+            time: "Afternoon",
+            title: "Cloud Forest, Flower Dome & SkyPark",
+            description:
+              "Gardens by the Bay — Cloud Forest and Flower Dome with Jurassic World — then the Supertree Grove and Marina Bay Sands SkyPark views.",
+          },
+        ],
+      },
+      {
+        day: 5,
+        title: "City tour — cruise embarkation",
+        stops: [
+          {
+            time: "Morning",
+            title: "Singapore city tour",
+            description:
+              "Merlion Park, Marina Bay, a Singapore Flyer photo stop, Chinatown, Little India, the Civic District and Orchard Road, with lunch at an Indian restaurant.",
+          },
+          {
+            time: "Afternoon",
+            title: "Board the Genting Dream",
+            description:
+              "Private transfer to the cruise terminal, easy check-in assistance and embarkation. Settle into your Balcony Stateroom.",
+          },
+        ],
+      },
+      {
+        day: 6,
+        title: "A day at sea",
+        stops: [
+          {
+            time: "All day",
+            title: "Cruise at leisure",
+            description:
+              "A full day on board — pools, shows, entertainment and unlimited included meals, with Indian and Jain options available.",
+          },
+        ],
+      },
+      {
+        day: 7,
+        title: "Disembark & departure",
+        stops: [
+          {
+            time: "Morning",
+            title: "Disembarkation & airport transfer",
+            description:
+              "Breakfast on board, then disembark and transfer to Singapore Airport for your onward flight home.",
+          },
+        ],
+      },
+    ],
+    priceIncludes: [
+      "4 nights at Hotel Boss Singapore with daily breakfast.",
+      "2-night Genting Dream cruise in a Balcony Stateroom with all meals & port charges.",
+      "4 lunches & 4 dinners at Indian restaurants in Singapore.",
+      "Singapore visa.",
+      "Night Safari with tram ride & dinner.",
+      "Universal Studios Singapore with SGD 20 meal coupon.",
+      "Sentosa 4-in-1 — Cable Car, Wings of Time & Madame Tussauds — with SGD 20 meal coupon.",
+      "Gardens by the Bay (Cloud Forest + Flower Dome) & Marina Bay Sands SkyPark (non-peak).",
+      "Singapore city tour and private airport & cruise-terminal transfers.",
+    ],
+    priceExcludes: [
+      "Airfare to and from Singapore (land package only).",
+      "2% TCS (refundable in your ITR).",
+      "Cruise gratuities.",
       "New Year and Christmas gala dinner charges, if any.",
       "Transfers and sightseeing other than specified.",
       "Peak-season surcharges.",

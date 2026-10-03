@@ -85,6 +85,14 @@ export const DESTINATIONS: HomeDestination[] = [
     cta: "View packages",
     priceFromInr: 63000,
   },
+  {
+    name: "Singapore",
+    slug: "singapore",
+    image: "/images/destinations/singapore-merlion-sunset.jpg",
+    tags: ["International", "First International Trip"],
+    cta: "View packages",
+    priceFromInr: 106800,
+  },
   // --- Travel guides / sample itineraries ---------------------------------
   // TODO(assets): most of these reuse placeholder photos — swap in real
   // destination images under public/images/destinations/.
