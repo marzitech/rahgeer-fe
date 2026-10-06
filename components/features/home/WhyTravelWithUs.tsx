@@ -37,33 +37,33 @@ const ICONS: Record<string, LucideIcon> = {
 
 export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
   return (
-    <section className="bg-cream py-12 sm:py-16">
+    <section className="bg-cream-dark pt-4 pb-14 sm:pb-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
-          <h2 className="font-display text-2xl font-bold text-brand sm:text-3xl">
+          <h2 className="font-display text-[1.75rem] font-extrabold text-brand sm:text-4xl">
             Why travel with us?
           </h2>
-          <p className="mt-2 text-sm text-ink/70">
+          <p className="mt-2 text-sm text-ink/60">
             From Planning to Booking. For all your Travel Needs
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <ul className="space-y-3">
+        <div className="mt-10 grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <ul className="space-y-4">
             {features.map((feature) => {
               const Icon = ICONS[feature.icon] ?? UserRound;
               return (
                 <li
                   key={feature.id}
-                  className="flex gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-black/5"
+                  className="flex items-start gap-4 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-black/5"
                 >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
-                    <Icon className="size-4" aria-hidden />
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-cream-dark text-brand">
+                    <Icon className="size-[1.1rem]" aria-hidden />
                   </span>
-                  <div>
-                    <h3 className="text-sm font-bold text-brand">{feature.title}</h3>
+                  <div className="min-w-0">
+                    <h3 className="text-[0.95rem] font-bold text-brand">{feature.title}</h3>
                     {feature.description ? (
-                      <p className="mt-0.5 text-xs leading-relaxed text-ink/70">
+                      <p className="mt-1 text-[0.8rem] leading-relaxed text-ink/60">
                         {feature.description}
                       </p>
                     ) : null}
@@ -82,8 +82,8 @@ export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
 
 function ExpertCard() {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-brand">
-      <div className="relative h-56 sm:h-72">
+    <div className="relative overflow-hidden rounded-3xl bg-brand">
+      <div className="relative h-64 sm:h-[22rem]">
         <Image
           src="/images/home/travel-mitr-portrait.jpg"
           alt="A Marzi travel expert"
@@ -93,8 +93,8 @@ function ExpertCard() {
         />
       </div>
 
-      <div className="m-4 rounded-xl bg-white p-4 shadow-sm">
-        <h3 className="font-display text-lg font-bold text-ink">Talk to an Expert</h3>
+      <div className="m-4 rounded-2xl bg-white p-5 shadow-sm">
+        <h3 className="font-display text-xl font-bold text-ink">Talk to an Expert</h3>
         <p className="mt-1 text-xs leading-relaxed text-ink/70">
           Our travel experts are available 24/7 to help you plan your dream trip.
         </p>

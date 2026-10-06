@@ -17,6 +17,12 @@
   --cream-dark: #f7edd8;
   --gold: #ffc61a; /* marzi-gold accent */
   --ink: #27010f; /* near-black plum (dark CTA card) */
+
+  /* Home redesign (Oct 2026) */
+  --sand: #faf4ef; /* hero band — lighter than cream-dark */
+  --sage: #5ea98e; /* the round "Coolest Community For 50+" badge */
+  --price: #0b7a5d; /* trip prices — deliberately NOT brand magenta */
+  --navy: #15151f; /* section headings that aren't brand-coloured */
 }
 
 @theme inline {
@@ -32,6 +38,10 @@
   --color-cream-dark: var(--cream-dark);
   --color-gold: var(--gold);
   --color-ink: var(--ink);
+  --color-sand: var(--sand);
+  --color-sage: var(--sage);
+  --color-price: var(--price);
+  --color-navy: var(--navy);
 
   --font-sans: var(--font-lato);
   --font-display: var(--font-playfair);

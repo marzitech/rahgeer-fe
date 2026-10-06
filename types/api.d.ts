@@ -756,8 +756,7 @@ export interface components {
         HeroBanner: {
             /** Format: uuid */
             readonly id: string;
-            /** Format: uri */
-            image_url: string;
+            image_url?: string;
             alt?: string;
             headline?: string;
             caption?: string;
@@ -978,7 +977,6 @@ export interface components {
         PatchedHeroBanner: {
             /** Format: uuid */
             readonly id?: string;
-            /** Format: uri */
             image_url?: string;
             alt?: string;
             headline?: string;
@@ -1409,7 +1407,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["HeroBanner"];
                 "application/x-www-form-urlencoded": components["schemas"]["HeroBanner"];
@@ -1457,7 +1455,7 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["HeroBanner"];
                 "application/x-www-form-urlencoded": components["schemas"]["HeroBanner"];

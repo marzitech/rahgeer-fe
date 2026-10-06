@@ -3,6 +3,7 @@ import {
   FALLBACK_FEATURES,
   FALLBACK_HERO_BANNERS,
   normalizeHomeContent,
+  splitCaption,
 } from "./home-content";
 
 describe("normalizeHomeContent", () => {
@@ -94,5 +95,36 @@ describe("normalizeHomeContent", () => {
 
     expect(content.heroBanners[0]).toMatchObject({ headline: "", badgeText: "", ctaHref: "" });
     expect(content.features[0]).toMatchObject({ description: "", icon: "" });
+  });
+});
+
+describe("splitCaption", () => {
+  it("marks the *starred* phrase so the design's accent colour can apply", () => {
+    expect(splitCaption("Mrs. & Mr. Pandya in Paris for their *30th Anniversary*")).toEqual([
+      { text: "Mrs. & Mr. Pandya in Paris for their ", emphasis: false },
+      { text: "30th Anniversary", emphasis: true },
+    ]);
+  });
+
+  it("leaves a caption with no stars as one plain run", () => {
+    expect(splitCaption("A quiet morning in Kyoto")).toEqual([
+      { text: "A quiet morning in Kyoto", emphasis: false },
+    ]);
+  });
+
+  it("handles an emphasis in the middle", () => {
+    expect(splitCaption("Their *silver jubilee* in Rome")).toEqual([
+      { text: "Their ", emphasis: false },
+      { text: "silver jubilee", emphasis: true },
+      { text: " in Rome", emphasis: false },
+    ]);
+  });
+
+  it("treats an unclosed star as ordinary text rather than eating the rest", () => {
+    expect(splitCaption("5 * 4 people")).toEqual([{ text: "5 * 4 people", emphasis: false }]);
+  });
+
+  it("returns nothing for an empty caption", () => {
+    expect(splitCaption("")).toEqual([]);
   });
 });

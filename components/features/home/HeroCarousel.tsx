@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { HeroBanner } from "@/lib/content/home-content";
+import { splitCaption, type HeroBanner } from "@/lib/content/home-content";
 import { cn } from "@/lib/utils";
 
 /**
@@ -39,20 +39,22 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
   const banner = banners[index];
 
   return (
-    <section className="bg-cream pt-6 pb-10 sm:pt-10">
-      <div className="mx-auto max-w-6xl px-4">
-        <h1 className="font-display text-center text-3xl font-bold text-brand sm:text-4xl lg:text-5xl">
-          Travel Confidently
-        </h1>
+    <section className="bg-sand pt-24 pb-6 md:pt-28">
+      <h1 className="font-display px-4 text-center text-[2rem] leading-tight font-extrabold text-brand sm:text-5xl">
+        Travel Confidently
+      </h1>
 
-        <div
-          className="relative mt-6 sm:mt-8"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocusCapture={() => setPaused(true)}
-          onBlurCapture={() => setPaused(false)}
-        >
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl sm:aspect-[21/9] sm:rounded-3xl">
+      <div
+        className="mt-6 sm:mt-8"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+      >
+        {/* Near-full-bleed, as the design has it: the banner is the page's
+            widest element, held off the edges by a small gutter only. */}
+        <div className="relative mx-auto max-w-[96rem] px-3 sm:px-4">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[21/9] sm:rounded-3xl">
             {banners.map((slide, i) => (
               <div
                 key={slide.id}
@@ -67,64 +69,75 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
                   alt={slide.alt || slide.headline || "Marzi Holidays"}
                   fill
                   priority={i === 0}
-                  sizes="(max-width: 1152px) 100vw, 1152px"
+                  sizes="100vw"
                   className="object-cover"
                 />
-                {/* Left-weighted scrim: the headline sits over the photo and
-                    has to stay readable whatever the photo is. */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
+                {/* A LIGHT wash, not a dark scrim: the headline is brand
+                    maroon in this design, so the left of the photo has to
+                    stay pale whatever photo ops uploads. */}
+                <div className="absolute inset-0 bg-gradient-to-r from-sand/95 from-0% via-sand/80 via-35% to-transparent to-75% sm:via-sand/75 sm:via-32% sm:to-70%" />
               </div>
             ))}
 
-            {/* Marzi Holidays lockup, top-left, as in the design. */}
-            <div className="absolute top-4 left-4 rounded-xl bg-white/95 px-3 py-2 sm:top-6 sm:left-6">
-              <p className="font-display text-sm leading-none font-bold text-brand sm:text-base">
+            {/* Thin inset frame, as drawn in the design. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-3 rounded-xl ring-1 ring-white/50 sm:inset-5 sm:rounded-2xl"
+            />
+
+            {/* Marzi Holidays lockup — a soft tan shape bleeding out of the
+                top-left corner rather than a floating card. */}
+            <div className="absolute top-0 left-0 rounded-br-[2rem] bg-sand/95 py-3 pr-7 pl-4 sm:py-4 sm:pr-10 sm:pl-6">
+              <p className="font-display text-base leading-none font-extrabold text-brand sm:text-xl">
                 marzi
               </p>
-              <p className="font-display text-sm leading-tight font-bold text-brand sm:text-base">
+              <p className="font-display text-base leading-tight font-extrabold text-brand sm:text-xl">
                 holidays
               </p>
-              <p className="mt-0.5 text-[0.5rem] tracking-[0.18em] text-brand/70 uppercase">
+              <p className="mt-1 text-[0.45rem] tracking-[0.2em] text-brand/70 uppercase sm:text-[0.55rem]">
                 Travel Confidently
               </p>
             </div>
 
             {banner.badgeText ? (
-              <span className="absolute top-1/2 right-4 flex size-20 -translate-y-1/2 items-center justify-center rounded-full bg-teal-600 p-2 text-center text-[0.55rem] leading-tight font-bold tracking-wide text-white uppercase sm:right-8 sm:size-24 sm:text-[0.6rem]">
+              <span className="absolute top-1/2 right-4 flex size-[4.5rem] -translate-y-1/2 items-center justify-center rounded-full bg-sage p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:right-10 sm:size-24 sm:text-[0.7rem]">
                 {banner.badgeText}
               </span>
             ) : null}
 
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-12">
-              <div className="max-w-xl">
-                {banner.headline ? (
-                  <p className="font-display text-xl leading-snug font-bold text-white sm:text-3xl lg:text-4xl">
-                    {banner.headline}
-                  </p>
-                ) : null}
-                {banner.ctaLabel && banner.ctaHref ? (
-                  <Link
-                    href={banner.ctaHref}
-                    className="mt-4 inline-flex rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
-                  >
-                    {banner.ctaLabel}
-                  </Link>
-                ) : null}
-              </div>
+            <div className="absolute inset-y-0 left-0 flex max-w-[78%] flex-col justify-center p-5 sm:max-w-[48%] sm:p-10 lg:p-14">
+              {banner.headline ? (
+                <p className="font-display text-xl leading-[1.15] font-extrabold text-brand sm:text-3xl lg:text-[2.6rem]">
+                  {banner.headline}
+                </p>
+              ) : null}
+              {banner.ctaLabel && banner.ctaHref ? (
+                <Link
+                  href={banner.ctaHref}
+                  className="mt-5 inline-flex w-fit rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
+                >
+                  {banner.ctaLabel}
+                </Link>
+              ) : null}
             </div>
 
             {banner.caption ? (
-              <p className="absolute right-4 bottom-4 max-w-[60%] rounded-lg bg-white/90 px-3 py-1.5 text-[0.65rem] text-ink sm:right-8 sm:bottom-8 sm:text-xs">
-                {banner.caption}
+              <p className="absolute right-4 bottom-4 max-w-[70%] rounded-xl bg-white/95 px-4 py-2 text-[0.7rem] text-ink shadow-sm sm:right-10 sm:bottom-8 sm:text-sm">
+                {splitCaption(banner.caption).map((run, i) => (
+                  <span key={i} className={run.emphasis ? "font-semibold text-brand" : undefined}>
+                    {run.text}
+                  </span>
+                ))}
               </p>
             ) : null}
           </div>
 
           {count > 1 ? (
-            <>
+            /* Controls sit below the banner — on the sand, not over the
+               photo, where they can never fight the artwork for contrast. */
+            <div className="mt-5 flex items-center justify-between">
               <CarouselArrow side="left" onClick={() => go(index - 1)} />
-              <CarouselArrow side="right" onClick={() => go(index + 1)} />
-              <div className="mt-4 flex justify-center gap-2">
+              <div className="flex gap-2">
                 {banners.map((slide, i) => (
                   <button
                     key={slide.id}
@@ -133,13 +146,14 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
                     aria-label={`Go to slide ${i + 1}`}
                     aria-current={i === index}
                     className={cn(
-                      "h-2 rounded-full transition-all",
-                      i === index ? "w-6 bg-brand" : "w-2 bg-brand/25 hover:bg-brand/40",
+                      "size-2 rounded-full transition-colors",
+                      i === index ? "bg-brand" : "bg-brand/20 hover:bg-brand/40",
                     )}
                   />
                 ))}
               </div>
-            </>
+              <CarouselArrow side="right" onClick={() => go(index + 1)} />
+            </div>
           ) : null}
         </div>
       </div>
@@ -154,12 +168,9 @@ function CarouselArrow({ side, onClick }: { side: "left" | "right"; onClick: () 
       type="button"
       onClick={onClick}
       aria-label={side === "left" ? "Previous slide" : "Next slide"}
-      className={cn(
-        "absolute top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-brand shadow-md transition-colors hover:bg-cream-dark sm:flex",
-        side === "left" ? "-left-5" : "-right-5",
-      )}
+      className="flex size-9 items-center justify-center rounded-full bg-white text-ink/70 shadow-sm ring-1 ring-black/5 transition-colors hover:bg-cream-dark sm:size-10"
     >
-      <Icon className="size-5" />
+      <Icon className="size-4 sm:size-5" />
     </button>
   );
 }

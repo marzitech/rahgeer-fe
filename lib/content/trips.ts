@@ -13,6 +13,7 @@ export type TripCard = {
   title: string;
   imageUrl: string;
   durationLabel: string;
+  groupSizeLabel: string;
   datesLabel: string;
   packageType: string;
   placesCovered: string[];
@@ -43,6 +44,7 @@ function toTrip(raw: unknown, index: number): TripCard | null {
     title: str(row.title),
     imageUrl: str(row.card_image_url),
     durationLabel: str(row.duration_label),
+    groupSizeLabel: str(row.group_size_label),
     datesLabel: str(row.dates_label),
     packageType: str(row.package_type),
     placesCovered: strList(row.places_covered),

@@ -134,3 +134,35 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
     features: features.length > 0 ? features : FALLBACK_FEATURES,
   };
 }
+
+export type CaptionRun = { text: string; emphasis: boolean };
+
+/**
+ * Split a caption into plain and emphasised runs.
+ *
+ * The design prints part of the hero caption in the brand colour — "…for
+ * their **30th Anniversary**". Which part is editorial, so the dashboard
+ * marks it by wrapping it in asterisks rather than the site guessing.
+ *
+ * Only balanced pairs count: a lone "*" is ordinary text, so a caption
+ * like "5 * 4 people" is not swallowed into an emphasis that never ends.
+ */
+export function splitCaption(caption: string): CaptionRun[] {
+  if (!caption) return [];
+
+  const runs: CaptionRun[] = [];
+  let rest = caption;
+
+  while (rest.length > 0) {
+    const open = rest.indexOf("*");
+    const close = open === -1 ? -1 : rest.indexOf("*", open + 1);
+    if (open === -1 || close === -1) break;
+
+    if (open > 0) runs.push({ text: rest.slice(0, open), emphasis: false });
+    runs.push({ text: rest.slice(open + 1, close), emphasis: true });
+    rest = rest.slice(close + 1);
+  }
+
+  if (rest.length > 0) runs.push({ text: rest, emphasis: false });
+  return runs;
+}

@@ -79,10 +79,16 @@ const SOCIALS = [
   { name: "LinkedIn", href: MARZI_SITE, Icon: LinkedinIcon },
 ];
 
-/** Purple footer: brand blurb, link columns, address, legal line. */
+/**
+ * Footer: brand blurb, link columns, address, legal line.
+ *
+ * Brand maroon rather than the purple bar marzi-web uses — the travel
+ * site carries the Marzi Holidays palette end to end, and the design puts
+ * the footer in the same wine as the hero headline.
+ */
 export function Footer() {
   return (
-    <footer id="footer" className="hide-in-app bg-marzi-purple text-white">
+    <footer id="footer" className="hide-in-app bg-brand text-white">
       <div className="mx-auto max-w-[1192px] px-4 py-14">
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div className="col-span-2 md:col-span-1">

@@ -21,7 +21,7 @@ const SHOWN = 4;
 
 export function FaqNumbered() {
   return (
-    <section id="faq" className="bg-cream py-12 sm:py-16">
+    <section id="faq" className="bg-sand py-12 sm:py-16">
       <div className="mx-auto max-w-4xl space-y-3 px-4">
         {FAQS.slice(0, SHOWN).map((faq, index) => (
           <FaqRow

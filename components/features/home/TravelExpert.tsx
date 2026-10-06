@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { cn } from "@/lib/utils";
@@ -56,9 +54,9 @@ const POLICIES = [
 export function TravelExpert() {
   return (
     <>
-      <section className="bg-cream pt-12 pb-8 text-center sm:pt-16">
+      <section className="bg-cream-dark pt-4 pb-10 text-center sm:pt-8">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="font-display text-2xl font-bold text-brand sm:text-3xl">
+          <h2 className="font-display text-[1.75rem] font-extrabold text-brand sm:text-4xl">
             Looking to travel?
           </h2>
           <p className="mt-2 text-sm text-ink/70">
@@ -123,9 +121,22 @@ export function TravelExpert() {
 
         <div className="bg-white px-4 py-10 sm:px-8 lg:py-14">
           <div className="mx-auto max-w-md lg:mr-auto lg:ml-8">
-            <ul className="space-y-1">
+            <ul className="space-y-5">
               {POLICIES.map((policy) => (
-                <PolicyRow key={policy.title} title={policy.title} body={policy.body} />
+                <li key={policy.title} className="flex gap-3">
+                  <span
+                    aria-hidden
+                    className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand"
+                  />
+                  <div>
+                    <h4 className="text-[0.7rem] font-bold tracking-[0.08em] text-ink uppercase">
+                      {policy.title}
+                    </h4>
+                    <p className="mt-1 text-[0.8rem] leading-relaxed text-ink/60">
+                      {policy.body}
+                    </p>
+                  </div>
+                </li>
               ))}
             </ul>
 
@@ -140,31 +151,5 @@ export function TravelExpert() {
         </div>
       </section>
     </>
-  );
-}
-
-function PolicyRow({ title, body }: { title: string; body: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <li className="border-b border-black/5 last:border-0">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        className="flex w-full items-center gap-3 py-3 text-left"
-      >
-        <span className="size-1.5 shrink-0 rounded-full bg-brand" aria-hidden />
-        <span className="flex-1 text-xs font-bold tracking-wide text-ink uppercase">
-          {title}
-        </span>
-        <ChevronDown
-          className={cn("size-4 shrink-0 text-ink/40 transition-transform", open && "rotate-180")}
-          aria-hidden
-        />
-      </button>
-      {open ? (
-        <p className="pb-3 pl-[1.125rem] text-xs leading-relaxed text-ink/70">{body}</p>
-      ) : null}
-    </li>
   );
 }

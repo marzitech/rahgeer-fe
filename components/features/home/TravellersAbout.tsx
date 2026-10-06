@@ -50,9 +50,9 @@ export function TravellersAbout() {
   const go = (next: number) => setActive(((next % count) + count) % count);
 
   return (
-    <section className="bg-cream pt-12 sm:pt-16">
+    <section className="bg-sand pt-12 sm:pt-16">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="font-display text-center text-2xl font-bold text-brand sm:text-3xl">
+        <h2 className="font-display text-center text-[1.75rem] font-extrabold text-brand sm:text-4xl">
           Our Travellers, About Us
         </h2>
       </div>
