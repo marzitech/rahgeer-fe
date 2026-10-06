@@ -1,7 +1,7 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FaqItem } from "./FaqItem";
 
-const FAQS = [
+export const FAQS = [
   {
     question: "Who is Marzi Holidays for?",
     answer:
