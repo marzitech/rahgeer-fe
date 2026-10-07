@@ -114,3 +114,33 @@ describe("itinerary stop images", () => {
     expect(pkg.days[0].stops[0].image).toBe("");
   });
 });
+
+describe("travel mitr", () => {
+  it("maps the assigned guide onto the page's shape", () => {
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      travel_mitr: {
+        name: "Naveen",
+        photo_url: "/images/figma/expert-portrait.png",
+        languages: "English · Hindi · Kannada",
+        trips_label: "150+ Trips completed",
+      },
+    })!;
+    expect(pkg.travelMitr).toEqual({
+      name: "Naveen",
+      photoUrl: "/images/figma/expert-portrait.png",
+      languages: "English · Hindi · Kannada",
+      tripsLabel: "150+ Trips completed",
+    });
+  });
+
+  it("is null when no guide is assigned, so the card can be hidden", () => {
+    expect(normalizePackageDetail({ ...ROW, travel_mitr: null })!.travelMitr).toBeNull();
+    expect(normalizePackageDetail(ROW)!.travelMitr).toBeNull();
+  });
+
+  it("ignores a guide with no name rather than rendering a blank card", () => {
+    const pkg = normalizePackageDetail({ ...ROW, travel_mitr: { name: "", photo_url: "x" } })!;
+    expect(pkg.travelMitr).toBeNull();
+  });
+});

@@ -66,7 +66,7 @@ export default async function PackagePage({
               priceFromInr={pkg.priceFromInr}
             />
           </div>
-          <PackageHighlights highlights={pkg.highlights} />
+          <PackageHighlights highlights={pkg.highlights} mitr={pkg.travelMitr} />
           <PackageItinerary days={pkg.days} />
         </main>
       ) : (

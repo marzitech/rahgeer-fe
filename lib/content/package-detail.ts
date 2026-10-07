@@ -23,6 +23,13 @@ export type PackageDay = {
 
 export type TermDescription = { term: string; description: string };
 
+export type TravelMitr = {
+  name: string;
+  photoUrl: string;
+  languages: string;
+  tripsLabel: string;
+};
+
 export type PackageDetail = {
   slug: string;
   name: string;
@@ -43,6 +50,8 @@ export type PackageDetail = {
   days: PackageDay[];
   priceIncludes: string[];
   priceExcludes: string[];
+  /** The guide who runs this tour; not every tour has one assigned. */
+  travelMitr: TravelMitr | null;
 };
 
 function str(v: unknown): string {
@@ -84,6 +93,20 @@ function dayList(v: unknown): PackageDay[] {
     }));
 }
 
+/** A Mitr needs a name to be worth showing; everything else is optional. */
+function toMitr(raw: unknown): TravelMitr | null {
+  if (!raw || typeof raw !== "object") return null;
+  const m = raw as Record<string, unknown>;
+  const name = str(m.name);
+  if (!name) return null;
+  return {
+    name,
+    photoUrl: str(m.photo_url),
+    languages: str(m.languages),
+    tripsLabel: str(m.trips_label),
+  };
+}
+
 export function normalizePackageDetail(payload: unknown): PackageDetail | null {
   if (!payload || typeof payload !== "object") return null;
   const row = payload as Record<string, unknown>;
@@ -122,5 +145,6 @@ export function normalizePackageDetail(payload: unknown): PackageDetail | null {
     days: dayList(content.days),
     priceIncludes: strList(content.price_includes),
     priceExcludes: strList(content.price_excludes),
+    travelMitr: toMitr(row.travel_mitr),
   };
 }
