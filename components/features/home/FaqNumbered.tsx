@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
-import { FAQS } from "./Faq";
+import type { FaqEntry } from "@/lib/content/home-content";
 
 /**
  * The numbered FAQ from the redesign.
@@ -19,13 +19,15 @@ import { FAQS } from "./Faq";
 
 const SHOWN = 4;
 
-export function FaqNumbered() {
+export function FaqNumbered({ items }: { items: FaqEntry[] }) {
+  if (items.length === 0) return null;
+
   return (
     <section id="faq" className="bg-sand py-12 sm:py-16">
       <div className="mx-auto max-w-4xl space-y-3 px-4">
-        {FAQS.slice(0, SHOWN).map((faq, index) => (
+        {items.slice(0, SHOWN).map((faq, index) => (
           <FaqRow
-            key={faq.question}
+            key={faq.id}
             number={index + 1}
             question={faq.question}
             answer={faq.answer}

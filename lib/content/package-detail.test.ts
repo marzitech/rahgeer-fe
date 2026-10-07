@@ -115,6 +115,75 @@ describe("itinerary stop images", () => {
   });
 });
 
+describe("what the price covers", () => {
+  it("keeps the icon the dashboard chose for each line", () => {
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      content: {
+        price_includes: [{ icon: "hotel", label: "Hotel stay" }],
+        price_excludes: [{ icon: "flight", label: "Flight tickets" }],
+      },
+    })!;
+
+    expect(pkg.priceIncludes).toEqual([{ icon: "hotel", label: "Hotel stay" }]);
+    expect(pkg.priceExcludes).toEqual([{ icon: "flight", label: "Flight tickets" }]);
+  });
+
+  it("reads a plain list of strings too", () => {
+    // The bundled fallback content for the original eight tours holds
+    // strings, and so does anything written straight to the API. An
+    // unlabelled line still beats dropping it.
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      content: { price_includes: ["All meals", "Private transfers"] },
+    })!;
+
+    expect(pkg.priceIncludes).toEqual([
+      { icon: "", label: "All meals" },
+      { icon: "", label: "Private transfers" },
+    ]);
+  });
+
+  it("drops a line with no words, which would render as an empty bullet", () => {
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      content: { price_includes: [{ icon: "hotel", label: "" }, "", { label: "Visa" }] },
+    })!;
+
+    expect(pkg.priceIncludes).toEqual([{ icon: "", label: "Visa" }]);
+  });
+});
+
+describe("the cancellation policy", () => {
+  it("maps each clause onto a heading and its wording", () => {
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      content: {
+        cancellation_policy: [
+          { title: "Booking & payments", body: "Full payment confirms your booking." },
+        ],
+      },
+    })!;
+
+    expect(pkg.cancellationPolicy).toEqual([
+      { title: "Booking & payments", body: "Full payment confirms your booking." },
+    ]);
+  });
+
+  it("is empty rather than undefined when a tour has none, so the section can be hidden", () => {
+    expect(normalizePackageDetail(ROW)!.cancellationPolicy).toEqual([]);
+  });
+
+  it("keeps a clause that has wording but no heading", () => {
+    const pkg = normalizePackageDetail({
+      ...ROW,
+      content: { cancellation_policy: [{ body: "Refunds take 14 days." }, {}] },
+    })!;
+
+    expect(pkg.cancellationPolicy).toEqual([{ title: "", body: "Refunds take 14 days." }]);
+  });
+});
+
 describe("travel mitr", () => {
   it("maps the assigned guide onto the page's shape", () => {
     const pkg = normalizePackageDetail({

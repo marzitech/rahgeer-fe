@@ -25,9 +25,16 @@ export type SiteFeature = {
   description: string;
 };
 
+export type FaqEntry = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
 export type HomeContent = {
   heroBanners: HeroBanner[];
   features: SiteFeature[];
+  faqs: FaqEntry[];
 };
 
 /** Shown when the backend has nothing published, or cannot be reached. */
@@ -77,6 +84,89 @@ export const FALLBACK_FEATURES: SiteFeature[] = [
   },
 ];
 
+/**
+ * The questions the site shipped with.
+ *
+ * Kept as the fallback rather than deleted: the accordion is the last
+ * thing on the page that answers "is this for me?", and an outage that
+ * empties it costs a booking. The dashboard's list wins whenever it has
+ * one.
+ */
+export const FALLBACK_FAQS: FaqEntry[] = [
+  {
+    id: "fallback-faq-0",
+    question: "Who is Marzi Holidays for?",
+    answer:
+      "People above 50 who want a comfortable, well-planned holiday — in India or abroad. We also help adult children plan trips for their parents. Every journey is shaped around your pace and comfort.",
+  },
+  {
+    id: "fallback-faq-1",
+    question: "What is a Travel Mitr?",
+    answer:
+      "Your Travel Mitr is a dedicated Relationship Manager who plans, books, and coordinates your entire holiday. One trusted person handles everything, from your first conversation until you're back home.",
+  },
+  {
+    id: "fallback-faq-2",
+    question: "Is trip planning really free?",
+    answer:
+      "Yes. Speaking to your Travel Mitr and planning your holiday costs nothing. You only pay for the bookings you confirm.",
+  },
+  {
+    id: "fallback-faq-3",
+    question: "What is the Pre-Travel Health Assessment?",
+    answer:
+      "Before you travel, we understand your health profile — medications, mobility, and any medical needs. This helps us plan a trip that is genuinely safe and comfortable for you. It's something most travel companies simply don't do.",
+  },
+  {
+    id: "fallback-faq-4",
+    question: "What happens if there's a medical emergency during the trip?",
+    answer:
+      "You're never on your own. Marzi offers 24x7 doctor-on-call support, and our Indian tour managers travel with a basic first-aid box. We also keep the nearest hospitals mapped along your route, so help is always close at hand.",
+  },
+  {
+    id: "fallback-faq-5",
+    question: "Will the hotels and transport be comfortable for seniors?",
+    answer:
+      "Yes. We choose hotels with lifts and easy access, and arrange comfortable transport with boarding assistance. Small details like walking distances and steps each day are planned around you, with a gentle, unhurried pace.",
+  },
+  {
+    id: "fallback-faq-6",
+    question: "Can Marzi cater to special dietary needs?",
+    answer:
+      "Absolutely. Whether you need diabetic, Jain, vegetarian, or low-salt meals, we plan your food around your requirements. So you never have to worry about what's on your plate, even far from home.",
+  },
+  {
+    id: "fallback-faq-7",
+    question: "Does Marzi handle visas, forex, insurance and paperwork?",
+    answer:
+      "Yes. Visa, travel insurance, forex, and documentation are all managed for you in one place. There are no hidden costs and no extra charge for visa processing — you always know exactly what you're paying for.",
+  },
+  {
+    id: "fallback-faq-8",
+    question: "Can I plan a holiday for my parents and stay updated?",
+    answer:
+      "Yes. Many families come to us to plan worry-free trips for their parents. We keep you informed through the journey, and reach out promptly in case of any emergency. So you have complete peace of mind, wherever you are.",
+  },
+  {
+    id: "fallback-faq-9",
+    question: "I've never travelled abroad before. Can Marzi still help?",
+    answer:
+      "Of course. We guide first-time travellers gently, with a pre-trip orientation covering packing, documents, and what to expect. Your Travel Mitr is beside you from your first question to your return home.",
+  },
+  {
+    id: "fallback-faq-10",
+    question: "Do I need travel insurance, and does Marzi arrange it?",
+    answer:
+      "Yes, we arrange travel insurance at the best available prices. We also explain in plain language exactly what it covers — including how pre-existing conditions work — so nothing is confusing. You travel fully protected, with no fine print surprises.",
+  },
+  {
+    id: "fallback-faq-11",
+    question: "Why should I trust Marzi Holidays?",
+    answer:
+      "Marzi is backed by Primus Senior Living and built on a care-first philosophy. We're not just a travel company — we plan around your health, comfort, and safety, long before you leave. That care continues at every step of your journey.",
+  },
+];
+
 /** Narrow an unknown value to a string without throwing on nulls/numbers. */
 function str(value: unknown): string {
   return typeof value === "string" ? value : "";
@@ -98,6 +188,16 @@ function toBanner(raw: unknown, index: number): HeroBanner | null {
     ctaLabel: str(row.cta_label),
     ctaHref: str(row.cta_href),
   };
+}
+
+function toFaq(raw: unknown, index: number): FaqEntry | null {
+  if (!raw || typeof raw !== "object") return null;
+  const row = raw as Record<string, unknown>;
+  const question = str(row.question);
+  // A row is its question; an answer with nothing to answer is a blank
+  // accordion header nobody can open.
+  if (!question) return null;
+  return { id: str(row.id) || `faq-${index}`, question, answer: str(row.answer) };
 }
 
 function toFeature(raw: unknown, index: number): SiteFeature | null {
@@ -128,10 +228,14 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
   const features = Array.isArray(root.features)
     ? root.features.map(toFeature).filter((f): f is SiteFeature => f !== null)
     : [];
+  const faqs = Array.isArray(root.faqs)
+    ? root.faqs.map(toFaq).filter((f): f is FaqEntry => f !== null)
+    : [];
 
   return {
     heroBanners: banners.length > 0 ? banners : FALLBACK_HERO_BANNERS,
     features: features.length > 0 ? features : FALLBACK_FEATURES,
+    faqs: faqs.length > 0 ? faqs : FALLBACK_FAQS,
   };
 }
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  FALLBACK_FAQS,
   FALLBACK_FEATURES,
   FALLBACK_HERO_BANNERS,
   normalizeHomeContent,
@@ -84,7 +85,33 @@ describe("normalizeHomeContent", () => {
       const content = normalizeHomeContent(payload);
       expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
       expect(content.features).toEqual(FALLBACK_FEATURES);
+      expect(content.faqs).toEqual(FALLBACK_FAQS);
     }
+  });
+
+  it("maps the FAQ list the dashboard publishes", () => {
+    const content = normalizeHomeContent({
+      faqs: [
+        { id: "9", question: "Is planning free?", answer: "Yes." },
+        { id: "10", question: "What is a Travel Mitr?", answer: "Your manager." },
+      ],
+    });
+
+    expect(content.faqs).toEqual([
+      { id: "9", question: "Is planning free?", answer: "Yes." },
+      { id: "10", question: "What is a Travel Mitr?", answer: "Your manager." },
+    ]);
+  });
+
+  it("drops a question with no question, which would render as a blank row", () => {
+    const content = normalizeHomeContent({
+      faqs: [
+        { id: "1", question: "", answer: "An answer to nothing." },
+        { id: "2", question: "Real?" },
+      ],
+    });
+
+    expect(content.faqs).toEqual([{ id: "2", question: "Real?", answer: "" }]);
   });
 
   it("tolerates missing optional fields on an otherwise good row", () => {

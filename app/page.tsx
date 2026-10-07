@@ -38,7 +38,7 @@ export default async function HomePage() {
         </div>
         <TravelExpert />
         <TravellersAbout />
-        <FaqNumbered />
+        <FaqNumbered items={content.faqs} />
       </main>
       <Footer />
     </>

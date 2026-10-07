@@ -23,6 +23,12 @@ export type PackageDay = {
 
 export type TermDescription = { term: string; description: string };
 
+/** A line with a glyph beside it; an empty `icon` means no glyph. */
+export type IconLabel = { icon: string; label: string };
+
+/** One clause of the cancellation policy. */
+export type TitleBody = { title: string; body: string };
+
 export type TravelMitr = {
   name: string;
   photoUrl: string;
@@ -48,8 +54,10 @@ export type PackageDetail = {
   whyTour: TermDescription[];
   highlights: TermDescription[];
   days: PackageDay[];
-  priceIncludes: string[];
-  priceExcludes: string[];
+  priceIncludes: IconLabel[];
+  priceExcludes: IconLabel[];
+  /** Shared across tours unless this one wrote its own. */
+  cancellationPolicy: TitleBody[];
   /** The guide who runs this tour; not every tour has one assigned. */
   travelMitr: TravelMitr | null;
 };
@@ -68,6 +76,34 @@ function termList(v: unknown): TermDescription[] {
     .filter((x): x is Record<string, unknown> => !!x && typeof x === "object")
     .map((x) => ({ term: str(x.term), description: str(x.description) }))
     .filter((x) => x.term || x.description);
+}
+
+/**
+ * The inclusions and exclusions lists.
+ *
+ * The dashboard stores `{icon, label}`, but the eight imported tours hold
+ * plain strings and the bundled fallback content still does. Both arrive
+ * here, and a line without a glyph reads perfectly well — dropping it
+ * because it has no icon would hide what the fare covers.
+ */
+function iconLabelList(v: unknown): IconLabel[] {
+  if (!Array.isArray(v)) return [];
+  return v
+    .map((x) => {
+      if (typeof x === "string") return { icon: "", label: x.trim() };
+      if (!x || typeof x !== "object") return { icon: "", label: "" };
+      const row = x as Record<string, unknown>;
+      return { icon: str(row.icon), label: str(row.label).trim() };
+    })
+    .filter((x) => x.label);
+}
+
+function titleBodyList(v: unknown): TitleBody[] {
+  if (!Array.isArray(v)) return [];
+  return v
+    .filter((x): x is Record<string, unknown> => !!x && typeof x === "object")
+    .map((x) => ({ title: str(x.title), body: str(x.body) }))
+    .filter((x) => x.title || x.body);
 }
 
 function dayList(v: unknown): PackageDay[] {
@@ -143,8 +179,9 @@ export function normalizePackageDetail(payload: unknown): PackageDetail | null {
     whyTour: termList(content.why_tour_with_marzi),
     highlights: termList(content.highlights),
     days: dayList(content.days),
-    priceIncludes: strList(content.price_includes),
-    priceExcludes: strList(content.price_excludes),
+    priceIncludes: iconLabelList(content.price_includes),
+    priceExcludes: iconLabelList(content.price_excludes),
+    cancellationPolicy: titleBodyList(content.cancellation_policy),
     travelMitr: toMitr(row.travel_mitr),
   };
 }
