@@ -27,7 +27,7 @@ export default async function EnquiryPage({
   return (
     <>
       <Header />
-      <main className={isApp ? "bg-[#fdf7f2]" : "bg-[#fdf7f2] pt-28 lg:pt-24"}>
+      <main className={isApp ? "bg-[#fdf7f2]" : "bg-[#fdf7f2] pt-20 lg:pt-24"}>
         <div className="mx-auto max-w-[560px] px-4 py-8 md:py-12">
           <LeadForm
             formName="Website Landing Page"
