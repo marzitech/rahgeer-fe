@@ -4,34 +4,17 @@ import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import type { SiteFeature } from "@/lib/content/home-content";
+import { iconSrc } from "@/lib/content/travel-icons";
 
 /**
  * "Why travel with us?" — the benefit rows, plus the talk-to-an-expert card.
  *
  * Rows are edited in the admin dashboard. Each carries an icon *key*
  * rather than an icon, because the dashboard cannot send a React
- * component — unknown keys fall back to the guide glyph instead of
- * leaving a hole in the row.
+ * component — see `lib/content/travel-icons` for the keys it can send.
  */
 
 const CALL_NUMBER = "+918792237778";
-
-/**
- * The designer's own icons, exported from the Figma file.
- *
- * These keys are the contract with the dashboard's icon picker
- * (admin-v2 `lib/travel-icons.ts`). Both lists must carry the same keys:
- * one the picker offers but this map lacks renders as the fallback
- * glyph, which looks like a bug to whoever chose it.
- */
-const ICONS: Record<string, string> = {
-  guide: "/images/figma/icon-user.svg",
-  doctor: "/images/figma/icon-heart.svg",
-  meals: "/images/figma/icon-utensils.svg",
-  solo: "/images/figma/icon-shield.svg",
-  door: "/images/figma/icon-car.svg",
-  clock: "/images/figma/icon-clock.svg",
-};
 
 export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
   return (
@@ -55,7 +38,7 @@ export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
               >
                 <span className="bg-sand-deep flex size-12 shrink-0 items-center justify-center rounded-full">
                   <Image
-                    src={ICONS[feature.icon] ?? ICONS.guide}
+                    src={iconSrc(feature.icon)}
                     alt=""
                     width={24}
                     height={24}
@@ -97,11 +80,14 @@ function ExpertCard() {
             Talk to an Expert
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-gray-600">
-            Our travel experts are available 24/7 to help you plan your dream trip.
+            Our travel experts are available 24/7 to help you plan your dream
+            trip.
           </p>
           <a
             href={`tel:${CALL_NUMBER}`}
-            onClick={() => track(EVENTS.CALL_CLICK_FOOTER, { section: "why_travel_with_us" })}
+            onClick={() =>
+              track(EVENTS.CALL_CLICK_FOOTER, { section: "why_travel_with_us" })
+            }
             className="bg-brand-deep hover:bg-brand mt-5 flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-white transition-colors"
           >
             Call Us Now

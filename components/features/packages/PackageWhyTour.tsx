@@ -15,11 +15,11 @@ import type { TermDescription } from "@/lib/content/package-detail";
  * pretending each glyph means something specific.
  */
 const ICONS = [
-  "/images/figma/icon-user.svg",
-  "/images/figma/icon-heart.svg",
-  "/images/figma/icon-utensils.svg",
-  "/images/figma/icon-shield.svg",
-  "/images/figma/icon-car.svg",
+  "/images/figma/icon-guide.svg",
+  "/images/figma/icon-doctor.svg",
+  "/images/figma/icon-meals.svg",
+  "/images/figma/icon-solo.svg",
+  "/images/figma/icon-door.svg",
 ];
 
 export function PackageWhyTour({ items }: { items: TermDescription[] }) {
