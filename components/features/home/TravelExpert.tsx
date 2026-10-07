@@ -107,7 +107,9 @@ export function TravelExpert() {
               ))}
             </ul>
 
-            <div className="relative mt-6 h-40 sm:h-52">
+            {/* 3:2 rather than a short strip: at 160px tall the crop cut
+                through the top of his head. */}
+            <div className="relative mt-6 aspect-[3/2] w-full">
               <Image
                 src="/images/home/travel-mitr-portrait.jpg"
                 alt="A Marzi Travel Mitr"
@@ -119,7 +121,7 @@ export function TravelExpert() {
           </div>
         </div>
 
-        <div className="bg-white px-4 py-10 sm:px-8 lg:py-14">
+        <div className="bg-cream-dark px-4 pt-2 pb-12 sm:px-8 lg:bg-white lg:py-14">
           <div className="mx-auto max-w-md lg:mr-auto lg:ml-8">
             <ul className="space-y-5">
               {POLICIES.map((policy) => (
