@@ -123,3 +123,17 @@ body {
     print-color-adjust: exact;
   }
 }
+
+/* Soft stipple for the tan sections.
+   The design has a faint world map behind these bands; that artwork has
+   to come out of Figma. Until it does this keeps the colour from reading
+   as a flat field, at an opacity low enough that swapping in the real
+   map is a one-line change. */
+.texture-stipple {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--brand) 18%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 28px 28px;
+}

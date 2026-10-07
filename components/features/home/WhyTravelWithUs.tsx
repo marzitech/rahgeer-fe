@@ -37,7 +37,7 @@ const ICONS: Record<string, LucideIcon> = {
 
 export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
   return (
-    <section className="bg-cream-dark pt-4 pb-14 sm:pb-20">
+    <section className="texture-stipple bg-cream-dark pt-4 pb-14 sm:pb-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
           <h2 className="font-display text-[1.75rem] font-extrabold text-brand sm:text-4xl">

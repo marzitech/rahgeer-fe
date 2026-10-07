@@ -8,16 +8,18 @@ import { EVENTS } from "@/lib/analytics/events";
 import { formatPriceInr, type TripCard } from "@/lib/content/trips";
 
 /**
- * "Trips you can join this month" — the curated group tours rail.
+ * "Trips you can join this month" — the curated group tours.
  *
- * Cards come from the packages API, in the order the travel desk set in
- * the dashboard, so the lead trip can be changed without a deploy.
+ * Every published package appears, in the order the travel desk set in
+ * the dashboard. Which tours show and in what order is therefore an ops
+ * decision: unpublish one and it leaves the grid, drag it up and it
+ * leads. Three to a row, as the design draws it.
  */
 export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
   if (trips.length === 0) return null;
 
   return (
-    <section className="bg-cream-dark py-12 sm:py-16">
+    <section className="texture-stipple bg-cream-dark py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <h2 className="font-display text-navy text-[1.75rem] leading-tight font-extrabold sm:text-4xl">
@@ -35,7 +37,7 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
         </div>
 
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {trips.slice(0, 3).map((trip) => (
+          {trips.map((trip) => (
             <li key={trip.id}>
               <TripCardView trip={trip} />
             </li>
@@ -63,15 +65,15 @@ function TripCardView({ trip }: { trip: TripCard }) {
         ) : (
           <div className="size-full bg-cream-dark" />
         )}
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
 
         <div className="absolute inset-x-0 bottom-0 px-4 pb-3">
           <div className="flex items-end justify-between gap-2">
-            <h3 className="font-display text-xl leading-tight font-bold text-white sm:text-2xl">
+            <h3 className="font-display line-clamp-2 text-xl leading-tight font-bold text-white sm:text-2xl">
               {trip.name}
             </h3>
             {trip.durationLabel ? (
-              <span className="shrink-0 rounded-md bg-white/95 px-2 py-1 text-[0.6rem] font-semibold whitespace-nowrap text-brand">
+              <span className="shrink-0 self-end rounded-md bg-white/95 px-2 py-1 text-[0.6rem] font-semibold whitespace-nowrap text-brand">
                 {trip.durationLabel}
               </span>
             ) : null}
