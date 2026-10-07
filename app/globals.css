@@ -153,3 +153,26 @@ body {
   background-size: 166% auto;
   pointer-events: none;
 }
+
+/* The looping Travel Mitr conversation. A message slides up as it
+   lands, the way a chat client animates an incoming line. */
+@keyframes chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+/* The three dots of the typing indicator, staggered by inline delay. */
+@keyframes chat-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-0.15rem);
+  }
+}

@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { cn } from "@/lib/utils";
+import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-loop";
 
 /**
  * "Looking to travel?" — the assistance band.
@@ -15,6 +17,14 @@ import { cn } from "@/lib/utils";
  * about before they commit, collapsed so they do not wall off the CTA.
  */
 
+/**
+ * The conversation that plays on a loop.
+ *
+ * Four exchanges rather than one, because a single question answered
+ * reads as a scripted demo; a Mitr handling a wheelchair, a diet, a
+ * delay and a doctor reads as the job. Every one of these is a thing the
+ * desk is actually asked.
+ */
 const CHAT = [
   {
     from: "traveller" as const,
@@ -25,6 +35,36 @@ const CHAT = [
     from: "mitr" as const,
     text: "Done. Wheelchair booked for your 3PM flight to Bangalore.",
     time: "10:46 AM",
+  },
+  {
+    from: "traveller" as const,
+    text: "My mother is diabetic — can the meals be adjusted?",
+    time: "10:47 AM",
+  },
+  {
+    from: "mitr" as const,
+    text: "Noted. Low-sugar meals on both flights and at the hotel.",
+    time: "10:48 AM",
+  },
+  {
+    from: "traveller" as const,
+    text: "Our flight is delayed by four hours. Will the hotel hold the room?",
+    time: "11:20 AM",
+  },
+  {
+    from: "mitr" as const,
+    text: "Already called them. Late check-in confirmed, no extra charge.",
+    time: "11:21 AM",
+  },
+  {
+    from: "traveller" as const,
+    text: "Is there someone we can call if she feels unwell?",
+    time: "11:24 AM",
+  },
+  {
+    from: "mitr" as const,
+    text: "Our doctor is on call through the whole trip. Sending the number now.",
+    time: "11:25 AM",
   },
 ];
 
@@ -51,6 +91,132 @@ const POLICIES = [
   },
 ];
 
+/** How much of the script shows when motion is turned down. */
+const STILL_MESSAGES = 4;
+
+/**
+ * The exchange, playing itself.
+ *
+ * The list is pinned to a fixed height and anchored at the bottom so
+ * the section around it does not jump as messages arrive — a band that
+ * grows and collapses on a timer drags the rest of the page with it.
+ */
+function ChatLoop() {
+  const reduced = usePrefersReducedMotion();
+  const [state, setState] = useState<ChatState>(CHAT_START);
+
+  useEffect(() => {
+    if (reduced) return;
+    const id = setTimeout(
+      () => setState((s) => advanceChat(s, CHAT.length)),
+      chatDelay(state),
+    );
+    return () => clearTimeout(id);
+  }, [state, reduced]);
+
+  const typing = !reduced && state.phase === "typing";
+  const next = CHAT[Math.min(state.shown, CHAT.length - 1)];
+  // Motion turned down: two complete exchanges, sitting still. Whole
+  // exchanges rather than a slice of the loop — stopping on an
+  // unanswered question would read as the Mitr ignoring someone, and
+  // the full conversation is in the transcript below either way.
+  const visible = reduced
+    ? CHAT.slice(0, STILL_MESSAGES)
+    : // Only the last few fit the frame, and the newest is what matters.
+      CHAT.slice(Math.max(0, state.shown - 3), state.shown);
+
+  return (
+    <div
+      aria-hidden
+      className={cn(
+        "mt-6 flex flex-col justify-end gap-4",
+        // Fixed height keeps the page from jumping as messages arrive;
+        // the mask fades the oldest one out at the top edge instead of
+        // slicing it through the middle of a word.
+        !reduced &&
+          "h-[17rem] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,#000_3rem)]",
+      )}
+    >
+      {visible.map((message) => (
+        <Bubble key={message.text} message={message} />
+      ))}
+      {typing ? <TypingDots from={next.from} /> : null}
+    </div>
+  );
+}
+
+function Bubble({ message }: { message: (typeof CHAT)[number] }) {
+  return (
+    <div
+      className={cn(
+        "flex items-end gap-2 motion-safe:animate-[chat-in_320ms_ease-out]",
+        message.from === "mitr" && "flex-row-reverse",
+      )}
+    >
+      {message.from === "traveller" ? (
+        <Image
+          src="/images/home/reviewer-vikram.jpg"
+          alt=""
+          width={36}
+          height={36}
+          className="size-9 shrink-0 rounded-full object-cover"
+        />
+      ) : null}
+      <div
+        className={cn(
+          "max-w-[78%] rounded-2xl px-4 py-3 text-sm",
+          message.from === "traveller"
+            ? "rounded-bl-sm bg-brand text-white"
+            : "rounded-br-sm bg-brand text-white",
+        )}
+      >
+        <p className="leading-snug">{message.text}</p>
+        <p className="mt-1 text-[0.6rem] text-white/70">{message.time}</p>
+      </div>
+    </div>
+  );
+}
+
+function TypingDots({ from }: { from: "traveller" | "mitr" }) {
+  return (
+    <div className={cn("flex items-end gap-2", from === "mitr" && "flex-row-reverse")}>
+      {from === "traveller" ? <span className="size-9 shrink-0" /> : null}
+      <div className="bg-brand/70 flex gap-1 rounded-2xl px-4 py-3.5">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="size-1.5 rounded-full bg-white/90 motion-safe:animate-[chat-dot_1s_ease-in-out_infinite]"
+            style={{ animationDelay: `${i * 0.15}s` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+/**
+ * Whether the viewer has asked for less movement.
+ *
+ * Subscribed to rather than copied into state: a media query is already
+ * an external store, and mirroring it with an effect means rendering
+ * once with the wrong answer and then again with the right one.
+ */
+function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(REDUCED_MOTION);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    // The server cannot know. Assuming motion is fine matches the
+    // default, so the markup it sends is right for most people.
+    () => false,
+  );
+}
+
 export function TravelExpert() {
   return (
     <>
@@ -74,35 +240,17 @@ export function TravelExpert() {
               Marzi Travel Expert
             </h3>
 
-            <ul className="mt-6 space-y-4">
+            <ChatLoop />
+
+            {/* The loop is decoration: it shows the same two or three
+                messages at a time and rewrites itself every second or
+                so, which is unusable through a screen reader. The whole
+                conversation is here once, in order, and read instead. */}
+            <ul className="sr-only">
               {CHAT.map((message) => (
-                <li
-                  key={message.text}
-                  className={cn(
-                    "flex items-end gap-2",
-                    message.from === "mitr" && "flex-row-reverse",
-                  )}
-                >
-                  {message.from === "traveller" ? (
-                    <Image
-                      src="/images/home/reviewer-vikram.jpg"
-                      alt=""
-                      width={36}
-                      height={36}
-                      className="size-9 shrink-0 rounded-full object-cover"
-                    />
-                  ) : null}
-                  <div
-                    className={cn(
-                      "max-w-[78%] rounded-2xl px-4 py-3 text-sm",
-                      message.from === "traveller"
-                        ? "rounded-bl-sm bg-brand text-white"
-                        : "rounded-br-sm bg-brand text-white",
-                    )}
-                  >
-                    <p className="leading-snug">{message.text}</p>
-                    <p className="mt-1 text-[0.6rem] text-white/70">{message.time}</p>
-                  </div>
+                <li key={message.text}>
+                  {message.from === "traveller" ? "Traveller" : "Travel Mitr"}:{" "}
+                  {message.text}
                 </li>
               ))}
             </ul>
