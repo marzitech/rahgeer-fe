@@ -66,7 +66,7 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
   const scrollable = !(atStart && atEnd);
 
   return (
-    <section className="py-12 sm:py-16">
+    <section id="trips" className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <h2 className="font-display text-navy min-w-0 text-[1.6rem] leading-tight font-extrabold sm:text-4xl">
@@ -92,19 +92,28 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
 
         {/* tabIndex makes the rail reachable by keyboard, so arrow keys can
             scroll it without tabbing through every card inside. */}
-        <div
-          ref={trackRef}
-          onScroll={syncEdges}
-          tabIndex={0}
-          role="region"
-          aria-label="Curated trips"
-          className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:gap-6 [&::-webkit-scrollbar]:hidden"
-        >
-          {trips.map((trip) => (
-            <div key={trip.id} className="w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-[31.8%]">
-              <TripCardView trip={trip} />
-            </div>
-          ))}
+        <div className="relative">
+          {scrollable ? (
+            <>
+              <EdgeArrow side="left" disabled={atStart} onClick={() => scrollByCard(-1)} />
+              <EdgeArrow side="right" disabled={atEnd} onClick={() => scrollByCard(1)} />
+            </>
+          ) : null}
+
+          <div
+            ref={trackRef}
+            onScroll={syncEdges}
+            tabIndex={0}
+            role="region"
+            aria-label="Curated trips"
+            className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:gap-6 [&::-webkit-scrollbar]:hidden"
+          >
+            {trips.map((trip) => (
+              <div key={trip.id} className="w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-[31.8%]">
+                <TripCardView trip={trip} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -130,6 +139,36 @@ function RailArrow({
       className={cn(
         "flex size-9 items-center justify-center rounded-full bg-white text-ink/70 shadow-sm ring-1 ring-black/5 transition",
         disabled ? "cursor-default opacity-35" : "hover:bg-cream",
+      )}
+    >
+      <Icon className="size-4" />
+    </button>
+  );
+}
+
+/** Phone-only arrows, overlaid on the card edges where a thumb reaches. */
+function EdgeArrow({
+  side,
+  disabled,
+  onClick,
+}: {
+  side: "left" | "right";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const Icon = side === "left" ? ChevronLeft : ChevronRight;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={side === "left" ? "Previous trips" : "More trips"}
+      className={cn(
+        // Vertically centred on the card's photo, not the whole card,
+        // so it never covers the price or the View Trip button.
+        "absolute top-[34%] z-10 flex size-9 items-center justify-center rounded-full bg-white/85 text-ink shadow-md backdrop-blur-sm transition sm:hidden",
+        side === "left" ? "-left-1" : "-right-1",
+        disabled && "pointer-events-none opacity-0",
       )}
     >
       <Icon className="size-4" />

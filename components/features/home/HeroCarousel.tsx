@@ -10,6 +10,11 @@ import { cn } from "@/lib/utils";
 /**
  * "Travel Confidently" — the hero carousel at the top of the home page.
  *
+ * Two layouts, one markup. On a desktop the copy sits over the left of
+ * the photo; on a phone it stacks above it, because a 390px column has
+ * no room for a headline and a photograph in the same place — overlaid,
+ * the type lands on whatever the photo happens to be doing there.
+ *
  * Slides are edited in the admin dashboard. Auto-advance pauses on hover
  * and on focus, and stops entirely for a reader who has asked for reduced
  * motion: this audience is 50+, and a banner that slides away mid-sentence
@@ -36,7 +41,6 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
   }, [count, paused]);
 
   if (count === 0) return null;
-  const banner = banners[index];
 
   return (
     <section className="bg-sand pt-24 pb-6 md:pt-28">
@@ -54,82 +58,25 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
         {/* Near-full-bleed, as the design has it: the banner is the page's
             widest element, held off the edges by a small gutter only. */}
         <div className="relative mx-auto max-w-[96rem] px-3 sm:px-4">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[21/9] sm:rounded-3xl">
+          {/* Desktop layers the slides and cross-fades between them. A
+              phone cannot: the stacked layout has no fixed height, so the
+              inactive ones are simply hidden. They stay mounted either
+              way, so advancing never flashes an empty frame. */}
+          <div className="sm:relative sm:aspect-[21/9] sm:overflow-hidden sm:rounded-3xl">
             {banners.map((slide, i) => (
               <div
                 key={slide.id}
                 aria-hidden={i !== index}
                 className={cn(
-                  "absolute inset-0 transition-opacity duration-700",
-                  i === index ? "opacity-100" : "pointer-events-none opacity-0",
+                  "sm:absolute sm:inset-0 sm:transition-opacity sm:duration-700",
+                  i === index
+                    ? "sm:opacity-100"
+                    : "hidden sm:block sm:pointer-events-none sm:opacity-0",
                 )}
               >
-                <Image
-                  src={slide.imageUrl}
-                  alt={slide.alt || slide.headline || "Marzi Holidays"}
-                  fill
-                  priority={i === 0}
-                  sizes="100vw"
-                  className="object-cover"
-                />
-                {/* A LIGHT wash, not a dark scrim: the headline is brand
-                    maroon in this design, so the left of the photo has to
-                    stay pale whatever photo ops uploads. */}
-                <div className="absolute inset-0 bg-gradient-to-r from-sand/95 from-0% via-sand/80 via-35% to-transparent to-75% sm:via-sand/75 sm:via-32% sm:to-70%" />
+                <Slide slide={slide} priority={i === 0} />
               </div>
             ))}
-
-            {/* Thin inset frame, as drawn in the design. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-3 rounded-xl ring-1 ring-white/50 sm:inset-5 sm:rounded-2xl"
-            />
-
-            {/* Marzi Holidays lockup — a soft tan shape bleeding out of the
-                top-left corner rather than a floating card. */}
-            <div className="absolute top-0 left-0 rounded-br-[2rem] bg-sand/95 py-3 pr-7 pl-4 sm:py-4 sm:pr-10 sm:pl-6">
-              <p className="font-display text-base leading-none font-extrabold text-brand sm:text-xl">
-                marzi
-              </p>
-              <p className="font-display text-base leading-tight font-extrabold text-brand sm:text-xl">
-                holidays
-              </p>
-              <p className="mt-1 text-[0.45rem] tracking-[0.2em] text-brand/70 uppercase sm:text-[0.55rem]">
-                Travel Confidently
-              </p>
-            </div>
-
-            {banner.badgeText ? (
-              <span className="absolute top-1/2 right-4 flex size-[4.5rem] -translate-y-1/2 items-center justify-center rounded-full bg-sage p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:right-10 sm:size-24 sm:text-[0.7rem]">
-                {banner.badgeText}
-              </span>
-            ) : null}
-
-            <div className="absolute inset-y-0 left-0 flex max-w-[78%] flex-col justify-center p-5 sm:max-w-[48%] sm:p-10 lg:p-14">
-              {banner.headline ? (
-                <p className="font-display text-xl leading-[1.15] font-extrabold text-brand sm:text-3xl lg:text-[2.6rem]">
-                  {banner.headline}
-                </p>
-              ) : null}
-              {banner.ctaLabel && banner.ctaHref ? (
-                <Link
-                  href={banner.ctaHref}
-                  className="mt-5 inline-flex w-fit rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
-                >
-                  {banner.ctaLabel}
-                </Link>
-              ) : null}
-            </div>
-
-            {banner.caption ? (
-              <p className="absolute right-4 bottom-4 max-w-[70%] rounded-xl bg-white/95 px-4 py-2 text-[0.7rem] text-ink shadow-sm sm:right-10 sm:bottom-8 sm:text-sm">
-                {splitCaption(banner.caption).map((run, i) => (
-                  <span key={i} className={run.emphasis ? "font-semibold text-brand" : undefined}>
-                    {run.text}
-                  </span>
-                ))}
-              </p>
-            ) : null}
           </div>
 
           {count > 1 ? (
@@ -158,6 +105,90 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
         </div>
       </div>
     </section>
+  );
+}
+
+function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
+  return (
+    <div className="flex flex-col-reverse overflow-hidden rounded-2xl bg-white/70 ring-1 ring-brand/10 sm:block sm:rounded-none sm:bg-transparent sm:ring-0">
+      {/* Photo. In flow under the copy on a phone; the whole frame on a
+          desktop, with the copy laid over its left third. */}
+      <div className="relative m-3 mt-0 aspect-[5/4] overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none">
+        <Image
+          src={slide.imageUrl}
+          alt={slide.alt || slide.headline || "Marzi Holidays"}
+          fill
+          priority={priority}
+          sizes="100vw"
+          className="object-cover"
+        />
+        {/* A LIGHT wash, not a dark scrim: the headline is brand maroon on
+            desktop, so the left of the photo has to stay pale whatever
+            photo ops uploads. Not needed on mobile — nothing sits on it. */}
+        <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
+
+        {slide.badgeText ? (
+          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-sage p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-1/2 sm:right-10 sm:size-24 sm:-translate-y-1/2 sm:text-[0.7rem]">
+            {slide.badgeText}
+          </span>
+        ) : null}
+
+        {slide.caption ? (
+          <p className="absolute right-3 bottom-3 left-3 rounded-lg bg-white/92 px-3 py-2 text-center text-[0.65rem] text-ink shadow-sm sm:left-auto sm:max-w-[70%] sm:rounded-xl sm:px-4 sm:bottom-8 sm:right-10 sm:text-left sm:text-sm">
+            {splitCaption(slide.caption).map((run, i) => (
+              <span key={i} className={run.emphasis ? "font-semibold text-brand" : undefined}>
+                {run.text}
+              </span>
+            ))}
+          </p>
+        ) : null}
+
+        {/* Desktop-only lockup: a soft tan shape bleeding out of the
+            top-left corner of the photo. */}
+        <div className="hidden rounded-br-[2rem] bg-sand/95 py-4 pr-10 pl-6 sm:absolute sm:top-0 sm:left-0 sm:block">
+          <Lockup />
+        </div>
+      </div>
+
+      {/* Copy. */}
+      <div className="px-5 pt-5 pb-4 sm:absolute sm:inset-y-0 sm:left-0 sm:flex sm:max-w-[48%] sm:flex-col sm:justify-center sm:p-10 lg:p-14">
+        <div className="sm:hidden">
+          <Lockup />
+        </div>
+
+        {slide.headline ? (
+          <p className="font-display mt-4 text-[1.4rem] leading-[1.2] font-extrabold text-brand sm:mt-0 sm:text-3xl lg:text-[2.6rem]">
+            {slide.headline}
+          </p>
+        ) : null}
+
+        {slide.ctaLabel && slide.ctaHref ? (
+          <Link
+            href={slide.ctaHref}
+            className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-deep sm:mt-5 sm:px-6 sm:py-3"
+          >
+            {slide.ctaLabel}
+            <ChevronRight className="size-4" aria-hidden />
+          </Link>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function Lockup() {
+  return (
+    <>
+      <p className="font-display text-lg leading-none font-extrabold text-brand sm:text-xl">
+        marzi
+      </p>
+      <p className="font-display text-lg leading-tight font-extrabold text-brand sm:text-xl">
+        holidays
+      </p>
+      <p className="mt-1 text-[0.5rem] tracking-[0.2em] text-brand/70 uppercase sm:text-[0.55rem]">
+        Travel Confidently
+      </p>
+    </>
   );
 }
 

@@ -9,9 +9,9 @@
   /* Exact marzi-web production values */
   --marzi-purple: #2e1065; /* header / footer bar */
   --marzi-purple-deep: #23093f;
-  --brand: #821a52; /* marzi-primary magenta */
-  --brand-deep: #6a1243;
-  --brand-darker: #4d0629;
+  --brand: #8f004c; /* marzi-primary */
+  --brand-deep: #67003d; /* hovers, pressed states */
+  --brand-darker: #4a002b; /* derived, keeps the scale in one hue */
   --marzi-pink: #ec1e79; /* CTA pink */
   --cream: #fffcf3; /* warm section background */
   --cream-dark: #f7edd8;
