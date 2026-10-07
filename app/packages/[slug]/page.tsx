@@ -48,27 +48,23 @@ export default async function PackagePage({
         <main className="bg-cream-dark">
           <PackageHero pkg={pkg} />
 
-          {/* The price card rides alongside Why Tour on a desktop and
-              leads on a phone, where it is the first thing worth doing. */}
-          <div className="mx-auto grid max-w-6xl gap-6 px-4 lg:grid-cols-[1fr_26rem] lg:items-start">
-            <div className="order-2 min-w-0 lg:order-1">
+          {/* Why Tour and the price card share a row on a desktop, as the
+              design has them. Stacked on a phone the reasons come first:
+              the price means little before them. */}
+          <div className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 lg:grid-cols-[1fr_25rem] lg:items-start">
+            <div className="min-w-0">
               {pkg.summary ? (
                 <p className="mb-6 text-base leading-relaxed text-gray-700">
                   {pkg.summary}
                 </p>
               ) : null}
+              <PackageWhyTour items={pkg.whyTour} />
             </div>
-            <div className="order-1 lg:order-2">
-              <PriceCallbackCard
-                slug={pkg.slug}
-                packageName={pkg.name}
-                priceFromInr={pkg.priceFromInr}
-              />
-            </div>
-          </div>
-
-          <div className="mt-10">
-            <PackageWhyTour items={pkg.whyTour} />
+            <PriceCallbackCard
+              slug={pkg.slug}
+              packageName={pkg.name}
+              priceFromInr={pkg.priceFromInr}
+            />
           </div>
           <PackageHighlights highlights={pkg.highlights} />
           <PackageItinerary days={pkg.days} />
