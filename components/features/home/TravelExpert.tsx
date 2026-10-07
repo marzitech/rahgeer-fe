@@ -9,12 +9,12 @@ import { cn } from "@/lib/utils";
 import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-loop";
 
 /**
- * "Looking to travel?" — the assistance band.
+ * "Bespoke Marzi Holidays" — the personalised-travel band.
  *
- * Left: a short WhatsApp-style exchange showing what asking a Travel Mitr
- * actually looks like, because "real-time assistance" means nothing until
- * you see someone booking wheelchair help. Right: the policies people ask
- * about before they commit, collapsed so they do not wall off the CTA.
+ * Left: a WhatsApp-style exchange showing what asking a Travel Mitr
+ * actually looks like, because "planned end-to-end" means nothing until
+ * you watch someone move a room to the ground floor. Right: what a
+ * bespoke holiday actually covers.
  */
 
 /**
@@ -28,66 +28,74 @@ import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-l
 const CHAT = [
   {
     from: "traveller" as const,
-    text: "I need wheelchair assistance at Mumbai airport.",
+    text: "My wife only eats Jain food. Will that be possible?",
     time: "10:45 AM",
   },
   {
     from: "mitr" as const,
-    text: "Done. Wheelchair booked for your 3PM flight to Bangalore.",
+    text: "Yes, definitely. Every hotel and restaurant on your trip has the note now.",
     time: "10:46 AM",
   },
   {
     from: "traveller" as const,
-    text: "My mother is diabetic — can the meals be adjusted?",
-    time: "10:47 AM",
+    text: "Can we get a room on a lower floor? My knees aren't great.",
+    time: "10:52 AM",
   },
   {
     from: "mitr" as const,
-    text: "Noted. Low-sugar meals on both flights and at the hotel.",
-    time: "10:48 AM",
+    text: "Moved your booking to the ground floor, near the lift for easy moving around.",
+    time: "10:54 AM",
   },
   {
     from: "traveller" as const,
-    text: "Our flight is delayed by four hours. Will the hotel hold the room?",
-    time: "11:20 AM",
+    text: "My husband isn't feeling well.",
+    time: "11:18 AM",
   },
   {
     from: "mitr" as const,
-    text: "Already called them. Late check-in confirmed, no extra charge.",
-    time: "11:21 AM",
+    text: "A doctor will be with you in 20 minutes. I'm on my way, too.",
+    time: "11:19 AM",
   },
   {
     from: "traveller" as const,
-    text: "Is there someone we can call if she feels unwell?",
-    time: "11:24 AM",
+    text: "I need wheelchair assistance at Mumbai airport.",
+    time: "11:40 AM",
   },
   {
     from: "mitr" as const,
-    text: "Our doctor is on call through the whole trip. Sending the number now.",
-    time: "11:25 AM",
+    text: "Done. Wheelchair booked for your 3 pm flight to Bengaluru.",
+    time: "11:41 AM",
   },
 ];
 
-const POLICIES = [
+/**
+ * What a bespoke holiday covers.
+ *
+ * This column used to hold the booking and cancellation policy. That
+ * belongs on the tour page, beside the price someone is about to pay —
+ * here, next to a conversation about what Marzi will arrange, the
+ * question is what you get, not what happens if you cancel.
+ */
+const OFFERINGS = [
   {
-    title: "Booking & payments",
-    body: "Full payment confirms your booking. A partial payment shows intent but does not confirm services. Non-payment within the required timeline may lead to cancellation, and registration or booking fees may be forfeited.",
+    title: "Destinations of Your Choice",
+    body: "Near or far, for as long as you like.",
   },
   {
-    title: "Cancellations & refunds",
-    body: "Cancellation charges depend on how close to departure you cancel and on what the hotels and airlines have already charged us. We share the exact breakdown in writing before anything is deducted.",
+    title: "Handcrafted Itineraries",
+    body: "Shaped around your interests and your pace.",
   },
   {
-    title: "Medical & accessibility",
-    body: "Tell us about mobility needs, dietary restrictions or ongoing treatment when you book. We arrange wheelchair assistance, accessible rooms and meal adjustments, and a doctor is on call throughout the trip.",
+    title: "Handpicked Stays",
+    body: "Chosen for comfort, location and a restful night.",
   },
   {
-    title: "Travel documents & visas",
-    body: "We handle visa paperwork for international trips and tell you exactly which documents to send and by when. Passports must be valid for at least six months beyond your return date.",
+    title: "End-to-end Bookings",
+    body: "Flights, stays, transfers and paperwork, in one place.",
   },
   {
-    title: "What happens if plans change",
-    body: "Weather, strikes and health can all move a plan. Your Travel Mitr rearranges transfers and stays on the ground, and you are told what changed and why before it affects your day.",
+    title: "A Dedicated Travel Expert",
+    body: "Reachable before you leave and throughout the trip.",
   },
 ];
 
@@ -223,10 +231,10 @@ export function TravelExpert() {
       <section className="bg-cream-dark pt-4 pb-10 text-center sm:pt-8">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="font-display text-[1.75rem] font-extrabold text-brand sm:text-4xl">
-            Looking to travel?
+            Bespoke Marzi Holidays
           </h2>
           <p className="mt-2 text-sm text-ink/70">
-            Get real-time assistance for every travel need.
+            Completely personalised itineraries, planned end-to-end.
           </p>
         </div>
       </section>
@@ -235,9 +243,7 @@ export function TravelExpert() {
         <div className="bg-cream-dark px-4 py-10 sm:px-8 lg:py-14">
           <div className="mx-auto max-w-md lg:ml-auto lg:mr-8">
             <h3 className="font-display text-2xl leading-tight font-bold text-brand sm:text-3xl">
-              Talk to
-              <br />
-              Marzi Travel Expert
+              A Marzi Travel Expert at your service
             </h3>
 
             <ChatLoop />
@@ -272,18 +278,18 @@ export function TravelExpert() {
         <div className="bg-cream-dark px-4 pt-2 pb-12 sm:px-8 lg:bg-white lg:py-14">
           <div className="mx-auto max-w-md lg:mr-auto lg:ml-8">
             <ul className="space-y-5">
-              {POLICIES.map((policy) => (
-                <li key={policy.title} className="flex gap-3">
+              {OFFERINGS.map((offering) => (
+                <li key={offering.title} className="flex gap-3">
                   <span
                     aria-hidden
                     className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand"
                   />
                   <div>
                     <h4 className="text-[0.7rem] font-bold tracking-[0.08em] text-ink uppercase">
-                      {policy.title}
+                      {offering.title}
                     </h4>
                     <p className="mt-1 text-[0.8rem] leading-relaxed text-ink/60">
-                      {policy.body}
+                      {offering.body}
                     </p>
                   </div>
                 </li>

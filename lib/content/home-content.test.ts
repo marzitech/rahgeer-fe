@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ICON_KEYS } from "./travel-icons";
 import {
   FALLBACK_EXPERT,
   FALLBACK_FAQS,
@@ -190,5 +191,57 @@ describe("splitCaption", () => {
 
   it("returns nothing for an empty caption", () => {
     expect(splitCaption("")).toEqual([]);
+  });
+});
+
+describe("the bundled copy and the backend seed", () => {
+  /**
+   * These are the words production is showing right now: the deployed
+   * backend does not serve /site-content/home/ yet, so every visitor
+   * gets the fallbacks. When it does deploy, the seeded rows take over.
+   * If the two lists disagree the site changes copy on a release that
+   * touched no copy — so they are pinned here, and a change has to be
+   * made on both sides deliberately.
+   *
+   * Kept in step with rahgeer-be `apps/sitecontent/seed_data/travel_content.json`.
+   */
+  it("offers the six Classic Marzi Holidays rows, in order", () => {
+    expect(FALLBACK_FEATURES.map((f) => f.title)).toEqual([
+      "A Personal Travel Guide",
+      "Personalised Trip Planning",
+      "24x7 Medical Support",
+      "Door-to-door Transfers",
+      "All Meals Included",
+      "Flights, Hotels & Visas",
+    ]);
+  });
+
+  it("gives every row an icon the site can actually render", () => {
+    for (const feature of FALLBACK_FEATURES) {
+      expect(ICON_KEYS).toContain(feature.icon);
+    }
+  });
+
+  it("asks the eleven questions, in order", () => {
+    expect(FALLBACK_FAQS.map((f) => f.question)).toEqual([
+      "Who is Marzi Holidays for?",
+      "What is a Travel Mitr?",
+      "Is trip planning really free?",
+      "What is the Pre-Travel Health Assessment?",
+      "What happens if there's a medical emergency during the trip?",
+      "Will the hotels and transport be comfortable?",
+      "Can Marzi cater to special dietary needs?",
+      "Does Marzi handle visas, forex, insurance and paperwork?",
+      "Can I plan a holiday for my parents and stay updated?",
+      "I've never travelled abroad before. Can Marzi still help?",
+      "Why should I trust Marzi Holidays?",
+    ]);
+  });
+
+  it("leaves the hero as it was", () => {
+    // The hero was reverted after the copy rewrite: the standalone
+    // heading, the photo caption and the original headline all stay.
+    const [hero] = FALLBACK_HERO_BANNERS;
+    expect(hero.headline).toBe("A Life Well Lived Deserves Journeys Well Planned.");
   });
 });

@@ -53,7 +53,7 @@ export function TravellersAbout() {
     <section className="bg-sand pt-12 sm:pt-16">
       <div className="mx-auto max-w-6xl px-4">
         <h2 className="font-display text-center text-[1.75rem] font-extrabold text-brand sm:text-4xl">
-          Our Travellers, About Us
+          Postcards from our travellers
         </h2>
       </div>
 

@@ -28,6 +28,7 @@ const ICONS: Record<string, string> = {
   flight: "/images/figma/icon-flight.svg",
   beverages: "/images/figma/icon-beverages.svg",
   laundry: "/images/figma/icon-laundry.svg",
+  planning: "/images/figma/icon-planning.svg",
 };
 
 /** Every key the site can render, for tests and for iterating. */

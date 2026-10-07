@@ -60,34 +60,46 @@ export const FALLBACK_HERO_BANNERS: HeroBanner[] = [
 
 export const FALLBACK_FEATURES: SiteFeature[] = [
   {
-    id: "fallback-guide",
+    id: "fallback-indian-tour-guide",
     icon: "guide",
-    title: "Experienced Indian Tour Guide",
-    description: "Local experts who speak your language and know the hidden gems.",
+    title: "A Personal Travel Guide",
+    description:
+      "An experienced tour manager along the way, handling the details for you.",
   },
   {
-    id: "fallback-doctor",
+    id: "fallback-personalised-trip-planning",
+    icon: "planning",
+    title: "Personalised Trip Planning",
+    description:
+      "Solo, as a couple or with a group, we plan the trip around your pace.",
+  },
+  {
+    id: "fallback-doctor-support",
     icon: "doctor",
-    title: "24X7 Doctor Support",
-    description: "Medical assistance available at your fingertips, anywhere in the world.",
+    title: "24x7 Medical Support",
+    description:
+      "A health check before you leave, and a doctor on call at any hour.",
   },
   {
-    id: "fallback-meals",
-    icon: "meals",
-    title: "Three Familiar Meals Everyday",
-    description: "Enjoy home-style Indian cuisine at every meal, no matter where you are.",
-  },
-  {
-    id: "fallback-solo",
-    icon: "solo",
-    title: "Safe for Solo Travellers",
-    description: "Group travel designed for safety and companionship.",
-  },
-  {
-    id: "fallback-door",
+    id: "fallback-door-to-door",
     icon: "door",
-    title: "Door to Door Coordination",
-    description: "We handle every detail from airport pickup to drop-off.",
+    title: "Door-to-door Transfers",
+    description:
+      "From your home to the airport, the airport to your hotel, and back again.",
+  },
+  {
+    id: "fallback-familiar-meals",
+    icon: "meals",
+    title: "All Meals Included",
+    description:
+      "Three meals a day, with Indian and local vegetarian options included.",
+  },
+  {
+    id: "fallback-flights-hotels-visas",
+    icon: "flight",
+    title: "Flights, Hotels & Visas",
+    description:
+      "Flights, hotels, visas, forex and insurance, all taken care of.",
   },
 ];
 
@@ -113,76 +125,70 @@ export const FALLBACK_EXPERT: Expert = {
  */
 export const FALLBACK_FAQS: FaqEntry[] = [
   {
-    id: "fallback-faq-0",
+    id: "fallback-who-is-marzi-holidays-for",
     question: "Who is Marzi Holidays for?",
     answer:
-      "People above 50 who want a comfortable, well-planned holiday — in India or abroad. We also help adult children plan trips for their parents. Every journey is shaped around your pace and comfort.",
+      "People over 50 who want a comfortable, well-planned holiday, in India or abroad. Many adult children also come to us to plan a trip for their parents.",
   },
   {
-    id: "fallback-faq-1",
+    id: "fallback-what-is-a-travel-mitr",
     question: "What is a Travel Mitr?",
     answer:
-      "Your Travel Mitr is a dedicated Relationship Manager who plans, books, and coordinates your entire holiday. One trusted person handles everything, from your first conversation until you're back home.",
+      "Your Travel Mitr is one person who plans, books and coordinates your whole holiday. You speak to the same person from your first call until you're back home.",
   },
   {
-    id: "fallback-faq-2",
+    id: "fallback-is-trip-planning-really-free",
     question: "Is trip planning really free?",
     answer:
-      "Yes. Speaking to your Travel Mitr and planning your holiday costs nothing. You only pay for the bookings you confirm.",
+      "Yes. Talking to your Travel Mitr and planning your trip costs nothing. You pay only for the bookings you confirm.",
   },
   {
-    id: "fallback-faq-3",
+    id: "fallback-what-is-the-pre-travel-health-assessment",
     question: "What is the Pre-Travel Health Assessment?",
     answer:
-      "Before you travel, we understand your health profile — medications, mobility, and any medical needs. This helps us plan a trip that is genuinely safe and comfortable for you. It's something most travel companies simply don't do.",
+      "A short conversation before you travel about your medications, mobility and any medical needs. It helps us plan a trip that's safe and comfortable for you.",
   },
   {
-    id: "fallback-faq-4",
+    id: "fallback-what-happens-if-there-s-a-medical-emergency-during-the-trip",
     question: "What happens if there's a medical emergency during the trip?",
     answer:
-      "You're never on your own. Marzi offers 24x7 doctor-on-call support, and our Indian tour managers travel with a basic first-aid box. We also keep the nearest hospitals mapped along your route, so help is always close at hand.",
+      "A doctor is on call 24x7, and we map the nearest hospitals along your route before you leave. On group tours, your tour manager also carries a first-aid kit.",
   },
   {
-    id: "fallback-faq-5",
-    question: "Will the hotels and transport be comfortable for seniors?",
+    id: "fallback-will-the-hotels-and-transport-be-comfortable-for-seniors",
+    question: "Will the hotels and transport be comfortable?",
     answer:
-      "Yes. We choose hotels with lifts and easy access, and arrange comfortable transport with boarding assistance. Small details like walking distances and steps each day are planned around you, with a gentle, unhurried pace.",
+      "Yes. We choose hotels with lifts and easy access, and transport with help boarding. Walking distances and steps are planned for each day, at an unhurried pace.",
   },
   {
-    id: "fallback-faq-6",
+    id: "fallback-can-marzi-cater-to-special-dietary-needs",
     question: "Can Marzi cater to special dietary needs?",
     answer:
-      "Absolutely. Whether you need diabetic, Jain, vegetarian, or low-salt meals, we plan your food around your requirements. So you never have to worry about what's on your plate, even far from home.",
+      "Yes. Diabetic, Jain, vegetarian or low-salt, we plan your meals around what you need, wherever you are.",
   },
   {
-    id: "fallback-faq-7",
+    id: "fallback-does-marzi-handle-visas-forex-insurance-and-paperwork",
     question: "Does Marzi handle visas, forex, insurance and paperwork?",
     answer:
-      "Yes. Visa, travel insurance, forex, and documentation are all managed for you in one place. There are no hidden costs and no extra charge for visa processing — you always know exactly what you're paying for.",
+      "Yes, all in one place. We arrange travel insurance and explain what it covers in plain language, including pre-existing conditions. Visa processing costs nothing extra, and there are no hidden charges.",
   },
   {
-    id: "fallback-faq-8",
+    id: "fallback-can-i-plan-a-holiday-for-my-parents-and-stay-updated",
     question: "Can I plan a holiday for my parents and stay updated?",
     answer:
-      "Yes. Many families come to us to plan worry-free trips for their parents. We keep you informed through the journey, and reach out promptly in case of any emergency. So you have complete peace of mind, wherever you are.",
+      "Yes. We keep you posted throughout the trip and call you straight away if anything goes wrong.",
   },
   {
-    id: "fallback-faq-9",
+    id: "fallback-never-travelled-abroad",
     question: "I've never travelled abroad before. Can Marzi still help?",
     answer:
-      "Of course. We guide first-time travellers gently, with a pre-trip orientation covering packing, documents, and what to expect. Your Travel Mitr is beside you from your first question to your return home.",
+      "Yes. Before you leave, we take you through packing, documents and what to expect. Your Travel Mitr is there for every question along the way.",
   },
   {
-    id: "fallback-faq-10",
-    question: "Do I need travel insurance, and does Marzi arrange it?",
-    answer:
-      "Yes, we arrange travel insurance at the best available prices. We also explain in plain language exactly what it covers — including how pre-existing conditions work — so nothing is confusing. You travel fully protected, with no fine print surprises.",
-  },
-  {
-    id: "fallback-faq-11",
+    id: "fallback-why-should-i-trust-marzi-holidays",
     question: "Why should I trust Marzi Holidays?",
     answer:
-      "Marzi is backed by Primus Senior Living and built on a care-first philosophy. We're not just a travel company — we plan around your health, comfort, and safety, long before you leave. That care continues at every step of your journey.",
+      "Marzi is backed by Primus Senior Living, and we plan around your health, comfort and safety first. That care starts before you book and continues until you're home.",
   },
 ];
 

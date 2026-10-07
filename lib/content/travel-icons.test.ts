@@ -41,6 +41,7 @@ describe("the icon a stored key resolves to", () => {
       "hotel",
       "laundry",
       "meals",
+      "planning",
       "sightseeing",
       "solo",
       "water",

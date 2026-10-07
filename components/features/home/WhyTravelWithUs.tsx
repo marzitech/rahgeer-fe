@@ -7,7 +7,7 @@ import type { Expert, SiteFeature } from "@/lib/content/home-content";
 import { iconSrc } from "@/lib/content/travel-icons";
 
 /**
- * "Why travel with us?" — the benefit rows, plus the talk-to-an-expert card.
+ * "Classic Marzi Holidays" — the benefit rows, plus the talk-to-an-expert card.
  *
  * Rows are edited in the admin dashboard. Each carries an icon *key*
  * rather than an icon, because the dashboard cannot send a React
@@ -28,10 +28,11 @@ export function WhyTravelWithUs({
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
           <h2 className="font-display text-brand-deep text-[1.75rem] font-extrabold sm:text-[2.875rem]">
-            Why travel with us?
+            Classic Marzi Holidays
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-gray-600 sm:text-lg">
-            From Planning to Booking. For all your Travel Needs
+            Solo and Group-friendly tours with like-minded travellers, fully
+            planned and hosted.
           </p>
         </div>
 
