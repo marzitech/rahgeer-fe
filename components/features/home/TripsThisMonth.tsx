@@ -69,10 +69,10 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
     <section id="trips" className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-          <h2 className="font-display text-navy min-w-0 text-[1.6rem] leading-tight font-extrabold sm:text-4xl">
+          <h2 className="font-display text-navy min-w-0 text-[1.6rem] leading-tight font-extrabold sm:text-[2.875rem]">
             Trips you can join this month
           </h2>
-          <span className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.6rem] font-semibold tracking-[0.12em] text-white uppercase sm:text-[0.7rem]">
+          <span className="font-label inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.6rem] font-bold tracking-[0.08em] text-white uppercase sm:text-[0.8rem]">
             <span aria-hidden className="text-[0.5rem]">
               ◆
             </span>
@@ -180,7 +180,7 @@ function TripCardView({ trip }: { trip: TripCard }) {
   const price = formatPriceInr(trip.priceFromInr);
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white">
       <div className="relative aspect-[4/3]">
         {trip.imageUrl ? (
           <Image
@@ -193,15 +193,15 @@ function TripCardView({ trip }: { trip: TripCard }) {
         ) : (
           <div className="size-full bg-cream-dark" />
         )}
-        <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/90 via-black/55 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
 
         <div className="absolute inset-x-0 bottom-0 px-4 pb-3">
           <div className="flex items-end justify-between gap-2">
-            <h3 className="font-display line-clamp-2 text-xl leading-tight font-bold text-white sm:text-2xl">
+            <h3 className="font-display text-sand-deep line-clamp-2 text-xl leading-tight font-bold sm:text-[1.875rem]">
               {trip.name}
             </h3>
             {trip.durationLabel ? (
-              <span className="shrink-0 self-end rounded-md bg-white/95 px-2 py-1 text-[0.6rem] font-semibold whitespace-nowrap text-brand">
+              <span className="bg-sand-deep text-brand shrink-0 self-end rounded px-2 py-1 text-xs font-semibold whitespace-nowrap">
                 {trip.durationLabel}
               </span>
             ) : null}
@@ -230,8 +230,8 @@ function TripCardView({ trip }: { trip: TripCard }) {
         <div>
           {price ? (
             <>
-              <p className="text-[0.7rem] text-ink/55">Starting from</p>
-              <p className="font-display text-price text-xl font-extrabold sm:text-[1.4rem]">
+              <p className="font-label text-navy text-sm font-semibold">Starting from</p>
+              <p className="font-display text-teal text-xl font-bold sm:text-[1.875rem]">
                 {price}
               </p>
             </>
@@ -240,7 +240,7 @@ function TripCardView({ trip }: { trip: TripCard }) {
         <Link
           href={trip.href}
           onClick={() => track(EVENTS.PACKAGE_CARD_CLICK, { slug: trip.slug })}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand-deep"
+          className="font-label bg-brand text-sand-deep hover:bg-brand-deep inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold transition-colors"
         >
           View Trip
           <ArrowRight className="size-3.5" aria-hidden />

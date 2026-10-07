@@ -44,7 +44,7 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
 
   return (
     <section className="bg-sand pt-32 pb-6 lg:pt-28">
-      <h1 className="font-display px-4 text-center text-[2rem] leading-tight font-extrabold text-brand sm:text-5xl">
+      <h1 className="px-4 text-center text-[2rem] leading-[1.1] font-extrabold text-brand sm:text-[3.5rem]">
         Travel Confidently
       </h1>
 
@@ -128,15 +128,15 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
 
         {slide.badgeText ? (
-          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-sage p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-1/2 sm:right-10 sm:size-24 sm:-translate-y-1/2 sm:text-[0.7rem]">
+          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-teal p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-1/2 sm:right-10 sm:size-24 sm:-translate-y-1/2 sm:text-[0.7rem]">
             {slide.badgeText}
           </span>
         ) : null}
 
         {slide.caption ? (
-          <p className="absolute right-3 bottom-3 left-3 rounded-lg bg-white/92 px-3 py-2 text-center text-[0.65rem] text-ink shadow-sm sm:left-auto sm:max-w-[70%] sm:rounded-xl sm:px-4 sm:bottom-8 sm:right-10 sm:text-left sm:text-sm">
+          <p className="font-label bg-sand-deep absolute right-3 bottom-3 left-3 rounded-2xl px-4 py-2.5 text-center text-[0.7rem] font-bold text-[#0d0d0d] sm:right-10 sm:bottom-8 sm:left-auto sm:max-w-[70%] sm:rounded-[27px] sm:text-left sm:text-[1.125rem]">
             {splitCaption(slide.caption).map((run, i) => (
-              <span key={i} className={run.emphasis ? "font-semibold text-brand" : undefined}>
+              <span key={i} className={run.emphasis ? "text-brand-deep" : undefined}>
                 {run.text}
               </span>
             ))}
@@ -157,7 +157,7 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         </div>
 
         {slide.headline ? (
-          <p className="font-display mt-4 text-[1.4rem] leading-[1.2] font-extrabold text-brand sm:mt-0 sm:text-3xl lg:text-[2.6rem]">
+          <p className="font-display text-brand-deep mt-4 text-[1.4rem] leading-[1.15] font-extrabold sm:mt-0 sm:text-3xl lg:text-[2.66rem]">
             {slide.headline}
           </p>
         ) : null}

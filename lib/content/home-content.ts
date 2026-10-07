@@ -34,11 +34,11 @@ export type HomeContent = {
 export const FALLBACK_HERO_BANNERS: HeroBanner[] = [
   {
     id: "fallback-hero",
-    imageUrl: "/images/home/hero-koh-tao.jpg",
-    alt: "Travellers on a Marzi holiday",
+    imageUrl: "/images/figma/hero-paris.jpg",
+    alt: "A couple travelling together in Paris",
     headline: "A Life Well Lived Deserves Journeys Well Planned.",
     caption: "",
-    badgeText: "ONLY FOR 50 & ABOVE",
+    badgeText: "Coolest Community For 50+",
     ctaLabel: "",
     ctaHref: "",
   },
