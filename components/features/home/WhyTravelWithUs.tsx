@@ -75,11 +75,26 @@ export function WhyTravelWithUs({
 function ExpertCard({ expert }: { expert: Expert }) {
   return (
     /* The portrait is a cut-out, and in the design the head rises above
-       the maroon panel. That only works if the wrapper does not clip, so
-       the rounded corners live on the panel itself rather than here. */
+       the maroon panel. Nothing here may clip, so the rounding lives on
+       the panels themselves rather than on a container. */
     <div className="relative pt-12 sm:pt-16">
-      <div className="bg-sand overflow-hidden rounded-3xl border border-[#e5e7eb] shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
-        <div className="h-56 bg-[#65023d] sm:h-72" />
+      <div className="bg-sand rounded-3xl border border-[#e5e7eb] shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
+        {/* The portrait hangs off the bottom of this panel, so it is
+            anchored to it rather than measured from the card. Offsets
+            counted from the card have to restate the padding and the
+            panel's height, and drift the moment either changes — which
+            is how the photo came to sit 8px below the maroon edge. */}
+        <div className="relative h-56 rounded-t-3xl bg-[#65023d] sm:h-72">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto aspect-[3/4] w-[58%] max-w-[19rem]">
+            <Image
+              src={expert.photoUrl}
+              alt={expert.name}
+              fill
+              sizes="(max-width: 1024px) 60vw, 320px"
+              className="object-cover object-bottom"
+            />
+          </div>
+        </div>
 
         <div className="p-6 sm:p-8">
           <h3 className="font-display text-navy text-xl font-bold sm:text-[1.5625rem]">
@@ -99,23 +114,6 @@ function ExpertCard({ expert }: { expert: Expert }) {
             Call Us Now
           </a>
         </div>
-      </div>
-
-      {/* A fixed portrait frame rather than the bare image: photos come
-          off the dashboard at whatever shape the camera gave them, and a
-          wide cut-out — the subject small between broad transparent
-          margins — would otherwise render as a stamp adrift above the
-          panel. Cropping to this ratio trims the margins instead, and
-          anchoring to the bottom keeps the subject standing on the
-          panel rather than floating over it. */}
-      <div className="pointer-events-none absolute bottom-[calc(100%-17.5rem)] left-1/2 aspect-[3/4] w-[58%] max-w-[19rem] -translate-x-1/2 sm:bottom-[calc(100%-22rem)]">
-        <Image
-          src={expert.photoUrl}
-          alt={expert.name}
-          fill
-          sizes="(max-width: 1024px) 60vw, 320px"
-          className="object-cover object-bottom"
-        />
       </div>
     </div>
   );
