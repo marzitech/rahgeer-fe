@@ -16,13 +16,21 @@ import type { SiteFeature } from "@/lib/content/home-content";
 
 const CALL_NUMBER = "+918792237778";
 
-/** The designer's own icons, exported from the Figma file. */
+/**
+ * The designer's own icons, exported from the Figma file.
+ *
+ * These keys are the contract with the dashboard's icon picker
+ * (admin-v2 `lib/travel-icons.ts`). Both lists must carry the same keys:
+ * one the picker offers but this map lacks renders as the fallback
+ * glyph, which looks like a bug to whoever chose it.
+ */
 const ICONS: Record<string, string> = {
   guide: "/images/figma/icon-user.svg",
   doctor: "/images/figma/icon-heart.svg",
   meals: "/images/figma/icon-utensils.svg",
   solo: "/images/figma/icon-shield.svg",
   door: "/images/figma/icon-car.svg",
+  clock: "/images/figma/icon-clock.svg",
 };
 
 export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
