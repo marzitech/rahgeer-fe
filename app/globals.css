@@ -124,16 +124,30 @@ body {
   }
 }
 
-/* Soft stipple for the tan sections.
-   The design has a faint world map behind these bands; that artwork has
-   to come out of Figma. Until it does this keeps the colour from reading
-   as a flat field, at an opacity low enough that swapping in the real
-   map is a one-line change. */
-.texture-stipple {
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    color-mix(in srgb, var(--brand) 18%, transparent) 1px,
-    transparent 0
-  );
-  background-size: 28px 28px;
+/* The world map behind the trips and "why travel with us" band.
+
+   Natural Earth 1:110m land, projected equirectangular and cropped to the
+   usual +84..-60 band (generated once; it is a static asset, not a
+   runtime dependency). Real coastlines rather than approximated shapes —
+   a travel site is the last place to draw geography freehand.
+
+   Drawn on a pseudo-element rather than as a plain background-image so
+   the opacity can be tuned without touching the file, and so it sits
+   above the section's colour but behind its content. */
+.texture-worldmap {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-worldmap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/images/textures/world-map.svg");
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: 130% auto;
+  opacity: 0.07;
+  pointer-events: none;
 }

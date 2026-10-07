@@ -30,8 +30,12 @@ export default async function HomePage() {
       <Header />
       <main>
         <HeroCarousel banners={content.heroBanners} />
-        <TripsThisMonth trips={trips} />
-        <WhyTravelWithUs features={content.features} />
+        {/* One band, one map: the watermark has to run continuously
+            behind both sections rather than restart at each one. */}
+        <div className="texture-worldmap bg-cream-dark">
+          <TripsThisMonth trips={trips} />
+          <WhyTravelWithUs features={content.features} />
+        </div>
         <TravelExpert />
         <TravellersAbout />
         <FaqNumbered />

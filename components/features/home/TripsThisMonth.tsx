@@ -66,7 +66,7 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
   const scrollable = !(atStart && atEnd);
 
   return (
-    <section className="texture-stipple bg-cream-dark py-12 sm:py-16">
+    <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <h2 className="font-display text-navy min-w-0 text-[1.6rem] leading-tight font-extrabold sm:text-4xl">
