@@ -176,16 +176,25 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
   );
 }
 
+/**
+ * The Marzi Holidays lockup: the brand wordmark, then "holidays" set
+ * large beneath it. The wordmark is the real logo rather than the word
+ * typed out — it carries the "by PRIMUS" strapline, which type cannot.
+ */
 function Lockup() {
   return (
     <>
-      <p className="font-display text-lg leading-none font-extrabold text-brand sm:text-xl">
-        marzi
-      </p>
-      <p className="font-display text-lg leading-tight font-extrabold text-brand sm:text-xl">
+      <Image
+        src="/images/brand/marzi-logo.png"
+        alt="Marzi"
+        width={1147}
+        height={377}
+        className="h-auto w-[5.5rem] sm:w-[6.5rem]"
+      />
+      <p className="mt-1.5 text-[1.75rem] leading-none font-black text-[#65003f] sm:text-[1.85rem]">
         holidays
       </p>
-      <p className="mt-1 text-[0.5rem] tracking-[0.2em] text-brand/70 uppercase sm:text-[0.55rem]">
+      <p className="mt-1.5 text-[0.55rem] font-bold tracking-[0.14em] text-[#85065a] uppercase">
         Travel Confidently
       </p>
     </>
