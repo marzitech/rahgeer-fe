@@ -34,7 +34,7 @@ export default async function HomePage() {
             behind both sections rather than restart at each one. */}
         <div className="texture-worldmap bg-cream-dark">
           <TripsThisMonth trips={trips} />
-          <WhyTravelWithUs features={content.features} />
+          <WhyTravelWithUs features={content.features} expert={content.expert} />
         </div>
         <TravelExpert />
         <TravellersAbout />

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  FALLBACK_EXPERT,
   FALLBACK_FAQS,
   FALLBACK_FEATURES,
   FALLBACK_HERO_BANNERS,
@@ -86,7 +87,43 @@ describe("normalizeHomeContent", () => {
       expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
       expect(content.features).toEqual(FALLBACK_FEATURES);
       expect(content.faqs).toEqual(FALLBACK_FAQS);
+      expect(content.expert).toEqual(FALLBACK_EXPERT);
     }
+  });
+
+  it("fronts the page with the first Travel Mitr on the roster", () => {
+    const content = normalizeHomeContent({
+      travel_mitrs: [
+        { id: "1", name: "Nabeel", photo_url: "https://cdn.example/nabeel.webp" },
+        { id: "2", name: "Someone else", photo_url: "https://cdn.example/other.webp" },
+      ],
+    });
+
+    expect(content.expert).toEqual({
+      name: "Nabeel",
+      photoUrl: "https://cdn.example/nabeel.webp",
+    });
+  });
+
+  it("keeps the bundled portrait when nobody on the roster has a photo", () => {
+    // A Mitr added but not yet photographed must not blank the card —
+    // it is the only face on the home page.
+    const content = normalizeHomeContent({
+      travel_mitrs: [{ id: "1", name: "Nabeel", photo_url: "" }],
+    });
+
+    expect(content.expert).toEqual(FALLBACK_EXPERT);
+  });
+
+  it("skips past a photoless Mitr to one who has a picture", () => {
+    const content = normalizeHomeContent({
+      travel_mitrs: [
+        { id: "1", name: "No photo yet", photo_url: "" },
+        { id: "2", name: "Nabeel", photo_url: "https://cdn.example/nabeel.webp" },
+      ],
+    });
+
+    expect(content.expert.name).toBe("Nabeel");
   });
 
   it("maps the FAQ list the dashboard publishes", () => {

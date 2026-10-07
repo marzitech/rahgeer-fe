@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
-import type { SiteFeature } from "@/lib/content/home-content";
+import type { Expert, SiteFeature } from "@/lib/content/home-content";
 import { iconSrc } from "@/lib/content/travel-icons";
 
 /**
@@ -16,7 +16,13 @@ import { iconSrc } from "@/lib/content/travel-icons";
 
 const CALL_NUMBER = "+918792237778";
 
-export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
+export function WhyTravelWithUs({
+  features,
+  expert,
+}: {
+  features: SiteFeature[];
+  expert: Expert;
+}) {
   return (
     <section className="pt-4 pb-14 sm:pb-20">
       <div className="mx-auto max-w-6xl px-4">
@@ -59,16 +65,16 @@ export function WhyTravelWithUs({ features }: { features: SiteFeature[] }) {
             ))}
           </ul>
 
-          <ExpertCard />
+          <ExpertCard expert={expert} />
         </div>
       </div>
     </section>
   );
 }
 
-function ExpertCard() {
+function ExpertCard({ expert }: { expert: Expert }) {
   return (
-    /* The portrait is a cut-out, and in the design his head rises above
+    /* The portrait is a cut-out, and in the design the head rises above
        the maroon panel. That only works if the wrapper does not clip, so
        the rounded corners live on the panel itself rather than here. */
     <div className="relative pt-12 sm:pt-16">
@@ -95,14 +101,22 @@ function ExpertCard() {
         </div>
       </div>
 
-      <Image
-        src="/images/figma/expert-portrait.png"
-        alt="A Marzi travel expert"
-        width={1087}
-        height={1447}
-        sizes="(max-width: 1024px) 60vw, 320px"
-        className="pointer-events-none absolute bottom-[calc(100%-17.5rem)] left-1/2 w-[58%] max-w-[19rem] -translate-x-1/2 sm:bottom-[calc(100%-22rem)]"
-      />
+      {/* A fixed portrait frame rather than the bare image: photos come
+          off the dashboard at whatever shape the camera gave them, and a
+          wide cut-out — the subject small between broad transparent
+          margins — would otherwise render as a stamp adrift above the
+          panel. Cropping to this ratio trims the margins instead, and
+          anchoring to the bottom keeps the subject standing on the
+          panel rather than floating over it. */}
+      <div className="pointer-events-none absolute bottom-[calc(100%-17.5rem)] left-1/2 aspect-[3/4] w-[58%] max-w-[19rem] -translate-x-1/2 sm:bottom-[calc(100%-22rem)]">
+        <Image
+          src={expert.photoUrl}
+          alt={expert.name}
+          fill
+          sizes="(max-width: 1024px) 60vw, 320px"
+          className="object-cover object-bottom"
+        />
+      </div>
     </div>
   );
 }

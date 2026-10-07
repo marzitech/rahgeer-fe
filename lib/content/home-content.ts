@@ -31,10 +31,17 @@ export type FaqEntry = {
   answer: string;
 };
 
+/** The face on the "Talk to an Expert" card. */
+export type Expert = {
+  name: string;
+  photoUrl: string;
+};
+
 export type HomeContent = {
   heroBanners: HeroBanner[];
   features: SiteFeature[];
   faqs: FaqEntry[];
+  expert: Expert;
 };
 
 /** Shown when the backend has nothing published, or cannot be reached. */
@@ -83,6 +90,18 @@ export const FALLBACK_FEATURES: SiteFeature[] = [
     description: "We handle every detail from airport pickup to drop-off.",
   },
 ];
+
+/**
+ * The portrait the site shipped with.
+ *
+ * Stands in until a Travel Mitr with a photo is on the roster. The card
+ * is the only face on the home page, so it must never be empty — a Mitr
+ * added but not yet photographed should not blank it.
+ */
+export const FALLBACK_EXPERT: Expert = {
+  name: "A Marzi travel expert",
+  photoUrl: "/images/figma/expert-portrait.png",
+};
 
 /**
  * The questions the site shipped with.
@@ -190,6 +209,23 @@ function toBanner(raw: unknown, index: number): HeroBanner | null {
   };
 }
 
+/**
+ * The first Mitr on the roster who has a photo.
+ *
+ * Who fronts the page is an ops decision — the roster is ordered in the
+ * dashboard, and the top of it is who the card shows.
+ */
+function toExpert(raw: unknown): Expert {
+  if (!Array.isArray(raw)) return FALLBACK_EXPERT;
+  for (const row of raw) {
+    if (!row || typeof row !== "object") continue;
+    const mitr = row as Record<string, unknown>;
+    const photoUrl = str(mitr.photo_url);
+    if (photoUrl) return { name: str(mitr.name) || FALLBACK_EXPERT.name, photoUrl };
+  }
+  return FALLBACK_EXPERT;
+}
+
 function toFaq(raw: unknown, index: number): FaqEntry | null {
   if (!raw || typeof raw !== "object") return null;
   const row = raw as Record<string, unknown>;
@@ -236,6 +272,7 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
     heroBanners: banners.length > 0 ? banners : FALLBACK_HERO_BANNERS,
     features: features.length > 0 ? features : FALLBACK_FEATURES,
     faqs: faqs.length > 0 ? faqs : FALLBACK_FAQS,
+    expert: toExpert(root.travel_mitrs),
   };
 }
 
