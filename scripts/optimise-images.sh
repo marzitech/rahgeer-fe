@@ -50,6 +50,16 @@ for src in "$@"; do
     | cut -c1-48)
   out="$outdir/${base}.jpg"
 
+  # JPEG has no alpha, and ffmpeg composites what it finds onto black
+  # without comment. Warn rather than guess: a cut-out wants a PNG, or a
+  # deliberate background, and silently blackening one is worse than
+  # stopping to ask.
+  if ffprobe -v error -select_streams v:0 -show_entries stream=pix_fmt \
+       -of csv=p=0 "$src" 2>/dev/null | grep -qE 'rgba|bgra|ya|argb'; then
+    echo "  WARNING: $(basename "$src") has an alpha channel; JPEG will" >&2
+    echo "           flatten it onto black. Keep it as PNG if it is a cut-out." >&2
+  fi
+
   ffmpeg -nostdin -loglevel error -y -i "$src" \
     -vf "scale='min(${width},iw)':-2:flags=lanczos" \
     -map_metadata -1 -pix_fmt yuvj420p -q:v "$q" \

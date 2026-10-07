@@ -30,7 +30,7 @@ export function PackageHero({ pkg }: { pkg: PackageDetail }) {
           Back to destinations
         </Link>
 
-        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl sm:aspect-[1290/415]">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl sm:aspect-[1290/415]">
           {image ? (
             <Image
               src={image}
