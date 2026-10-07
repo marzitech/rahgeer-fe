@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 import type { TermDescription, TravelMitr } from "@/lib/content/package-detail";
 
 /**
@@ -50,40 +49,46 @@ export function PackageHighlights({
 }
 
 /**
- * The portrait is a cut-out and overhangs the top of the maroon panel,
- * so the wrapper must not clip — the rounding lives on the panel.
+ * The Mitr's photo sits inside the card, above their details.
+ *
+ * It used to be positioned as a cut-out overhanging a maroon panel,
+ * which only worked for the one bundled portrait it was built around: a
+ * tall image whose subject filled the frame. Photos uploaded through the
+ * dashboard are whatever shape the camera gave them, and a landscape one
+ * came out as a small rectangle floating in the middle of the maroon.
+ *
+ * A fixed-ratio frame holds any of them. `object-cover` trims the edges
+ * rather than letterboxing, and anchoring to the bottom keeps the
+ * subject standing on the panel instead of drifting in the middle —
+ * people are photographed head-up, so the bottom is the safe edge to
+ * crop. The sand background shows through a cut-out's transparency.
  */
 function TravelMitrCard({ mitr }: { mitr: TravelMitr }) {
   return (
-    <div className={cn("relative", mitr.photoUrl && "pt-14")}>
-      <div className="overflow-hidden rounded-3xl border border-[#e5e7eb]">
-        {mitr.photoUrl ? <div className="bg-brand-deep h-52 sm:h-56" /> : null}
-        <div className="bg-sand p-6">
-          <p className="font-display text-navy text-xl font-bold">{mitr.name}</p>
-          {mitr.languages ? (
-            <p className="mt-1 text-sm text-gray-600">{mitr.languages}</p>
-          ) : null}
-          {mitr.tripsLabel ? (
-            <p className="text-brand-deep mt-4 flex items-center gap-2 text-sm font-semibold">
-              <Check className="size-4" aria-hidden />
-              {mitr.tripsLabel}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
-      {/* The photo overhangs the panel, so the wrapper must not clip —
-          and with no photo there is no panel to overhang. */}
+    <div className="overflow-hidden rounded-3xl border border-[#e5e7eb]">
       {mitr.photoUrl ? (
-        <Image
-          src={mitr.photoUrl}
-          alt={`${mitr.name}, a Marzi Travel Mitr`}
-          width={760}
-          height={1012}
-          sizes="(max-width: 1024px) 50vw, 260px"
-          className="pointer-events-none absolute bottom-[calc(100%-16.5rem)] left-1/2 w-[52%] max-w-[16rem] -translate-x-1/2"
-        />
+        <div className="bg-sand-deep relative aspect-[4/3] w-full">
+          <Image
+            src={mitr.photoUrl}
+            alt={`${mitr.name}, a Marzi Travel Mitr`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 400px"
+            className="object-cover object-bottom"
+          />
+        </div>
       ) : null}
+      <div className="bg-sand p-6">
+        <p className="font-display text-navy text-xl font-bold">{mitr.name}</p>
+        {mitr.languages ? (
+          <p className="mt-1 text-sm text-gray-600">{mitr.languages}</p>
+        ) : null}
+        {mitr.tripsLabel ? (
+          <p className="text-brand-deep mt-4 flex items-center gap-2 text-sm font-semibold">
+            <Check className="size-4" aria-hidden />
+            {mitr.tripsLabel}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }
