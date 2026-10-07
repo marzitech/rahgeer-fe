@@ -4,6 +4,9 @@ import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { PackageDetail } from "@/components/features/packages/PackageDetail";
 import { PackageHero } from "@/components/features/packages/PackageHero";
+import { PackageHighlights } from "@/components/features/packages/PackageHighlights";
+import { PackageItinerary } from "@/components/features/packages/PackageItinerary";
+import { PackageWhyTour } from "@/components/features/packages/PackageWhyTour";
 import { PriceCallbackCard } from "@/components/features/packages/PriceCallbackCard";
 import { getTrip, getTrips } from "@/lib/content/fetchers";
 import { normalizePackageDetail } from "@/lib/content/package-detail";
@@ -45,18 +48,30 @@ export default async function PackagePage({
         <main className="bg-cream-dark">
           <PackageHero pkg={pkg} />
 
-          <div className="mx-auto grid max-w-6xl gap-8 px-4 pb-16 lg:grid-cols-[1fr_26rem] lg:items-start">
-            <div className="min-w-0">
+          {/* The price card rides alongside Why Tour on a desktop and
+              leads on a phone, where it is the first thing worth doing. */}
+          <div className="mx-auto grid max-w-6xl gap-6 px-4 lg:grid-cols-[1fr_26rem] lg:items-start">
+            <div className="order-2 min-w-0 lg:order-1">
               {pkg.summary ? (
-                <p className="text-base leading-relaxed text-gray-700">{pkg.summary}</p>
+                <p className="mb-6 text-base leading-relaxed text-gray-700">
+                  {pkg.summary}
+                </p>
               ) : null}
             </div>
-            <PriceCallbackCard
-              slug={pkg.slug}
-              packageName={pkg.name}
-              priceFromInr={pkg.priceFromInr}
-            />
+            <div className="order-1 lg:order-2">
+              <PriceCallbackCard
+                slug={pkg.slug}
+                packageName={pkg.name}
+                priceFromInr={pkg.priceFromInr}
+              />
+            </div>
           </div>
+
+          <div className="mt-10">
+            <PackageWhyTour items={pkg.whyTour} />
+          </div>
+          <PackageHighlights highlights={pkg.highlights} />
+          <PackageItinerary days={pkg.days} />
         </main>
       ) : (
         /* Backend unreachable — the pre-existing page off bundled content. */

@@ -6,7 +6,13 @@
  * section of the page.
  */
 
-export type PackageStop = { time: string; title: string; description: string };
+export type PackageStop = {
+  time: string;
+  title: string;
+  description: string;
+  /** Optional photo for the stop; most tours have none yet. */
+  image: string;
+};
 
 export type PackageDay = {
   day: number;
@@ -72,6 +78,7 @@ function dayList(v: unknown): PackageDay[] {
               time: str(s.time),
               title: str(s.title),
               description: str(s.description),
+              image: str(s.image),
             }))
         : [],
     }));

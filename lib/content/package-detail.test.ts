@@ -24,7 +24,14 @@ const ROW = {
         day: 1,
         title: "Arrive Srinagar",
         description: "Settle in.",
-        stops: [{ time: "5 PM", title: "Shikara ride", description: "Calm." }],
+        stops: [
+          {
+            time: "5 PM",
+            title: "Shikara ride",
+            description: "Calm.",
+            image: "/images/destinations/kashmir.jpg",
+          },
+        ],
       },
     ],
     price_includes: ["All meals"],
@@ -47,6 +54,7 @@ describe("normalizePackageDetail", () => {
       priceFromInr: 59999,
     });
     expect(pkg.days[0].stops[0].title).toBe("Shikara ride");
+    expect(pkg.days[0].stops[0].image).toBe("/images/destinations/kashmir.jpg");
     expect(pkg.highlights[0].term).toBe("Dal Lake");
   });
 
@@ -93,5 +101,16 @@ describe("normalizePackageDetail", () => {
     for (const bad of [null, undefined, {}, "nope", { slug: "" }]) {
       expect(normalizePackageDetail(bad)).toBeNull();
     }
+  });
+});
+
+describe("itinerary stop images", () => {
+  it("defaults to no image rather than undefined, so the check is simple", () => {
+    const pkg = normalizePackageDetail({
+      slug: "x",
+      display_name: "X",
+      content: { days: [{ day: 1, title: "A", stops: [{ title: "S" }] }] },
+    })!;
+    expect(pkg.days[0].stops[0].image).toBe("");
   });
 });
