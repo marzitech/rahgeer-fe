@@ -50,7 +50,7 @@ export default async function PlanPage({
   return (
     <>
       <Header />
-      <main className="bg-[#fdf7f2] pt-20 md:pt-24">
+      <main className="bg-[#fdf7f2] pt-28 lg:pt-24">
         <div className="mx-auto max-w-[1192px] px-4 py-8">
           <BackLink
             href="/"

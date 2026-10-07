@@ -271,7 +271,7 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
   }, [heroImages.length, heroSlides.length]);
 
   return (
-    <main className="bg-[#fdf7f2] pt-20 md:pt-24">
+    <main className="bg-[#fdf7f2] pt-28 lg:pt-24">
       {mitrOpen ? (
         <TalkToMitrModal pkg={pkg} onClose={() => setMitrOpen(false)} />
       ) : null}

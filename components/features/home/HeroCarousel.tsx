@@ -43,7 +43,7 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
   if (count === 0) return null;
 
   return (
-    <section className="bg-sand pt-24 pb-6 md:pt-28">
+    <section className="bg-sand pt-32 pb-6 lg:pt-28">
       <h1 className="font-display px-4 text-center text-[2rem] leading-tight font-extrabold text-brand sm:text-5xl">
         Travel Confidently
       </h1>
