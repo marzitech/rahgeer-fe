@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Lato, Playfair_Display } from "next/font/google";
+import { Bricolage_Grotesque, Inter, Manrope } from "next/font/google";
 import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { CallbackPopup } from "@/components/CallbackPopup";
@@ -10,18 +10,26 @@ import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { isAppWebView } from "@/lib/app-webview";
 import "./globals.css";
 
-// Same pairing as marzi-web production: Lato body + Playfair display.
-const lato = Lato({
-  variable: "--font-lato",
+// The travel design system (Figma "Marzi World" → Travel): Bricolage
+// Grotesque for display, Inter for body, Manrope for the small uppercase
+// labels. Deliberately no serif — the earlier Playfair pairing came from
+// marzi-web and is not what this design uses.
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["600", "700", "800"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -57,7 +65,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-app={isApp ? "true" : undefined}
-      className={`${lato.variable} ${playfair.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${inter.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <HashScroll />

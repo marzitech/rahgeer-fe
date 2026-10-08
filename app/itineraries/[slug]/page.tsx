@@ -17,7 +17,7 @@ export default async function SampleItineraryPage({
       <div className="print:hidden">
         <Header />
       </div>
-      <main className="min-h-screen bg-[#fdf7f2] pt-20 md:pt-24 print:min-h-0 print:bg-white print:pt-0">
+      <main className="min-h-screen bg-[#fdf7f2] pt-20 lg:pt-24 print:min-h-0 print:bg-white print:pt-0">
         <SampleItineraryView slug={slug} />
       </main>
       <div className="print:hidden">

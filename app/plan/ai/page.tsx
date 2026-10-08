@@ -14,7 +14,7 @@ export default function AiPlanPage() {
       <div className="print:hidden">
         <Header />
       </div>
-      <main className="min-h-screen bg-[#fdf7f2] pt-20 md:pt-24 print:pt-0">
+      <main className="min-h-screen bg-[#fdf7f2] pt-20 lg:pt-24 print:pt-0">
         <div className="mx-auto max-w-[1192px] px-4 py-8">
           <BackLink
             href="/"

@@ -9,14 +9,20 @@
   /* Exact marzi-web production values */
   --marzi-purple: #2e1065; /* header / footer bar */
   --marzi-purple-deep: #23093f;
-  --brand: #821a52; /* marzi-primary magenta */
-  --brand-deep: #6a1243;
-  --brand-darker: #4d0629;
+  --brand: #8f004c; /* marzi-primary */
+  --brand-deep: #67003d; /* hovers, pressed states */
+  --brand-darker: #4a002b; /* derived, keeps the scale in one hue */
   --marzi-pink: #ec1e79; /* CTA pink */
   --cream: #fffcf3; /* warm section background */
-  --cream-dark: #f7edd8;
+  --cream-dark: #f4e7cd; /* the tan band (Figma Destinations Section) */
   --gold: #ffc61a; /* marzi-gold accent */
   --ink: #27010f; /* near-black plum (dark CTA card) */
+
+  /* Travel design system — exact values from the Figma file. */
+  --sand: #f7f2ed; /* hero band */
+  --sand-deep: #e4d9d0; /* chips, card titles, caption pill, icon badges */
+  --teal: #019778; /* prices AND the "Coolest Community" badge */
+  --navy: #111827; /* section headings that aren't brand-coloured */
 }
 
 @theme inline {
@@ -32,9 +38,14 @@
   --color-cream-dark: var(--cream-dark);
   --color-gold: var(--gold);
   --color-ink: var(--ink);
+  --color-sand: var(--sand);
+  --color-sand-deep: var(--sand-deep);
+  --color-teal: var(--teal);
+  --color-navy: var(--navy);
 
-  --font-sans: var(--font-lato);
-  --font-display: var(--font-playfair);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-bricolage);
+  --font-label: var(--font-manrope);
 }
 
 /* Anchor jumps (#destinations, #plan-your-trip, …) clear the fixed header.
@@ -43,13 +54,20 @@
    next page's footer). Smooth anchor scrolling is done per-jump in JS
    (HashScroll + CtaBanner) instead. */
 html {
-  scroll-padding-top: 6rem;
+  /* Clears the fixed header: two rows below lg, one from lg up. */
+  scroll-padding-top: 8rem;
+}
+
+@media (min-width: 64rem) {
+  html {
+    scroll-padding-top: 6rem;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-lato), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   /* App-like touch feel: no grey tap flash, no accidental text selection
      on chrome, no bounce/pull-to-refresh past the edges. */
   -webkit-tap-highlight-color: transparent;
@@ -82,7 +100,7 @@ body {
 
 /* Display headings use the serif brand voice */
 .font-display {
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-bricolage), system-ui, sans-serif;
 }
 
 /* Continuous marquee (Travel Mitr service chips). The track holds two
@@ -111,5 +129,50 @@ body {
     background: #fff !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+}
+
+/* The world map behind the trips and "why travel with us" band.
+
+   The designer's own artwork, exported from Figma (2394x1251). Its
+   colours are baked in, so it needs no opacity of its own — it is
+   positioned and sized to match the Figma frame rather than tiled. */
+.texture-worldmap {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-worldmap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/images/figma/world-map.svg");
+  background-repeat: no-repeat;
+  background-position: center 62%;
+  background-size: 166% auto;
+  pointer-events: none;
+}
+
+/* The looping Travel Mitr conversation. A message slides up as it
+   lands, the way a chat client animates an incoming line. */
+@keyframes chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+/* The three dots of the typing indicator, staggered by inline delay. */
+@keyframes chat-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-0.15rem);
   }
 }

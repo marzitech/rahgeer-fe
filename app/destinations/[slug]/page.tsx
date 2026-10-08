@@ -6,9 +6,20 @@ import { Faq } from "@/components/features/home/Faq";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { DESTINATION_CONTENT } from "@/lib/content/destinations";
+import { getHomeContent } from "@/lib/content/fetchers";
 import { FeaturedItineraries } from "./FeaturedItineraries";
 
 /** Destination page — design: Figma node 3541-27094. */
+
+/**
+ * The page body is bundled content, but its FAQ is edited in the
+ * dashboard, so the page revalidates on the same timer as the others
+ * rather than freezing the questions at build time.
+ *
+ * A literal because Next statically analyses segment config — an
+ * imported constant is silently ignored.
+ */
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return Object.keys(DESTINATION_CONTENT).map((slug) => ({ slug }));
@@ -20,6 +31,8 @@ export default async function DestinationPage({
   const { slug } = await params;
   const destination = DESTINATION_CONTENT[slug];
   if (!destination) notFound();
+
+  const { faqs } = await getHomeContent();
 
   return (
     <>
@@ -123,7 +136,7 @@ export default async function DestinationPage({
           <FeaturedItineraries destination={destination} />
         ) : null}
 
-        <Faq />
+        <Faq items={faqs} />
       </main>
       <Footer />
     </>

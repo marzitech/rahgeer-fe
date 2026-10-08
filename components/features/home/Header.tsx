@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   ChevronRight,
   Download,
@@ -28,13 +28,6 @@ import { cn } from "@/lib/utils";
 // The brand nav points at the main marzi.life site (this is the Travel
 // sub-site); the logo + bottom tab bar keep the travel home.
 const MARZI_SITE = "https://marzi.life";
-
-const NAV_LINKS = [
-  { href: MARZI_SITE, label: "Home" },
-  { href: `${MARZI_SITE}/about-us`, label: "About Us" },
-  { href: `${MARZI_SITE}/events`, label: "Meetups" },
-  { href: `${MARZI_SITE}/contact-us`, label: "Contact Us" },
-];
 
 // The mobile drawer mirrors the desktop navbar exactly — brand-site links
 // (external, marked so they render a plain anchor).
@@ -60,6 +53,13 @@ const MENU_ITEMS = [
   },
 ];
 
+const NAV_LINKS = [
+  { href: MARZI_SITE, label: "Home" },
+  { href: `${MARZI_SITE}/about-us`, label: "About Us" },
+  { href: `${MARZI_SITE}/events`, label: "Meetups" },
+  { href: `${MARZI_SITE}/contact-us`, label: "Contact Us" },
+];
+
 /* QR modal loads on demand — qrcode.react stays out of the initial bundle. */
 const DownloadAppModal = dynamic(
   () =>
@@ -74,6 +74,12 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const pathname = usePathname();
+
+  // The home page shows its nav inline, as the design draws it. Every
+  // other page keeps the bar to one row and puts the same links behind a
+  // hamburger — an inner page has its own content to lead with, and the
+  // second row costs 45px of a phone screen on every one of them.
+  const inlineNav = pathname === "/";
 
   /* Same behaviour as marzi-web's header: Android goes straight to the
      Play Store; desktop/iOS get the QR modal with both store buttons. */
@@ -111,85 +117,119 @@ export function Header() {
       <div className="hide-in-app pointer-events-none fixed inset-x-0 top-0 z-[100] bg-white/90 [padding-top:env(safe-area-inset-top)] backdrop-blur-md transition-all duration-500 md:bg-transparent md:[padding-top:0] md:backdrop-blur-none">
         <header
           className={cn(
-            "pointer-events-auto relative mx-auto flex h-16 items-center justify-between px-6 transition-all duration-500 ease-in-out md:h-20 md:px-10",
-            // Mobile: always a solid, full-width fixed bar (app-like — no
-            // shrinking pill). md+: restore the scroll-reactive floating pill.
+            "pointer-events-auto relative mx-auto transition-all duration-500 ease-in-out",
+            // Below lg the bar is two rows — logo and Download App, then the
+            // nav — because five links plus a button will not fit beside a
+            // logo on a phone. From lg the nav moves up beside the logo and
+            // the scroll-reactive floating pill comes back.
             "border-brand/20 border-b bg-white/90 shadow-sm backdrop-blur-md",
             isScrolled
-              ? "md:mt-4 md:max-w-6xl md:rounded-full md:border md:border-white/20 md:bg-white/80 md:shadow-lg md:backdrop-blur-xl"
-              : "md:mt-0 md:max-w-full",
+              ? "lg:mt-4 lg:max-w-6xl lg:rounded-full lg:border lg:border-white/20 lg:bg-white/80 lg:shadow-lg lg:backdrop-blur-xl"
+              : "lg:mt-0 lg:max-w-full",
           )}
         >
-          <div className="flex items-center gap-4 md:gap-8">
-            <Link
-              href="/"
-              className="group flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
-            >
-              <Image
-                src="/images/brand/marzi-logo.png"
-                alt="Marzi"
-                width={140}
-                height={48}
-                priority
-                className={cn(
-                  "h-8 w-auto transition-all",
-                  isScrolled ? "sm:h-9" : "sm:h-11",
-                )}
-              />
-              <div className="flex items-center gap-2">
-                <div
-                  className={cn("w-px bg-gray-300", isScrolled ? "h-5" : "h-6")}
+          <div className="flex h-16 items-center justify-between px-5 lg:h-20 lg:px-10">
+            <div className="flex items-center gap-4 lg:gap-8">
+              <Link
+                href="/"
+                className="group flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
+              >
+                <Image
+                  src="/images/brand/marzi-logo.png"
+                  alt="Marzi"
+                  width={140}
+                  height={48}
+                  priority
+                  className={cn(
+                    "h-8 w-auto transition-all",
+                    isScrolled ? "sm:h-9" : "sm:h-11",
+                  )}
                 />
-                <span className="text-brand font-display text-lg font-bold tracking-tight md:text-xl">
-                  Travel
-                </span>
-              </div>
-            </Link>
+                <div className="hidden items-center gap-2 lg:flex">
+                  <div
+                    className={cn(
+                      "w-px bg-gray-300",
+                      isScrolled ? "h-5" : "h-6",
+                    )}
+                  />
+                  <span className="text-brand font-display text-lg font-bold tracking-tight lg:text-xl">
+                    Travel
+                  </span>
+                </div>
+              </Link>
 
-            {/* Desktop nav — brand-site links (marzi.life) */}
-            <nav className="hidden items-center gap-6 lg:flex">
+              {/* Desktop nav — brand-site links (marzi.life) */}
+              <nav className="hidden items-center gap-6 lg:flex">
+                {NAV_LINKS.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="group hover:text-brand relative text-sm font-bold tracking-wider text-gray-500 uppercase transition-colors focus:outline-none"
+                  >
+                    {link.label}
+                    <span className="bg-brand absolute -bottom-1 left-0 h-0.5 w-0 transition-all group-hover:w-full" />
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleDownloadClick}
+                className={cn(
+                  "bg-brand group relative flex shrink-0 items-center gap-2 overflow-hidden rounded-full px-4 py-2.5 text-sm font-bold text-white transition-all",
+                  isScrolled ? "lg:px-4 lg:shadow-lg lg:hover:px-6" : "lg:px-6",
+                )}
+              >
+                <Download className="h-4 w-4" />
+                <span className="hidden sm:inline">Download App</span>
+                <span className="sm:hidden">Download</span>
+                {/* Shine sweep */}
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+              </button>
+
+              {!inlineNav ? (
+                <button
+                  type="button"
+                  aria-label={isOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isOpen}
+                  onClick={() => setIsOpen((open) => !open)}
+                  className="text-foreground flex size-11 items-center justify-center rounded-full hover:bg-black/5 lg:hidden"
+                >
+                  {isOpen ? (
+                    <X className="size-6" />
+                  ) : (
+                    <Menu className="size-6" />
+                  )}
+                </button>
+              ) : null}
+            </div>
+          </div>
+
+          {/* Second row, home only, below lg. Scrolls rather than wraps
+            so a narrow phone or a longer label can never push the bar
+            taller than the height the page pads for. */}
+          {inlineNav ? (
+            <nav className="flex h-11 [scrollbar-width:none] items-center gap-4 overflow-x-auto px-5 lg:hidden [&::-webkit-scrollbar]:hidden">
+              <Link
+                href="/"
+                aria-current="page"
+                className="text-brand shrink-0 text-xs font-bold tracking-wide uppercase"
+              >
+                Travel
+              </Link>
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="group hover:text-brand relative text-sm font-bold tracking-wider text-gray-500 uppercase transition-colors focus:outline-none"
+                  className="hover:text-brand shrink-0 text-xs font-bold tracking-wide text-gray-500 uppercase transition-colors"
                 >
                   {link.label}
-                  <span className="bg-brand absolute -bottom-1 left-0 h-0.5 w-0 transition-all group-hover:w-full" />
                 </a>
               ))}
             </nav>
-          </div>
-
-          <div className="flex items-center gap-3 md:gap-4">
-            <button
-              type="button"
-              onClick={handleDownloadClick}
-              className={cn(
-                "bg-brand group relative hidden items-center gap-2 overflow-hidden rounded-full py-2.5 text-sm font-bold text-white transition-all sm:flex",
-                isScrolled ? "px-4 shadow-lg hover:px-6" : "px-6",
-              )}
-            >
-              <Download className="h-4 w-4" />
-              <span>Download App</span>
-              {/* Shine sweep */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-            </button>
-
-            {/* Mobile menu trigger — 44px min tap target */}
-            <button
-              type="button"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              onClick={() => setIsOpen((open) => !open)}
-              className="text-foreground relative z-[1] flex h-11 w-11 items-center justify-center rounded-full hover:bg-black/5 lg:hidden"
-            >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+          ) : null}
         </header>
       </div>
 

@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen items-center justify-center bg-[#fdf7f2] pt-20 md:pt-24">
+      <main className="flex min-h-screen items-center justify-center bg-[#fdf7f2] pt-20 lg:pt-24">
         <div className="mx-auto max-w-md px-4 py-24 text-center">
           <span aria-hidden className="text-4xl">
             🧭

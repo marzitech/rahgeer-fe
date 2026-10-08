@@ -42,7 +42,7 @@ export function DownloadAppModal({ onClose }: { onClose: () => void }) {
       />
 
       <div className="relative w-full max-w-[420px] overflow-hidden rounded-[2rem] bg-white shadow-2xl">
-        <div className="absolute top-0 left-0 h-1.5 w-full bg-gradient-to-r from-[#821A52] via-[#E91E63] to-[#821A52]" />
+        <div className="absolute top-0 left-0 h-1.5 w-full bg-gradient-to-r from-[#8F004C] via-[#E91E63] to-[#8F004C]" />
 
         <button
           type="button"
@@ -54,7 +54,7 @@ export function DownloadAppModal({ onClose }: { onClose: () => void }) {
         </button>
 
         <div className="px-8 pt-10 pb-4 text-center">
-          <h2 className="font-display mb-2 text-3xl font-black leading-tight tracking-tight text-[#821A52]">
+          <h2 className="font-display mb-2 text-3xl font-black leading-tight tracking-tight text-[#8F004C]">
             Get the Marzi App
           </h2>
           <p className="text-sm font-medium text-gray-500">
@@ -63,17 +63,17 @@ export function DownloadAppModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="relative flex flex-col items-center justify-center bg-gray-50/50 p-10 pt-4">
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#821A52]/5 blur-[80px]" />
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8F004C]/5 blur-[80px]" />
 
           <div className="group relative">
-            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-[#821A52] via-[#FF6B6B] to-[#E91E63] opacity-10 blur transition-opacity duration-500 group-hover:opacity-20" />
+            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-[#8F004C] via-[#FF6B6B] to-[#E91E63] opacity-10 blur transition-opacity duration-500 group-hover:opacity-20" />
             <div className="relative flex transform items-center justify-center rounded-[2.5rem] border border-white bg-white p-6 shadow-xl transition-all duration-500 ease-out group-hover:scale-[1.02]">
-              <div className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-tr from-[#821A52]/[0.02] to-transparent" />
+              <div className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-tr from-[#8F004C]/[0.02] to-transparent" />
               <QRCodeSVG
                 value={QR_TARGET_URL}
                 size={200}
                 level="H"
-                fgColor="#821A52"
+                fgColor="#8F004C"
                 imageSettings={{
                   src: "/images/brand/marzi-favicon.png",
                   height: 52,
