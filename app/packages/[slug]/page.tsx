@@ -39,7 +39,7 @@ export default async function PackagePage({
 }: PageProps<"/packages/[slug]">) {
   const { slug } = await params;
 
-  const [trip, { faqs }] = await Promise.all([getTrip(slug), getHomeContent()]);
+  const [trip, { faqs, expert }] = await Promise.all([getTrip(slug), getHomeContent()]);
   const pkg = normalizePackageDetail(trip);
   const legacy = PACKAGE_CONTENT[slug];
   if (!pkg && !legacy) notFound();
@@ -69,7 +69,13 @@ export default async function PackagePage({
               priceFromInr={pkg.priceFromInr}
             />
           </div>
-          <PackageHighlights highlights={pkg.highlights} mitr={pkg.travelMitr} />
+          {/* Not every tour has its own Mitr assigned yet — in practice,
+              none on production do. Rather than leave the reassurance
+              half of this section blank on every single tour, it falls
+              back to whoever fronts the home page: the same rule, the
+              same person, wherever the site needs a face and has none
+              of its own. */}
+          <PackageHighlights highlights={pkg.highlights} mitr={pkg.travelMitr ?? expert} />
           <PackageItinerary days={pkg.days} />
           <PackagePriceTable includes={pkg.priceIncludes} excludes={pkg.priceExcludes} />
           <PackageCancellation clauses={pkg.cancellationPolicy} />

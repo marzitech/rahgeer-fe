@@ -31,10 +31,17 @@ export type FaqEntry = {
   answer: string;
 };
 
-/** The face on the "Talk to an Expert" card. */
+/**
+ * The face on the "Talk to an Expert" card — and, when a tour has no
+ * Mitr of its own, the same person's full card on its /package page.
+ * Carries exactly what TravelMitr does, so either place can take this
+ * value directly with no shape conversion.
+ */
 export type Expert = {
   name: string;
   photoUrl: string;
+  languages: string;
+  tripsLabel: string;
 };
 
 export type HomeContent = {
@@ -114,6 +121,8 @@ export const FALLBACK_FEATURES: SiteFeature[] = [
 export const FALLBACK_EXPERT: Expert = {
   name: "Nabeel",
   photoUrl: "/images/figma/expert-nabeel.webp",
+  languages: "English · Hindi",
+  tripsLabel: "150+ Trips completed",
 };
 
 /**
@@ -228,7 +237,14 @@ function toExpert(raw: unknown): Expert {
     if (!row || typeof row !== "object") continue;
     const mitr = row as Record<string, unknown>;
     const photoUrl = str(mitr.photo_url);
-    if (photoUrl) return { name: str(mitr.name) || FALLBACK_EXPERT.name, photoUrl };
+    if (photoUrl) {
+      return {
+        name: str(mitr.name) || FALLBACK_EXPERT.name,
+        photoUrl,
+        languages: str(mitr.languages),
+        tripsLabel: str(mitr.trips_label),
+      };
+    }
   }
   return FALLBACK_EXPERT;
 }
