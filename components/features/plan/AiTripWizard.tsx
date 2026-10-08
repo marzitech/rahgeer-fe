@@ -24,6 +24,7 @@ import {
   type Itinerary,
   type ItineraryIntake,
 } from "@/lib/api/endpoints";
+import { ApiError } from "@/lib/api/client";
 import { streamItineraryProgress } from "@/lib/api/stream";
 import {
   reverseGeocodeCity,
@@ -1164,6 +1165,9 @@ export function AiTripWizard() {
     "idle" | "generating" | "failed"
   >("idle");
   const [generationStep, setGenerationStep] = useState("");
+  // Set only when the failure has a more honest story than the generic
+  // "something went wrong" — today that's the create throttle (429).
+  const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [itinerary, setItinerary] = useState<Itinerary | null>(null);
   const [walkStretch, setWalkStretch] = useState<string | null>(null);
   const [travellers, setTravellers] = useState<Record<TravellerKey, number>>({
@@ -1373,6 +1377,7 @@ export function AiTripWizard() {
     // anonymously — no name/phone collected here.
     setGeneration("generating");
     setGenerationStep("");
+    setFailureMessage(null);
     try {
       const monthNumber =
         monthOptions.find((m) => m.id === travelMonth)?.monthNumber ??
@@ -1408,7 +1413,12 @@ export function AiTripWizard() {
           }
         },
       );
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiError && error.statusCode === 429) {
+        setFailureMessage(
+          "You've planned a few trips in a row — our planner needs a short breather. Please try again in a little while.",
+        );
+      }
       setGeneration("failed");
     }
   }
@@ -1466,8 +1476,8 @@ export function AiTripWizard() {
             We couldn&apos;t finish your itinerary
           </h1>
           <p className="text-foreground/60 mx-auto mt-3 max-w-sm text-sm">
-            Something went wrong on our side. Give it another try, or a Travel
-            Mitr can plan it with you.
+            {failureMessage ??
+              "Something went wrong on our side. Give it another try, or a Travel Mitr can plan it with you."}
           </p>
           <div className="mt-7 flex items-center justify-center gap-3">
             <button
