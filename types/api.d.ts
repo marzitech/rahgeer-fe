@@ -4,6 +4,269 @@
  */
 
 export interface paths {
+    "/api/v1/admin/features/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        get: operations["v1_admin_features_list"];
+        put?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        post: operations["v1_admin_features_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/features/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        get: operations["v1_admin_features_retrieve"];
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        put: operations["v1_admin_features_update"];
+        post?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        delete: operations["v1_admin_features_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        patch: operations["v1_admin_features_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/admin/features/reorder/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST {ids: [...]} — assign `sort_order` from the sequence given.
+         *
+         *     Subclasses set `model`. All-or-nothing: an id that does not exist means
+         *     the admin is working from a stale list, so the whole request is
+         *     rejected rather than renumbering a subset into a confusing order.
+         */
+        post: operations["v1_admin_features_reorder_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/hero-banners/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        get: operations["v1_admin_hero_banners_list"];
+        put?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        post: operations["v1_admin_hero_banners_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/hero-banners/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        get: operations["v1_admin_hero_banners_retrieve"];
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        put: operations["v1_admin_hero_banners_update"];
+        post?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        delete: operations["v1_admin_hero_banners_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        patch: operations["v1_admin_hero_banners_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/admin/hero-banners/reorder/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST {ids: [...]} — assign `sort_order` from the sequence given.
+         *
+         *     Subclasses set `model`. All-or-nothing: an id that does not exist means
+         *     the admin is working from a stale list, so the whole request is
+         *     rejected rather than renumbering a subset into a confusing order.
+         */
+        post: operations["v1_admin_hero_banners_reorder_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/packages/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Unpublished packages included — ops has to see what it has hidden. */
+        get: operations["v1_admin_packages_list"];
+        put?: never;
+        /** @description Unpublished packages included — ops has to see what it has hidden. */
+        post: operations["v1_admin_packages_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/packages/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        get: operations["v1_admin_packages_retrieve"];
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        put: operations["v1_admin_packages_update"];
+        post?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        delete: operations["v1_admin_packages_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Admin-dashboard-only endpoints, authorized by a shared service key.
+         *
+         *     No user authentication: the caller is another server, not a person. See
+         *     `HasServiceKey` for why the key is the boundary.
+         */
+        patch: operations["v1_admin_packages_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/admin/packages/reorder/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description POST {ids: [...]} — assign `sort_order` from the sequence given.
+         *
+         *     Subclasses set `model`. All-or-nothing: an id that does not exist means
+         *     the admin is working from a stale list, so the whole request is
+         *     rejected rather than renumbering a subset into a confusing order.
+         */
+        post: operations["v1_admin_packages_reorder_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/claim/": {
         parameters: {
             query?: never;
@@ -326,6 +589,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/packages/{slug}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Public detail: GET /api/v1/packages/{slug}/
+         *
+         *     Addressed by slug because that is what the page URL carries. An
+         *     unpublished package 404s rather than merely dropping out of the list.
+         */
+        get: operations["v1_packages_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/search/": {
         parameters: {
             query?: never;
@@ -335,6 +620,28 @@ export interface paths {
         };
         /** @description GET /api/v1/search/?q=honeymoon+beach&type=destination,package */
         get: operations["v1_search_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/site-content/home/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description GET /api/v1/site-content/home/ — everything editable on the home page.
+         *
+         *     One call, not two: the page needs both lists before it can render, and
+         *     a single round trip keeps the server component simple and fast.
+         */
+        get: operations["v1_site_content_home_retrieve"];
         put?: never;
         post?: never;
         delete?: never;
@@ -446,6 +753,29 @@ export interface components {
          * @enum {string}
          */
         GroupTypeEnum: "solo" | "couple" | "family" | "friends";
+        HeroBanner: {
+            /** Format: uuid */
+            readonly id: string;
+            image_url?: string;
+            alt?: string;
+            headline?: string;
+            caption?: string;
+            badge_text?: string;
+            cta_label?: string;
+            cta_href?: string;
+            sort_order?: number;
+            is_active?: boolean;
+        };
+        /**
+         * @description Shape of the single public read the home page makes.
+         *
+         *     Declared so it reaches `openapi.yaml`, which is what the frontend
+         *     generates its types from — an undocumented endpoint is an untyped one.
+         */
+        HomeContent: {
+            readonly hero_banners: components["schemas"]["HeroBanner"][];
+            readonly features: components["schemas"]["SiteFeature"][];
+        };
         ItineraryDay: {
             day_number: number;
             /** Format: date */
@@ -480,16 +810,80 @@ export interface components {
          * @enum {string}
          */
         PaceEnum: "relaxed" | "balanced" | "packed";
+        /** @description Trip cards: the home rail and the packages listing. */
         Package: {
             /** Format: uuid */
             readonly id: string;
             slug: string;
             display_name: string;
+            title?: string;
             destination: string;
             summary?: string;
-            content?: unknown;
+            card_image_url?: string;
+            duration_label?: string;
+            dates_label?: string;
+            package_type?: string;
+            meals_label?: string;
+            from_city?: string;
+            places_covered?: unknown;
+            tags?: unknown;
+            gen_ev_score?: number | null;
             default_duration_nights?: number | null;
             price_from_inr?: number | null;
+            sort_order?: number;
+        };
+        PackageAdmin: {
+            /** Format: uuid */
+            readonly id: string;
+            slug: string;
+            display_name: string;
+            title?: string;
+            destination: string;
+            summary?: string;
+            card_image_url?: string;
+            duration_label?: string;
+            dates_label?: string;
+            package_type?: string;
+            meals_label?: string;
+            from_city?: string;
+            places_covered?: unknown;
+            tags?: unknown;
+            gen_ev_score?: number | null;
+            default_duration_nights?: number | null;
+            price_from_inr?: number | null;
+            sort_order?: number;
+            hero_image_urls?: unknown;
+            content?: unknown;
+            match_keywords?: unknown;
+            is_active?: boolean;
+            /** Format: date-time */
+            readonly created: string;
+            /** Format: date-time */
+            readonly modified: string;
+        };
+        /** @description The package detail page — cards plus the full itinerary. */
+        PackageDetail: {
+            /** Format: uuid */
+            readonly id: string;
+            slug: string;
+            display_name: string;
+            title?: string;
+            destination: string;
+            summary?: string;
+            card_image_url?: string;
+            duration_label?: string;
+            dates_label?: string;
+            package_type?: string;
+            meals_label?: string;
+            from_city?: string;
+            places_covered?: unknown;
+            tags?: unknown;
+            gen_ev_score?: number | null;
+            default_duration_nights?: number | null;
+            price_from_inr?: number | null;
+            sort_order?: number;
+            hero_image_urls?: unknown;
+            content?: unknown;
         };
         PackageRequestCreate: {
             /** Format: uuid */
@@ -528,6 +922,32 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Enquiry"][];
         };
+        PaginatedHeroBannerList: {
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["HeroBanner"][];
+        };
+        PaginatedPackageAdminList: {
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["PackageAdmin"][];
+        };
         PaginatedPackageList: {
             /**
              * Format: uri
@@ -540,6 +960,71 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["Package"][];
+        };
+        PaginatedSiteFeatureList: {
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["SiteFeature"][];
+        };
+        PatchedHeroBanner: {
+            /** Format: uuid */
+            readonly id?: string;
+            image_url?: string;
+            alt?: string;
+            headline?: string;
+            caption?: string;
+            badge_text?: string;
+            cta_label?: string;
+            cta_href?: string;
+            sort_order?: number;
+            is_active?: boolean;
+        };
+        PatchedPackageAdmin: {
+            /** Format: uuid */
+            readonly id?: string;
+            slug?: string;
+            display_name?: string;
+            title?: string;
+            destination?: string;
+            summary?: string;
+            card_image_url?: string;
+            duration_label?: string;
+            dates_label?: string;
+            package_type?: string;
+            meals_label?: string;
+            from_city?: string;
+            places_covered?: unknown;
+            tags?: unknown;
+            gen_ev_score?: number | null;
+            default_duration_nights?: number | null;
+            price_from_inr?: number | null;
+            sort_order?: number;
+            hero_image_urls?: unknown;
+            content?: unknown;
+            match_keywords?: unknown;
+            is_active?: boolean;
+            /** Format: date-time */
+            readonly created?: string;
+            /** Format: date-time */
+            readonly modified?: string;
+        };
+        PatchedSiteFeature: {
+            /** Format: uuid */
+            readonly id?: string;
+            /** @description Key the frontend maps to an icon, e.g. 'guide', 'doctor'. */
+            icon?: string;
+            title?: string;
+            description?: string;
+            sort_order?: number;
+            is_active?: boolean;
         };
         PreferenceProfile: {
             pace: string;
@@ -567,6 +1052,15 @@ export interface components {
             email?: string;
             password: string;
         };
+        /**
+         * @description The whole new order, as a list of ids.
+         *
+         *     Positions come from the list index rather than being sent per row, so
+         *     the admin cannot produce duplicate or gapped `sort_order` values.
+         */
+        Reorder: {
+            ids: string[];
+        };
         SearchResponse: {
             results: components["schemas"]["SearchResult"][];
         };
@@ -580,6 +1074,16 @@ export interface components {
             };
             /** Format: double */
             score: number;
+        };
+        SiteFeature: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Key the frontend maps to an icon, e.g. 'guide', 'doctor'. */
+            icon?: string;
+            title: string;
+            description?: string;
+            sort_order?: number;
+            is_active?: boolean;
         };
         /**
          * @description * `website` - Website
@@ -703,6 +1207,513 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    v1_admin_features_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedSiteFeatureList"];
+                };
+            };
+        };
+    };
+    v1_admin_features_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SiteFeature"];
+                "application/x-www-form-urlencoded": components["schemas"]["SiteFeature"];
+                "multipart/form-data": components["schemas"]["SiteFeature"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteFeature"];
+                };
+            };
+        };
+    };
+    v1_admin_features_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteFeature"];
+                };
+            };
+        };
+    };
+    v1_admin_features_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SiteFeature"];
+                "application/x-www-form-urlencoded": components["schemas"]["SiteFeature"];
+                "multipart/form-data": components["schemas"]["SiteFeature"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteFeature"];
+                };
+            };
+        };
+    };
+    v1_admin_features_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    v1_admin_features_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedSiteFeature"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedSiteFeature"];
+                "multipart/form-data": components["schemas"]["PatchedSiteFeature"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteFeature"];
+                };
+            };
+        };
+    };
+    v1_admin_features_reorder_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reorder"];
+                "application/x-www-form-urlencoded": components["schemas"]["Reorder"];
+                "multipart/form-data": components["schemas"]["Reorder"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedHeroBannerList"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["HeroBanner"];
+                "application/x-www-form-urlencoded": components["schemas"]["HeroBanner"];
+                "multipart/form-data": components["schemas"]["HeroBanner"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HeroBanner"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HeroBanner"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["HeroBanner"];
+                "application/x-www-form-urlencoded": components["schemas"]["HeroBanner"];
+                "multipart/form-data": components["schemas"]["HeroBanner"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HeroBanner"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    v1_admin_hero_banners_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedHeroBanner"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedHeroBanner"];
+                "multipart/form-data": components["schemas"]["PatchedHeroBanner"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HeroBanner"];
+                };
+            };
+        };
+    };
+    v1_admin_hero_banners_reorder_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reorder"];
+                "application/x-www-form-urlencoded": components["schemas"]["Reorder"];
+                "multipart/form-data": components["schemas"]["Reorder"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedPackageAdminList"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PackageAdmin"];
+                "application/x-www-form-urlencoded": components["schemas"]["PackageAdmin"];
+                "multipart/form-data": components["schemas"]["PackageAdmin"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageAdmin"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageAdmin"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PackageAdmin"];
+                "application/x-www-form-urlencoded": components["schemas"]["PackageAdmin"];
+                "multipart/form-data": components["schemas"]["PackageAdmin"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageAdmin"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    v1_admin_packages_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedPackageAdmin"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedPackageAdmin"];
+                "multipart/form-data": components["schemas"]["PatchedPackageAdmin"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageAdmin"];
+                };
+            };
+        };
+    };
+    v1_admin_packages_reorder_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Reorder"];
+                "application/x-www-form-urlencoded": components["schemas"]["Reorder"];
+                "multipart/form-data": components["schemas"]["Reorder"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+        };
+    };
     v1_auth_claim_create: {
         parameters: {
             query?: never;
@@ -1113,6 +2124,27 @@ export interface operations {
             };
         };
     };
+    v1_packages_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PackageDetail"];
+                };
+            };
+        };
+    };
     v1_search_retrieve: {
         parameters: {
             query: {
@@ -1132,6 +2164,25 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SearchResponse"];
+                };
+            };
+        };
+    };
+    v1_site_content_home_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HomeContent"];
                 };
             };
         };

@@ -112,7 +112,7 @@ export function TripPlanDossier({
     : [];
 
   const packingSections: [string, string, string[] | undefined][] = [
-    ["#821a52", "Essentials", output.packing_list?.essentials],
+    ["#8f004c", "Essentials", output.packing_list?.essentials],
     ["#0d9488", "Clothing", output.packing_list?.clothing],
     ["#dc2626", "Medication & Health", output.packing_list?.medication_health],
     ["#b45309", "Senior Comfort", output.packing_list?.comfort_seniors],
