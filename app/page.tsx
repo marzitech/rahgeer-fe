@@ -4,7 +4,6 @@ import { Header } from "@/components/features/home/Header";
 import { HeroCarousel } from "@/components/features/home/HeroCarousel";
 import { HomeTracking } from "@/components/features/home/HomeTracking";
 import { TravelExpert } from "@/components/features/home/TravelExpert";
-import { TravellersAbout } from "@/components/features/home/TravellersAbout";
 import { TripsThisMonth } from "@/components/features/home/TripsThisMonth";
 import { WhyTravelWithUs } from "@/components/features/home/WhyTravelWithUs";
 import { getHomeContent, getTrips } from "@/lib/content/fetchers";
@@ -37,7 +36,8 @@ export default async function HomePage() {
           <WhyTravelWithUs features={content.features} expert={content.expert} />
         </div>
         <TravelExpert expert={content.expert} />
-        <TravellersAbout />
+        {/* "Postcards from our travellers" (TravellersAbout) is hidden for now;
+            the component is untouched — re-add it here to bring it back. */}
         <FaqNumbered items={content.faqs} />
       </main>
       <Footer />
