@@ -6,10 +6,9 @@
  * lands on a browsing page (home, destinations, itineraries, packages,
  * plan); skipped on /enquiry, which is nothing but the lead form.
  *
- * Shows once per page VISIT — every navigation to (or reload of) an
- * eligible page starts a fresh 5s timer; dismissing it only silences it
- * until the next page. A successful submit suppresses it for the rest of
- * the SESSION (sessionStorage) — a new session sees it again.
+ * Shows ONCE PER SESSION: 5s after the first page the visitor lands on,
+ * and never again until the session ends — whether they submitted it,
+ * closed it, or navigated away. The rule lives in lib/callback-popup.
  *
  * Phone-only lead → backend enquiry endpoint (same ops sheet as the
  * main lead form). `full_name` is required by the backend, so it goes
@@ -26,24 +25,13 @@ import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { createEnquiry } from "@/lib/api/endpoints";
 import { getAttribution } from "@/lib/attribution";
+import {
+  isCallbackEligible,
+  markCallbackShown,
+  wasCallbackShown,
+} from "@/lib/callback-popup";
 
-const SUBMITTED_KEY = "marzi_callback_popup_submitted";
 const SHOW_DELAY_MS = 5_000;
-
-// Prefix-matched (covers detail pages, e.g. /destinations/[slug]).
-const ELIGIBLE_PREFIXES = [
-  "/destinations",
-  "/itineraries",
-  "/packages",
-  "/plan",
-];
-
-function isEligible(pathname: string): boolean {
-  if (pathname === "/") return true;
-  return ELIGIBLE_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
-}
 
 export function CallbackPopup() {
   const pathname = usePathname() || "/";
@@ -53,21 +41,17 @@ export function CallbackPopup() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Timer restarts on navigation, so "stays on page for 5s" means 5s on
-  // a single eligible page — and each navigation is a fresh chance to
-  // show. Only a submit earlier in this session suppresses it.
+  // The timer belongs to the page the visitor is on: navigating away
+  // before it fires cancels it, and the next eligible page starts a
+  // fresh one. Once it has fired this session, it never arms again.
   useEffect(() => {
-    if (!isEligible(pathname)) return;
-    const hasSubmitted = () => {
-      try {
-        return Boolean(sessionStorage.getItem(SUBMITTED_KEY));
-      } catch {
-        return false;
-      }
-    };
-    if (hasSubmitted()) return;
+    if (!isCallbackEligible(pathname)) return;
+    if (wasCallbackShown(sessionStorage)) return;
     const timer = setTimeout(() => {
-      if (hasSubmitted()) return;
+      // Checked again at fire time: another tab in the same session may
+      // have shown it meanwhile.
+      if (wasCallbackShown(sessionStorage)) return;
+      markCallbackShown(sessionStorage);
       setOpen(true);
     }, SHOW_DELAY_MS);
     return () => clearTimeout(timer);
@@ -115,11 +99,6 @@ export function CallbackPopup() {
       // Only a delivered lead counts — firing before the await would report
       // callbacks the backend rejected.
       track(EVENTS.CALLBACK_REQUEST_FOOTER);
-      try {
-        sessionStorage.setItem(SUBMITTED_KEY, "1");
-      } catch {
-        // Best-effort — worst case the popup shows again on another page.
-      }
       setSuccess(true);
     } catch {
       setError("Something went wrong. Please try again.");
