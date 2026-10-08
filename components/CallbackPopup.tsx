@@ -109,7 +109,7 @@ export function CallbackPopup() {
 
   return (
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center p-5"
+      className="fixed inset-0 z-[120] flex items-center justify-center p-5 print:hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Want us to call you?"

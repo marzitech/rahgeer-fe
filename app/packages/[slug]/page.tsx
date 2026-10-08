@@ -46,7 +46,9 @@ export default async function PackagePage({
 
   return (
     <>
-      <Header />
+      <div className="print:hidden">
+        <Header />
+      </div>
       {pkg ? (
         <main className="bg-cream-dark">
           <PackageHero pkg={pkg} />
@@ -71,15 +73,22 @@ export default async function PackagePage({
           </div>
           <PackageHighlights highlights={pkg.highlights} mitr={pkg.travelMitr} />
           <PackageItinerary days={pkg.days} />
-          <PackagePriceTable includes={pkg.priceIncludes} excludes={pkg.priceExcludes} />
+          <PackagePriceTable
+            includes={pkg.priceIncludes}
+            excludes={pkg.priceExcludes}
+            placesCovered={pkg.placesCovered}
+            title={pkg.title}
+          />
           <PackageCancellation clauses={pkg.cancellationPolicy} />
         </main>
       ) : (
         /* Backend unreachable — the pre-existing page off bundled content. */
         <PackageDetail pkg={legacy!} />
       )}
-      <Faq items={faqs} />
-      <Footer />
+      <div className="print:hidden">
+        <Faq items={faqs} />
+        <Footer />
+      </div>
     </>
   );
 }
