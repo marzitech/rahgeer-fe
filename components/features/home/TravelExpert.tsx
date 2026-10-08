@@ -3,9 +3,11 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { cn } from "@/lib/utils";
+import type { Expert } from "@/lib/content/home-content";
 import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-loop";
 
 /**
@@ -225,11 +227,11 @@ function usePrefersReducedMotion(): boolean {
   );
 }
 
-export function TravelExpert() {
+export function TravelExpert({ expert }: { expert: Expert }) {
   return (
-    <>
-      <section className="bg-cream-dark pt-4 pb-10 text-center sm:pt-8">
-        <div className="mx-auto max-w-6xl px-4">
+    <section className="bg-cream py-10 sm:py-14">
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="text-center">
           <h2 className="font-display text-[1.75rem] font-extrabold text-brand sm:text-4xl">
             Bespoke Marzi Holidays
           </h2>
@@ -237,52 +239,62 @@ export function TravelExpert() {
             Completely personalised itineraries, planned end-to-end.
           </p>
         </div>
-      </section>
 
-      <section className="grid lg:grid-cols-2">
-        <div className="bg-cream-dark px-4 py-10 sm:px-8 lg:py-14">
-          <div className="mx-auto max-w-md lg:ml-auto lg:mr-8">
-            <h3 className="font-display text-2xl leading-tight font-bold text-brand sm:text-3xl">
-              A Marzi Travel Expert at your service
-            </h3>
+        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+          {/* ── The conversation, with the Mitr standing beside it ─────────
+              A two-column grid inside the card rather than an absolutely
+              positioned portrait: the image column reaches the card's
+              bottom edge on its own, so the cut-out stands on the frame
+              without an offset that has to agree with padding and chat
+              height. Single column on a phone, portrait last. */}
+          <div className="bg-cream-dark grid gap-4 overflow-hidden rounded-3xl pt-6 pl-6 sm:grid-cols-[1fr_minmax(10rem,42%)] sm:pt-8 sm:pl-8">
+            <div className="pr-6 pb-2 sm:pr-0 sm:pb-8">
+              <h3 className="font-display text-2xl leading-tight font-bold text-brand sm:text-3xl">
+                A Marzi Travel Expert at your service
+              </h3>
 
-            <ChatLoop />
+              <ChatLoop />
 
-            {/* The loop is decoration: it shows the same two or three
-                messages at a time and rewrites itself every second or
-                so, which is unusable through a screen reader. The whole
-                conversation is here once, in order, and read instead. */}
-            <ul className="sr-only">
-              {CHAT.map((message) => (
-                <li key={message.text}>
-                  {message.from === "traveller" ? "Traveller" : "Travel Mitr"}:{" "}
-                  {message.text}
-                </li>
-              ))}
-            </ul>
+              {/* The loop is decoration: it shows the same two or three
+                  messages at a time and rewrites itself every second or
+                  so, which is unusable through a screen reader. The whole
+                  conversation is here once, in order, and read instead. */}
+              <ul className="sr-only">
+                {CHAT.map((message) => (
+                  <li key={message.text}>
+                    {message.from === "traveller" ? "Traveller" : "Travel Mitr"}:{" "}
+                    {message.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            {/* 3:2 rather than a short strip: at 160px tall the crop cut
-                through the top of his head. */}
-            <div className="relative mt-6 aspect-[3/2] w-full">
+            {/* The same framing as the expert card: a fixed portrait ratio
+                with object-cover trims the transparent margins a studio
+                cut-out arrives with, and the bottom anchor keeps the
+                subject standing on the card's edge. Photos come from the
+                Travel Mitr roster, so swapping the person is a dashboard
+                edit. The card clips, so nothing overhangs. */}
+            <div className="relative ml-auto aspect-[3/4] w-[62%] self-end sm:w-full">
               <Image
-                src="/images/home/travel-mitr-portrait.jpg"
-                alt="A Marzi Travel Mitr"
+                src={expert.photoUrl}
+                alt={expert.name}
                 fill
-                sizes="(max-width: 1024px) 100vw, 448px"
-                className="rounded-2xl object-cover object-top"
+                sizes="(max-width: 640px) 62vw, (max-width: 1024px) 40vw, 260px"
+                className="object-cover object-bottom"
               />
             </div>
           </div>
-        </div>
 
-        <div className="bg-cream-dark px-4 pt-2 pb-12 sm:px-8 lg:bg-white lg:py-14">
-          <div className="mx-auto max-w-md lg:mr-auto lg:ml-8">
+          {/* ── What a bespoke holiday covers ─────────────────────────── */}
+          <div className="rounded-3xl bg-white p-6 sm:p-8 lg:p-10">
             <ul className="space-y-5">
               {OFFERINGS.map((offering) => (
                 <li key={offering.title} className="flex gap-3">
+                  {/* A small diamond, as the design draws it. */}
                   <span
                     aria-hidden
-                    className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand"
+                    className="mt-[0.4rem] size-1.5 shrink-0 rotate-45 bg-brand"
                   />
                   <div>
                     <h4 className="text-[0.7rem] font-bold tracking-[0.08em] text-ink uppercase">
@@ -299,13 +311,14 @@ export function TravelExpert() {
             <Link
               href="/enquiry"
               onClick={() => track(EVENTS.BOOK_SELF_CTA, { section: "travel_expert" })}
-              className="mt-8 inline-flex rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
             >
               Start Planning
+              <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
