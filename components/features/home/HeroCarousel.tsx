@@ -55,14 +55,14 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
       >
-        {/* Near-full-bleed, as the design has it: the banner is the page's
-            widest element, held off the edges by a small gutter only. */}
-        <div className="relative mx-auto max-w-[96rem] px-3 sm:px-4">
+        {/* Full-bleed: the banner runs edge to edge. The phone keeps its
+            small gutter — there the slide is a card, not a photo frame. */}
+        <div className="relative w-full px-3 sm:px-0">
           {/* Desktop layers the slides and cross-fades between them. A
               phone cannot: the stacked layout has no fixed height, so the
               inactive ones are simply hidden. They stay mounted either
               way, so advancing never flashes an empty frame. */}
-          <div className="sm:relative sm:aspect-[21/9] sm:overflow-hidden sm:rounded-3xl">
+          <div className="sm:relative sm:aspect-[21/9] sm:overflow-hidden">
             {banners.map((slide, i) => (
               <div
                 key={slide.id}
@@ -82,7 +82,7 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
           {count > 1 ? (
             /* Controls sit below the banner — on the sand, not over the
                photo, where they can never fight the artwork for contrast. */
-            <div className="mt-5 flex items-center justify-between">
+            <div className="mt-5 flex items-center justify-between sm:px-4">
               <CarouselArrow side="left" onClick={() => go(index - 1)} />
               <div className="flex gap-2">
                 {banners.map((slide, i) => (
@@ -128,7 +128,7 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
 
         {slide.badgeText ? (
-          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-teal p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-1/2 sm:right-10 sm:size-24 sm:-translate-y-1/2 sm:text-[0.7rem]">
+          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-teal p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-auto sm:right-10 sm:bottom-10 sm:size-24 sm:text-[0.7rem]">
             {slide.badgeText}
           </span>
         ) : null}
