@@ -36,7 +36,7 @@ export default async function HomePage() {
           <TripsThisMonth trips={trips} />
           <WhyTravelWithUs features={content.features} expert={content.expert} />
         </div>
-        <TravelExpert />
+        <TravelExpert expert={content.expert} />
         <TravellersAbout />
         <FaqNumbered items={content.faqs} />
       </main>
