@@ -1,20 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Download,
-  Home,
-  Info,
-  Menu,
-  Phone,
-  Users,
-  X,
-} from "lucide-react";
+import { ChevronRight, Download, Menu, X } from "lucide-react";
 import { PLAY_STORE_URL } from "@/lib/appStores";
 import { cn } from "@/lib/utils";
 
@@ -25,32 +15,19 @@ import { cn } from "@/lib/utils";
  * logo colors, gray nav with brand underline, brand Download App button.
  */
 
-// The brand nav points at the main marzi.life site (this is the Travel
-// sub-site); the logo + bottom tab bar keep the travel home.
+// The brand nav points at the main marzi.life site (this is the Holidays
+// sub-site); the logo + bottom tab bar keep the holidays home.
 const MARZI_SITE = "https://marzi.life";
 
-// The mobile drawer mirrors the desktop navbar exactly — brand-site links
-// (external, marked so they render a plain anchor).
+// The mobile menu mirrors the desktop navbar — brand-site links (external,
+// marked so they render a plain anchor) — and closes with this sub-site's
+// own home ("Holidays"), matching marzi-web's menu order.
 const MENU_ITEMS = [
-  { href: MARZI_SITE, label: "Home", Icon: Home, external: true },
-  {
-    href: `${MARZI_SITE}/about-us`,
-    label: "About Us",
-    Icon: Info,
-    external: true,
-  },
-  {
-    href: `${MARZI_SITE}/events`,
-    label: "Meetups",
-    Icon: Users,
-    external: true,
-  },
-  {
-    href: `${MARZI_SITE}/contact-us`,
-    label: "Contact Us",
-    Icon: Phone,
-    external: true,
-  },
+  { href: MARZI_SITE, label: "Home", external: true },
+  { href: `${MARZI_SITE}/about-us`, label: "About Us", external: true },
+  { href: `${MARZI_SITE}/events`, label: "Meetups", external: true },
+  { href: `${MARZI_SITE}/contact-us`, label: "Contact Us", external: true },
+  { href: "/", label: "Holidays" },
 ];
 
 const NAV_LINKS = [
@@ -73,13 +50,6 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [qrModalOpen, setQrModalOpen] = useState(false);
-  const pathname = usePathname();
-
-  // The home page shows its nav inline, as the design draws it. Every
-  // other page keeps the bar to one row and puts the same links behind a
-  // hamburger — an inner page has its own content to lead with, and the
-  // second row costs 45px of a phone screen on every one of them.
-  const inlineNav = pathname === "/";
 
   /* Same behaviour as marzi-web's header: Android goes straight to the
      Play Store; desktop/iOS get the QR modal with both store buttons. */
@@ -99,7 +69,7 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock the page behind the drawer + close it on Escape.
+  // Lock the page behind the menu + close it on Escape.
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;
@@ -118,10 +88,10 @@ export function Header() {
         <header
           className={cn(
             "pointer-events-auto relative mx-auto transition-all duration-500 ease-in-out",
-            // Below lg the bar is two rows — logo and Download App, then the
-            // nav — because five links plus a button will not fit beside a
-            // logo on a phone. From lg the nav moves up beside the logo and
-            // the scroll-reactive floating pill comes back.
+            // Below lg the bar is one row — logo, Download App, hamburger —
+            // with the nav links in the full-screen menu. From lg the nav
+            // sits inline beside the logo and the scroll-reactive floating
+            // pill comes back.
             "border-brand/20 border-b bg-white/90 shadow-sm backdrop-blur-md",
             isScrolled
               ? "lg:mt-4 lg:max-w-6xl lg:rounded-full lg:border lg:border-white/20 lg:bg-white/80 lg:shadow-lg lg:backdrop-blur-xl"
@@ -153,7 +123,7 @@ export function Header() {
                     )}
                   />
                   <span className="text-brand font-display text-lg font-bold tracking-tight lg:text-xl">
-                    Travel
+                    Holidays
                   </span>
                 </div>
               </Link>
@@ -189,53 +159,25 @@ export function Header() {
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
               </button>
 
-              {!inlineNav ? (
-                <button
-                  type="button"
-                  aria-label={isOpen ? "Close menu" : "Open menu"}
-                  aria-expanded={isOpen}
-                  onClick={() => setIsOpen((open) => !open)}
-                  className="text-foreground flex size-11 items-center justify-center rounded-full hover:bg-black/5 lg:hidden"
-                >
-                  {isOpen ? (
-                    <X className="size-6" />
-                  ) : (
-                    <Menu className="size-6" />
-                  )}
-                </button>
-              ) : null}
+              <button
+                type="button"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                onClick={() => setIsOpen((open) => !open)}
+                className="text-foreground flex size-11 items-center justify-center rounded-full hover:bg-black/5 lg:hidden"
+              >
+                {isOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+              </button>
             </div>
           </div>
-
-          {/* Second row, home only, below lg. Scrolls rather than wraps
-            so a narrow phone or a longer label can never push the bar
-            taller than the height the page pads for. */}
-          {inlineNav ? (
-            <nav className="flex h-11 [scrollbar-width:none] items-center gap-4 overflow-x-auto px-5 lg:hidden [&::-webkit-scrollbar]:hidden">
-              <Link
-                href="/"
-                aria-current="page"
-                className="text-brand shrink-0 text-xs font-bold tracking-wide uppercase"
-              >
-                Travel
-              </Link>
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="hover:text-brand shrink-0 text-xs font-bold tracking-wide text-gray-500 uppercase transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          ) : null}
         </header>
       </div>
 
-      {/* Mobile drawer — full-height slide-in panel (app-style). Sibling of
-          the header (NOT inside it) so its `fixed` positioning resolves to
-          the viewport, not the header's backdrop-blur containing block. */}
+      {/* Mobile menu — sheet dropping from the top over the dimmed page
+          (per design mock: white panel with rounded bottom corners, plain
+          rows with hairline dividers, centered pill CTA). Sibling of the
+          header (NOT inside it) so its `fixed` positioning resolves to the
+          viewport, not the header's backdrop-blur containing block. */}
       <div
         aria-hidden={!isOpen}
         className={cn(
@@ -250,86 +192,62 @@ export function Header() {
           tabIndex={isOpen ? 0 : -1}
           onClick={() => setIsOpen(false)}
           className={cn(
-            "absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300",
+            "absolute inset-0 bg-black/60 transition-opacity duration-300",
             isOpen ? "opacity-100" : "opacity-0",
           )}
         />
 
-        {/* Panel */}
+        {/* Sheet */}
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
           className={cn(
-            "absolute inset-y-0 right-0 flex w-[84%] max-w-sm flex-col bg-white [padding-top:env(safe-area-inset-top)] [padding-bottom:env(safe-area-inset-bottom)] shadow-2xl transition-transform duration-300 ease-out",
-            isOpen ? "translate-x-0" : "translate-x-full",
+            "absolute inset-x-0 top-0 flex max-h-full flex-col overflow-y-auto rounded-b-3xl bg-white [padding-top:env(safe-area-inset-top)] shadow-2xl transition-transform duration-300 ease-out",
+            isOpen ? "translate-y-0" : "-translate-y-full",
           )}
         >
-          {/* Drawer header */}
-          <div className="flex items-center justify-between border-b border-black/5 px-5 py-4">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/images/brand/marzi-logo.png"
-                alt="Marzi"
-                width={110}
-                height={38}
-                className="h-8 w-auto"
-              />
-              <span className="h-5 w-px bg-gray-300" />
-              <span className="text-brand font-display text-lg font-bold">
-                Travel
-              </span>
-            </div>
+          {/* Sheet header — logo left, close right */}
+          <div className="flex items-start justify-between px-6 pt-6">
+            <Image
+              src="/images/brand/marzi-logo.png"
+              alt="Marzi"
+              width={140}
+              height={48}
+              className="h-10 w-auto"
+            />
             <button
               type="button"
               aria-label="Close menu"
+              tabIndex={isOpen ? 0 : -1}
               onClick={() => setIsOpen(false)}
-              className="text-foreground flex h-10 w-10 items-center justify-center rounded-full bg-black/5 active:scale-95"
+              className="text-foreground flex size-11 items-center justify-center active:scale-95"
             >
-              <X className="h-5 w-5" />
+              <X className="size-6" strokeWidth={2} />
             </button>
           </div>
 
           {/* Nav rows */}
-          <nav className="flex-1 overflow-y-auto px-3 py-4">
-            {MENU_ITEMS.map(({ href, label, Icon, external }) => {
-              const active =
-                external || href.includes("#")
-                  ? false
-                  : href === "/"
-                    ? pathname === "/"
-                    : href.startsWith("/plan")
-                      ? pathname.startsWith("/plan")
-                      : pathname === href;
-              const rowClass = cn(
-                "group flex items-center gap-3.5 rounded-2xl px-3 py-3.5 transition active:scale-[0.98]",
-                active ? "bg-brand/5" : "hover:bg-black/[0.03]",
-              );
+          <nav className="px-6 pt-10">
+            {MENU_ITEMS.map(({ href, label, external }) => {
+              const rowClass =
+                "flex items-center justify-between border-b border-gray-200 py-6 transition active:opacity-60";
               const inner = (
                 <>
-                  <span
-                    className={cn(
-                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition",
-                      active ? "bg-brand text-white" : "bg-brand/10 text-brand",
-                    )}
-                  >
-                    <Icon className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                  <span
-                    className={cn(
-                      "flex-1 text-[15px] font-semibold",
-                      active ? "text-brand" : "text-gray-800",
-                    )}
-                  >
+                  <span className="text-lg font-semibold tracking-wide text-gray-800 uppercase">
                     {label}
                   </span>
-                  <ChevronRight className="text-foreground/30 h-4 w-4" />
+                  <ChevronRight
+                    className="size-5 text-gray-400"
+                    strokeWidth={2}
+                  />
                 </>
               );
               return external ? (
                 <a
                   key={label}
                   href={href}
+                  tabIndex={isOpen ? 0 : -1}
                   onClick={() => setIsOpen(false)}
                   className={rowClass}
                 >
@@ -339,8 +257,8 @@ export function Header() {
                 <Link
                   key={label}
                   href={href}
+                  tabIndex={isOpen ? 0 : -1}
                   onClick={() => setIsOpen(false)}
-                  aria-current={active ? "page" : undefined}
                   className={rowClass}
                 >
                   {inner}
@@ -349,18 +267,18 @@ export function Header() {
             })}
           </nav>
 
-          {/* Drawer footer CTA */}
-          <div className="border-t border-black/5 p-4">
+          {/* CTA — centered brand pill, as in the mock */}
+          <div className="px-6 pt-10 pb-12">
             <button
               type="button"
+              tabIndex={isOpen ? 0 : -1}
               onClick={() => {
                 setIsOpen(false);
                 handleDownloadClick();
               }}
-              className="bg-brand flex w-full items-center justify-center gap-2 rounded-2xl py-4 font-bold text-white shadow-lg active:scale-[0.98]"
+              className="bg-brand flex w-full items-center justify-center rounded-full py-4 text-lg font-bold text-white active:scale-[0.98]"
             >
-              <Download className="h-5 w-5" />
-              Download the App
+              Download App
             </button>
           </div>
         </div>
