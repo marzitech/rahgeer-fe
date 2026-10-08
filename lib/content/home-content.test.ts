@@ -95,7 +95,13 @@ describe("normalizeHomeContent", () => {
   it("fronts the page with the first Travel Mitr on the roster", () => {
     const content = normalizeHomeContent({
       travel_mitrs: [
-        { id: "1", name: "Nabeel", photo_url: "https://cdn.example/nabeel.webp" },
+        {
+          id: "1",
+          name: "Nabeel",
+          photo_url: "https://cdn.example/nabeel.webp",
+          languages: "English · Hindi · Kannada",
+          trips_label: "200+ Trips completed",
+        },
         { id: "2", name: "Someone else", photo_url: "https://cdn.example/other.webp" },
       ],
     });
@@ -103,6 +109,21 @@ describe("normalizeHomeContent", () => {
     expect(content.expert).toEqual({
       name: "Nabeel",
       photoUrl: "https://cdn.example/nabeel.webp",
+      languages: "English · Hindi · Kannada",
+      tripsLabel: "200+ Trips completed",
+    });
+  });
+
+  it("carries the same shape a package page's own Travel Mitr card expects", () => {
+    // A tour with nobody assigned falls back to this expert, card and
+    // all — the fallback has to be a real TravelMitr, not just a name
+    // and a photo, or the card renders with blank language/trips rows.
+    const content = normalizeHomeContent({});
+    expect(content.expert).toEqual({
+      name: "Nabeel",
+      photoUrl: "/images/figma/expert-nabeel.webp",
+      languages: "English · Hindi",
+      tripsLabel: "150+ Trips completed",
     });
   });
 
