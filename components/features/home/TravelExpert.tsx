@@ -132,8 +132,8 @@ function ChatLoop() {
   // the full conversation is in the transcript below either way.
   const visible = reduced
     ? CHAT.slice(0, STILL_MESSAGES)
-    : // Only the last few fit the frame, and the newest is what matters.
-      CHAT.slice(Math.max(0, state.shown - 3), state.shown);
+    : // The last two: one exchange at a time, and the newest is what matters.
+      CHAT.slice(Math.max(0, state.shown - 2), state.shown);
 
   return (
     <div
@@ -144,7 +144,7 @@ function ChatLoop() {
         // the mask fades the oldest one out at the top edge instead of
         // slicing it through the middle of a word.
         !reduced &&
-          "h-[17rem] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,#000_3rem)]",
+          "h-[15rem] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,#000_2.5rem)] sm:h-[14rem]",
       )}
     >
       {visible.map((message) => (
@@ -258,7 +258,7 @@ export function TravelExpert({ expert }: { expert: Expert }) {
               }}
             />
 
-            <div className="relative p-6 pr-[22%] sm:p-8 sm:pr-[20%]">
+            <div className="relative p-6 pr-[20%] pb-[9rem] sm:p-8 sm:pr-[20%] sm:pb-[10rem]">
               <h3 className="font-display text-2xl leading-tight font-bold text-brand sm:text-3xl">
                 A Marzi Travel Expert at your service
               </h3>
@@ -286,7 +286,7 @@ export function TravelExpert({ expert }: { expert: Expert }) {
                 over the chat without a z-index. Photos come from the
                 Travel Mitr roster, so swapping the person is a dashboard
                 edit. The card clips, so nothing overhangs. */}
-            <div className="pointer-events-none absolute right-0 bottom-0 aspect-[3/4] w-[46%] max-w-[16rem] sm:w-[42%]">
+            <div className="pointer-events-none absolute right-0 bottom-0 aspect-[3/4] w-[55%] max-w-[19rem] sm:w-[50%]">
               <Image
                 src={expert.photoUrl}
                 alt={expert.name}
