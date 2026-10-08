@@ -241,14 +241,24 @@ export function TravelExpert({ expert }: { expert: Expert }) {
         </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:items-stretch">
-          {/* ── The conversation, with the Mitr standing beside it ─────────
-              A two-column grid inside the card rather than an absolutely
-              positioned portrait: the image column reaches the card's
-              bottom edge on its own, so the cut-out stands on the frame
-              without an offset that has to agree with padding and chat
-              height. Single column on a phone, portrait last. */}
-          <div className="bg-cream-dark grid gap-4 overflow-hidden rounded-3xl pt-6 pl-6 sm:grid-cols-[1fr_minmax(10rem,42%)] sm:pt-8 sm:pl-8">
-            <div className="pr-6 pb-2 sm:pr-0 sm:pb-8">
+          {/* ── The conversation, with the Mitr in front of it ──────────────
+              The portrait is pinned to the card's bottom-right and layered
+              over the chat, as the design has it: messages run behind him
+              rather than beside him, and nothing about the chat's height
+              can move him. The doodle sits under everything at 24%, so it
+              reads as texture on the sand rather than a second picture. */}
+          <div className="bg-cream-dark relative isolate overflow-hidden rounded-3xl">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.24]"
+              style={{
+                backgroundImage: "url('/images/textures/doodle-pattern.webp')",
+                backgroundSize: "520px auto",
+                backgroundRepeat: "repeat",
+              }}
+            />
+
+            <div className="relative p-6 pr-[22%] sm:p-8 sm:pr-[20%]">
               <h3 className="font-display text-2xl leading-tight font-bold text-brand sm:text-3xl">
                 A Marzi Travel Expert at your service
               </h3>
@@ -269,18 +279,19 @@ export function TravelExpert({ expert }: { expert: Expert }) {
               </ul>
             </div>
 
-            {/* The same framing as the expert card: a fixed portrait ratio
-                with object-cover trims the transparent margins a studio
-                cut-out arrives with, and the bottom anchor keeps the
-                subject standing on the card's edge. Photos come from the
+            {/* Same framing as the expert card: a fixed portrait ratio with
+                object-cover trims the transparent margins a studio cut-out
+                arrives with, and the bottom anchor keeps the subject
+                standing on the card's edge. Last in the DOM, so it paints
+                over the chat without a z-index. Photos come from the
                 Travel Mitr roster, so swapping the person is a dashboard
                 edit. The card clips, so nothing overhangs. */}
-            <div className="relative ml-auto aspect-[3/4] w-[62%] self-end sm:w-full">
+            <div className="pointer-events-none absolute right-0 bottom-0 aspect-[3/4] w-[46%] max-w-[16rem] sm:w-[42%]">
               <Image
                 src={expert.photoUrl}
                 alt={expert.name}
                 fill
-                sizes="(max-width: 640px) 62vw, (max-width: 1024px) 40vw, 260px"
+                sizes="(max-width: 640px) 56vw, (max-width: 1024px) 48vw, 272px"
                 className="object-cover object-bottom"
               />
             </div>
