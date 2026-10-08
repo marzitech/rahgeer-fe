@@ -308,9 +308,15 @@ export function TravelExpert({ expert }: { expert: Expert }) {
               ))}
             </ul>
 
+            {/* Straight to the AI planner, not the enquiry form: this band is
+                about a holiday built around you, and the planner is where
+                that starts. The same CTA event is kept so the click series
+                is unbroken; the destination is recorded on it. */}
             <Link
-              href="/enquiry"
-              onClick={() => track(EVENTS.BOOK_SELF_CTA, { section: "travel_expert" })}
+              href="/plan/ai"
+              onClick={() =>
+                track(EVENTS.BOOK_SELF_CTA, { section: "travel_expert", destination: "ai_planner" })
+              }
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep"
             >
               Start Planning
