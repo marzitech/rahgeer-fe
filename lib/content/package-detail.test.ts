@@ -190,14 +190,14 @@ describe("travel mitr", () => {
       ...ROW,
       travel_mitr: {
         name: "Naveen",
-        photo_url: "/images/figma/expert-portrait.png",
+        photo_url: "/images/figma/expert-nabeel.webp",
         languages: "English · Hindi · Kannada",
         trips_label: "150+ Trips completed",
       },
     })!;
     expect(pkg.travelMitr).toEqual({
       name: "Naveen",
-      photoUrl: "/images/figma/expert-portrait.png",
+      photoUrl: "/images/figma/expert-nabeel.webp",
       languages: "English · Hindi · Kannada",
       tripsLabel: "150+ Trips completed",
     });

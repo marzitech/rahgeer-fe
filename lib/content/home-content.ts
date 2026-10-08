@@ -104,15 +104,16 @@ export const FALLBACK_FEATURES: SiteFeature[] = [
 ];
 
 /**
- * The portrait the site shipped with.
+ * The Travel Mitr the site shows until the roster carries one.
  *
- * Stands in until a Travel Mitr with a photo is on the roster. The card
- * is the only face on the home page, so it must never be empty — a Mitr
- * added but not yet photographed should not blank it.
+ * Nabeel runs the tours today, so he is the fallback rather than a stock
+ * portrait: an environment whose roster is empty — production until ops
+ * adds him in the dashboard — shows the real person, not a stranger. The
+ * card is the only face on the home page, so it must never be empty.
  */
 export const FALLBACK_EXPERT: Expert = {
-  name: "A Marzi travel expert",
-  photoUrl: "/images/figma/expert-portrait.png",
+  name: "Nabeel",
+  photoUrl: "/images/figma/expert-nabeel.webp",
 };
 
 /**
