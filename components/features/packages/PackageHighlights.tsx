@@ -78,7 +78,9 @@ function TravelMitrCard({ mitr }: { mitr: TravelMitr }) {
         </div>
       ) : null}
       <div className="bg-sand p-6">
-        <p className="font-display text-navy text-xl font-bold">{mitr.name}</p>
+        <p className="font-display text-navy text-xl font-bold">
+          Tour Mitr: {mitr.name}
+        </p>
         {mitr.languages ? (
           <p className="mt-1 text-sm text-gray-600">{mitr.languages}</p>
         ) : null}
