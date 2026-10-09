@@ -26,11 +26,16 @@ import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-l
  * reads as a scripted demo; a Mitr handling a wheelchair, a diet, a
  * delay and a doctor reads as the job. Every one of these is a thing the
  * desk is actually asked.
+ *
+ * Each traveller question carries its own face, because they are four
+ * different people: "my wife" is asked by a man, "my husband" by a woman,
+ * and one avatar across all four would have a man asking about his husband.
  */
 const CHAT = [
   {
     from: "traveller" as const,
     text: "My wife only eats Jain food. Will that be possible?",
+    avatar: "/images/home/reviewer-vikram.jpg",
     time: "10:45 AM",
   },
   {
@@ -41,6 +46,7 @@ const CHAT = [
   {
     from: "traveller" as const,
     text: "Can we get a room on a lower floor? My knees aren't great.",
+    avatar: "/images/home/traveller-ramesh.jpg",
     time: "10:52 AM",
   },
   {
@@ -51,6 +57,7 @@ const CHAT = [
   {
     from: "traveller" as const,
     text: "My husband isn't feeling well.",
+    avatar: "/images/home/traveller-meera.jpg",
     time: "11:18 AM",
   },
   {
@@ -61,6 +68,7 @@ const CHAT = [
   {
     from: "traveller" as const,
     text: "I need wheelchair assistance at Mumbai airport.",
+    avatar: "/images/home/traveller-kamala.jpg",
     time: "11:40 AM",
   },
   {
@@ -163,9 +171,9 @@ function Bubble({ message }: { message: (typeof CHAT)[number] }) {
         message.from === "mitr" && "flex-row-reverse",
       )}
     >
-      {message.from === "traveller" ? (
+      {message.avatar ? (
         <Image
-          src="/images/home/reviewer-vikram.jpg"
+          src={message.avatar}
           alt=""
           width={36}
           height={36}
