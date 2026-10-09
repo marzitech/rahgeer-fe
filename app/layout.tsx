@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter, Manrope } from "next/font/google";
 import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
 import { AttributionCapture } from "@/components/AttributionCapture";
-import { CallbackPopup } from "@/components/CallbackPopup";
 import { GangadharTracker } from "@/components/GangadharTracker";
 import { HashScroll } from "@/components/HashScroll";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
@@ -74,8 +73,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <AttributionCapture />
         <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>
         {/* Timed lead-capture popup — website only; app users are
-            already reachable, no popup inside the WebView. */}
-        {!isApp && <CallbackPopup />}
+            already reachable, no popup inside the WebView. Switched off
+            for now; restore the line below (and its import) to bring it
+            back. */}
+        {/* {!isApp && <CallbackPopup />} */}
         {/* Floating WhatsApp chat — website only, same reasoning as the
             popup: app users already have in-app channels. */}
         {!isApp && <WhatsAppFloat />}
