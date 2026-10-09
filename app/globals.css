@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* `app:` — styles that apply only inside the Marzi app WebView, keyed to
+   the same `data-app="true"` attribute as .hide-in-app below. Scoped from
+   :root so it outranks the breakpoint variants it overrides (`app:pt-6`
+   beats `lg:pt-28` whatever order the classes are emitted in). */
+@custom-variant app (:root[data-app="true"] &);
+
 /* Marzi brand tokens — sampled from the Figma home design + aligned with
    marzi-web's production palette (deep purple bar, magenta primary). */
 :root {
@@ -96,6 +102,11 @@ body {
 }
 :root[data-app="true"] main {
   padding-top: 0 !important;
+}
+/* Heroes that build the header's height into their own top padding use
+   the `app:` variant to drop it. Anchor jumps have no header to clear. */
+:root[data-app="true"] {
+  scroll-padding-top: 1rem;
 }
 
 /* Display headings use the serif brand voice */

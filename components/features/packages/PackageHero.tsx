@@ -20,7 +20,7 @@ export function PackageHero({ pkg }: { pkg: PackageDetail }) {
   const image = images[index];
 
   return (
-    <section className="bg-sand pt-24 pb-6 lg:pt-28">
+    <section className="bg-sand pt-24 pb-6 lg:pt-28 app:pt-6">
       <div className="mx-auto max-w-6xl px-4">
         <Link
           href="/#trips"
