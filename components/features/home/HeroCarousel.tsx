@@ -143,21 +143,12 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
           </p>
         ) : null}
 
-        {/* Desktop-only lockup: a soft tan shape bleeding out of the
-            top-left corner of the photo. */}
-        <div className="hidden rounded-br-[2rem] bg-sand/95 py-4 pr-10 pl-6 sm:absolute sm:top-0 sm:left-0 sm:block">
-          <Lockup />
-        </div>
       </div>
 
       {/* Copy. */}
       <div className="px-5 pt-5 pb-4 sm:absolute sm:inset-y-0 sm:left-0 sm:flex sm:max-w-[48%] sm:flex-col sm:justify-center sm:p-10 lg:p-14">
-        <div className="sm:hidden">
-          <Lockup />
-        </div>
-
         {slide.headline ? (
-          <p className="font-display text-brand-deep mt-4 text-[1.4rem] leading-[1.15] font-extrabold sm:mt-0 sm:text-3xl lg:text-[2.66rem]">
+          <p className="font-display text-brand-deep text-[1.4rem] leading-[1.15] font-extrabold sm:text-3xl lg:text-[2.66rem]">
             {slide.headline}
           </p>
         ) : null}
@@ -173,31 +164,6 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         ) : null}
       </div>
     </div>
-  );
-}
-
-/**
- * The Marzi Holidays lockup: the brand wordmark, then "holidays" set
- * large beneath it. The wordmark is the real logo rather than the word
- * typed out — it carries the "by PRIMUS" strapline, which type cannot.
- */
-function Lockup() {
-  return (
-    <>
-      <Image
-        src="/images/brand/marzi-logo.png"
-        alt="Marzi"
-        width={1147}
-        height={377}
-        className="h-auto w-[5.5rem] sm:w-[6.5rem]"
-      />
-      <p className="mt-1.5 text-[1.75rem] leading-none font-black text-[#65003f] sm:text-[1.85rem]">
-        holidays
-      </p>
-      <p className="mt-1.5 text-[0.55rem] font-bold tracking-[0.14em] text-[#85065a] uppercase">
-        Travel Confidently
-      </p>
-    </>
   );
 }
 
