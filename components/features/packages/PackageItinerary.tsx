@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { PackageDay } from "@/lib/content/package-detail";
 import { cn } from "@/lib/utils";
+import { RichText } from "@/components/ui/RichText";
 
 /**
  * "Your Itinerary" — every day listed, one open at a time.
@@ -81,14 +82,13 @@ export function PackageItinerary({ days }: { days: PackageDay[] }) {
                     {day.title ? ` · ${day.title}` : ""}
                   </span>
                   {day.description ? (
-                    <span
+                    <RichText
+                      value={day.description}
                       className={cn(
                         "font-label mt-1 block text-sm font-medium",
                         expanded ? "text-white/85" : "text-[#6d6d6d]",
                       )}
-                    >
-                      {day.description}
-                    </span>
+                    />
                   ) : null}
                 </span>
                 <ChevronDown
@@ -131,9 +131,10 @@ export function PackageItinerary({ days }: { days: PackageDay[] }) {
                             </p>
                           ) : null}
                           {stop.description ? (
-                            <p className="font-label mt-3 text-sm leading-relaxed text-[#6d6d6d] sm:text-[0.9375rem]">
-                              {stop.description}
-                            </p>
+                            <RichText
+                              value={stop.description}
+                              className="font-label mt-3 text-sm leading-relaxed text-[#6d6d6d] sm:text-[0.9375rem]"
+                            />
                           ) : null}
                           {stop.image ? (
                             <div className="relative mt-3 h-44 w-full overflow-hidden rounded-2xl sm:h-[220px]">
