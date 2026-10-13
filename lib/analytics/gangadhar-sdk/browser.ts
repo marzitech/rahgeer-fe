@@ -88,14 +88,28 @@ export class BrowserTracker {
     }
   }
 
-  track(name: string, props?: Record<string, unknown>): void {
+  /**
+   * Record an event.
+   *
+   * `traits` ride on the event itself — the way an anonymous visitor's
+   * name and phone reach the server, since /v1/identify needs a login.
+   * `urgent` flushes now rather than at the next interval: a lead typed
+   * into a form must not wait on a tab that may be closing.
+   */
+  track(
+    name: string,
+    props?: Record<string, unknown>,
+    opts: { traits?: Record<string, unknown>; urgent?: boolean } = {},
+  ): void {
     this.core?.track(name, {
       page: safePath(),
       url: safeHref(),
       referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
       utm: this.utm,
       props,
+      ...(opts.traits ? { traits: opts.traits } : {}),
     });
+    if (opts.urgent) this.core?.flushUrgent();
   }
 
   page(pathOverride?: string, props?: Record<string, unknown>): void {

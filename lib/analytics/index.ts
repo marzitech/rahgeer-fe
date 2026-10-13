@@ -25,9 +25,13 @@ export function initAnalytics(): void {
 }
 
 /** Queue an event. Safe to call anywhere — no-ops on the server and never throws. */
-export function track(name: string, props?: Record<string, unknown>): void {
+export function track(
+  name: string,
+  props?: Record<string, unknown>,
+  opts: { traits?: Record<string, unknown>; urgent?: boolean } = {},
+): void {
   initAnalytics();
-  gangadhar.track(name, props);
+  gangadhar.track(name, props, opts);
 }
 
 /** Record a pageview ($pageview). */
