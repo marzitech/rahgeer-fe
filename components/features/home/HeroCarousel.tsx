@@ -128,7 +128,15 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
 
         {slide.badgeText ? (
-          <span className="absolute top-3 right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-teal p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:top-auto sm:right-10 sm:bottom-10 sm:size-24 sm:text-[0.7rem]">
+          <span
+            className={cn(
+              "absolute right-3 flex size-[4.25rem] items-center justify-center rounded-full bg-teal p-2 text-center text-[0.5rem] leading-tight font-semibold text-white sm:right-10 sm:bottom-10 sm:size-24 sm:text-[0.7rem]",
+              // Bottom-right on every size now. On mobile the caption is a
+              // full-width pill pinned to the bottom, so sit above it when
+              // there is one rather than landing on top of it.
+              slide.caption ? "bottom-20" : "bottom-3",
+            )}
+          >
             {slide.badgeText}
           </span>
         ) : null}
