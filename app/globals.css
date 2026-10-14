@@ -176,3 +176,12 @@ body {
     transform: translateY(-0.15rem);
   }
 }
+
+/* The trip planner's loading screen: a day title or a hotel fades in as
+   the backend writes it. */
+@keyframes plan-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+}

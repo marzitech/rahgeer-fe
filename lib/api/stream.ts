@@ -1,9 +1,15 @@
 /**
  * SSE helper for live itinerary-generation progress.
  *
- * Backend contract (see rahgeer-be Postman collection):
- *   status -> started -> retrieved -> facts -> generating -> completed | failed
+ * Backend contract (rahgeer-be apps/ai/workflows/itinerary.py):
+ *   status -> started -> retrieved -> facts -> outlining
+ *     -> route_progress* (title, then each day's title, as they are written)
+ *     -> outline (the route: days + highlights, hotels)
+ *     -> day_ready* + dossier_ready (in whatever order they finish)
+ *     -> finalising -> completed | failed
  * plus day_regenerating / day_completed / day_failed during day regens.
+ * On connect the server replays the run's events so far, so a refresh or a
+ * reconnect rebuilds the same screen (lib/api/progress.ts is idempotent).
  * Heartbeats are SSE comments (ignored by EventSource automatically).
  */
 
@@ -16,6 +22,12 @@ export type ProgressEvent = {
     | "retrieved"
     | "facts"
     | "generating"
+    | "outlining"
+    | "route_progress"
+    | "outline"
+    | "day_ready"
+    | "dossier_ready"
+    | "finalising"
     | "completed"
     | "failed"
     | "day_regenerating"
