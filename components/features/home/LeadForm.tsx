@@ -6,6 +6,8 @@ import { MapPin } from "lucide-react";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
 import { getAttribution } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
+import { EVENTS } from "@/lib/analytics/events";
 import {
   searchDestinations,
   type DestinationSuggestion,
@@ -169,6 +171,44 @@ export function LeadForm({
   >([]);
   const [destFocused, setDestFocused] = useState(false);
   const skipSearchRef = useRef(false);
+  /* `started` fires once per mount, on the first keystroke. Per field would
+     be a scroll-depth event wearing a funnel's name. */
+  const startedRef = useRef(false);
+
+  /** Which form this is, as both the backend and the funnel name it. */
+  const formKey =
+    formName ??
+    (audience === "yourself"
+      ? "plan-yourself"
+      : audience === "parents"
+        ? "plan-parents"
+        : "home-hero");
+
+  /**
+   * The properties every step of this funnel carries.
+   *
+   * Never the name, phone or free-text message. A behaviour event is read by
+   * anybody with dashboard access and the enquiry itself already carries the
+   * person — the funnel only needs to know the SHAPE of what they asked for.
+   */
+  function funnelProps(extra: Record<string, unknown> = {}) {
+    return {
+      form: formKey,
+      audience: audience ?? null,
+      source,
+      trip_scope: destination.trim() ? guessTripScope(destination) : null,
+      has_destination: destination.trim().length > 0,
+      has_month: month.trim().length > 0,
+      ...extra,
+    };
+  }
+
+  /** The customer has begun filling it in. Once per mount. */
+  function noteStarted() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track(EVENTS.TRAVEL_ENQUIRY_STARTED, funnelProps());
+  }
 
   useEffect(() => {
     // A just-picked suggestion shouldn't immediately re-open the dropdown.
@@ -199,6 +239,7 @@ export function LeadForm({
   }, [destination]);
 
   function clearFieldError(field: FieldName) {
+    noteStarted();
     setFieldErrors((prev) => {
       if (!prev[field]) return prev;
       const next = { ...prev };
@@ -214,10 +255,15 @@ export function LeadForm({
     const errors = validate({ destination, fullName, mobile });
     setFieldErrors(errors);
     if (Object.keys(errors).length > 0) {
+      // They tried and OUR form stopped them. Counted separately from a
+      // backend failure: one is a form problem we can fix, the other is an
+      // outage, and a single "failed" event hides which.
+      track(EVENTS.TRAVEL_ENQUIRY_REJECTED, funnelProps({ fields: Object.keys(errors).sort() }));
       setState("idle");
       return;
     }
 
+    track(EVENTS.TRAVEL_ENQUIRY_SUBMITTED, funnelProps());
     setState("submitting");
     try {
       const messageParts = [
@@ -245,8 +291,19 @@ export function LeadForm({
         // hoists standard UTMs to columns and keeps the raw dict.
         attribution: getAttribution(),
       });
+      // The conversion. This is the event a WhatsApp automation binds to, and
+      // the one the whole funnel is measured against.
+      track(EVENTS.TRAVEL_ENQUIRY_SUCCEEDED, funnelProps());
       setState("success");
     } catch (error) {
+      track(
+        EVENTS.TRAVEL_ENQUIRY_FAILED,
+        funnelProps({
+          // The CODE, never the server's message: a validation detail can
+          // echo back what the customer typed.
+          reason: error instanceof ApiError ? `http_${error.statusCode}` : "network",
+        }),
+      );
       setState("error");
       if (error instanceof ApiError) {
         const serverErrors = backendFieldErrors(error.detail);
