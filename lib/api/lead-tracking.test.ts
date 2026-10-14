@@ -14,7 +14,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const track = vi.fn();
 const apiFetch = vi.fn();
 
-vi.mock("@/lib/analytics", () => ({ track: (...args: unknown[]) => track(...args) }));
+vi.mock("@/lib/analytics", () => ({
+  track: (...args: unknown[]) => track(...args),
+}));
 vi.mock("./client", () => ({
   apiFetch: (...args: unknown[]) => apiFetch(...args),
   session: { get: () => null, set: () => {}, clear: () => {} },
@@ -29,7 +31,11 @@ beforeEach(() => {
 
 describe("createEnquiry", () => {
   it("reports the lead, with the traits the CRM identifies people by", async () => {
-    await createEnquiry({ full_name: "Asha Rao", phone: "+919812345678", form: "home-hero" });
+    await createEnquiry({
+      full_name: "Asha Rao",
+      phone: "+919812345678",
+      form: "home-hero",
+    });
 
     expect(track).toHaveBeenCalledTimes(1);
     const [name, props, opts] = track.mock.calls[0];
@@ -51,7 +57,9 @@ describe("createEnquiry", () => {
   it("does not report a lead when the submission failed", async () => {
     // Nothing was saved, so there is nobody to follow up.
     apiFetch.mockRejectedValue(new Error("500"));
-    await expect(createEnquiry({ full_name: "Asha", phone: "98" })).rejects.toThrow();
+    await expect(
+      createEnquiry({ full_name: "Asha", phone: "98" }),
+    ).rejects.toThrow();
     expect(track).not.toHaveBeenCalled();
   });
 

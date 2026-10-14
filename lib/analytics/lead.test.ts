@@ -11,18 +11,24 @@ describe("LEAD_EVENT", () => {
 
 describe("leadTraits", () => {
   it("carries the name and phone the CRM identifies people by", () => {
-    expect(leadTraits({ full_name: "Asha Rao", phone: "+919812345678" })).toEqual({
+    expect(
+      leadTraits({ full_name: "Asha Rao", phone: "+919812345678" }),
+    ).toEqual({
       name: "Asha Rao",
       phone: "+919812345678",
     });
   });
 
   it("reads either field name the forms use", () => {
-    expect(leadTraits({ name: "Asha Rao", phone: "9812345678" })?.name).toBe("Asha Rao");
+    expect(leadTraits({ name: "Asha Rao", phone: "9812345678" })?.name).toBe(
+      "Asha Rao",
+    );
   });
 
   it("includes the email when there is one", () => {
-    expect(leadTraits({ name: "Asha", phone: "98", email: "a@b.com" })?.email).toBe("a@b.com");
+    expect(
+      leadTraits({ name: "Asha", phone: "98", email: "a@b.com" })?.email,
+    ).toBe("a@b.com");
   });
 
   it("trims what people type", () => {
@@ -33,7 +39,9 @@ describe("leadTraits", () => {
   });
 
   it("identifies on a phone alone", () => {
-    expect(leadTraits({ phone: "9812345678" })).toEqual({ phone: "9812345678" });
+    expect(leadTraits({ phone: "9812345678" })).toEqual({
+      phone: "9812345678",
+    });
   });
 
   it("is null when nothing identifies them", () => {
@@ -52,18 +60,33 @@ describe("leadTraits", () => {
 describe("leadProps", () => {
   it("records which form converted and what they asked about", () => {
     expect(
-      leadProps({ form: "home-hero", destination: "Kashmir", travel_month: "September" }),
-    ).toEqual({ form: "home-hero", destination: "Kashmir", travel_month: "September" });
+      leadProps({
+        form: "home-hero",
+        destination: "Kashmir",
+        travel_month: "September",
+      }),
+    ).toEqual({
+      form: "home-hero",
+      destination: "Kashmir",
+      travel_month: "September",
+    });
   });
 
   it("leaves out what was not filled in", () => {
-    expect(leadProps({ form: "home-hero", destination: "" })).toEqual({ form: "home-hero" });
+    expect(leadProps({ form: "home-hero", destination: "" })).toEqual({
+      form: "home-hero",
+    });
   });
 
   it("never carries the person's details into props", () => {
     // Those belong in traits; duplicating them here would scatter personal
     // data across every event's property bag.
-    const props = leadProps({ form: "x", full_name: "Asha", phone: "98", email: "a@b.com" });
+    const props = leadProps({
+      form: "x",
+      full_name: "Asha",
+      phone: "98",
+      email: "a@b.com",
+    });
     expect(props).toEqual({ form: "x" });
   });
 });

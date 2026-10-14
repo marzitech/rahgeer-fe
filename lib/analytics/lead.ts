@@ -28,7 +28,8 @@ type EnquiryLike = {
   email?: unknown;
 };
 
-const text = (value: unknown): string => (typeof value === "string" ? value.trim() : "");
+const text = (value: unknown): string =>
+  typeof value === "string" ? value.trim() : "";
 
 /**
  * What identifies this person, or null when nothing does.
@@ -51,9 +52,18 @@ export function leadTraits(body: EnquiryLike): Record<string, string> | null {
 }
 
 /** What the lead came from, for the event's own properties. */
-export function leadProps(body: Record<string, unknown>): Record<string, unknown> {
+export function leadProps(
+  body: Record<string, unknown>,
+): Record<string, unknown> {
   const props: Record<string, unknown> = {};
-  for (const key of ["form", "destination", "travel_month", "pax", "budget", "source"]) {
+  for (const key of [
+    "form",
+    "destination",
+    "travel_month",
+    "pax",
+    "budget",
+    "source",
+  ]) {
     const value = text(body[key]);
     if (value) props[key] = value;
   }

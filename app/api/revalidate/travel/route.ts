@@ -24,7 +24,10 @@ export async function POST(request: Request) {
 
   // Fail closed. An unset secret must not mean "anyone may clear the cache".
   if (!secret) {
-    return Response.json({ error: "Revalidation is not configured." }, { status: 503 });
+    return Response.json(
+      { error: "Revalidation is not configured." },
+      { status: 503 },
+    );
   }
   if (request.headers.get("x-revalidate-secret") !== secret) {
     return Response.json({ error: "Bad secret." }, { status: 401 });
