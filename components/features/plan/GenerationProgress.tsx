@@ -39,7 +39,9 @@ function DayRow({
         className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors duration-500 ${
           day.ready
             ? "bg-teal text-white"
-            : "bg-sand-deep/70 text-foreground/60"
+            : writing
+              ? "bg-brand/10 text-brand motion-safe:animate-pulse"
+              : "bg-sand-deep/70 text-foreground/60"
         }`}
       >
         {day.ready ? (
