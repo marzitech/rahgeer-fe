@@ -39,7 +39,9 @@ export function PackageTracking({
       destination: destination ?? null,
       // Minor units with an explicit currency, per the taxonomy's money rule.
       price_from_paise:
-        typeof priceFromInr === "number" ? Math.round(priceFromInr * 100) : null,
+        typeof priceFromInr === "number"
+          ? Math.round(priceFromInr * 100)
+          : null,
       currency: "INR",
     });
     // Slug only: re-firing because a title arrived from a late fetch would

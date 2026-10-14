@@ -8,10 +8,7 @@ import { createEnquiry } from "@/lib/api/endpoints";
 import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
-import {
-  searchDestinations,
-  type DestinationSuggestion,
-} from "@/lib/geocode";
+import { searchDestinations, type DestinationSuggestion } from "@/lib/geocode";
 
 const MONTHS = [
   "January",
@@ -258,7 +255,10 @@ export function LeadForm({
       // They tried and OUR form stopped them. Counted separately from a
       // backend failure: one is a form problem we can fix, the other is an
       // outage, and a single "failed" event hides which.
-      track(EVENTS.TRAVEL_ENQUIRY_REJECTED, funnelProps({ fields: Object.keys(errors).sort() }));
+      track(
+        EVENTS.TRAVEL_ENQUIRY_REJECTED,
+        funnelProps({ fields: Object.keys(errors).sort() }),
+      );
       setState("idle");
       return;
     }
@@ -301,7 +301,8 @@ export function LeadForm({
         funnelProps({
           // The CODE, never the server's message: a validation detail can
           // echo back what the customer typed.
-          reason: error instanceof ApiError ? `http_${error.statusCode}` : "network",
+          reason:
+            error instanceof ApiError ? `http_${error.statusCode}` : "network",
         }),
       );
       setState("error");

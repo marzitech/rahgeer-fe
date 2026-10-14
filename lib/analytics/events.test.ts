@@ -58,7 +58,13 @@ describe("the event registry", () => {
     // at all before. Each step is separate on purpose: "rejected" is our form
     // refusing them and "failed" is the backend, and one event for both would
     // hide which.
-    for (const step of ["started", "submitted", "succeeded", "failed", "rejected"]) {
+    for (const step of [
+      "started",
+      "submitted",
+      "succeeded",
+      "failed",
+      "rejected",
+    ]) {
       expect(current).toContain(`travel_enquiry_${step}`);
     }
   });
@@ -97,8 +103,20 @@ describe("every new name follows the estate taxonomy", () => {
     // carrying form:"plan-parents", not a name per form. These are the words
     // that would show somebody had done it anyway.
     for (const name of current) {
-      for (const variant of ["home", "footer", "hero", "web", "mobile", "parents", "self", "desktop"]) {
-        expect(name.split("_"), `${name} names a variant: ${variant}`).not.toContain(variant);
+      for (const variant of [
+        "home",
+        "footer",
+        "hero",
+        "web",
+        "mobile",
+        "parents",
+        "self",
+        "desktop",
+      ]) {
+        expect(
+          name.split("_"),
+          `${name} names a variant: ${variant}`,
+        ).not.toContain(variant);
       }
     }
   });
