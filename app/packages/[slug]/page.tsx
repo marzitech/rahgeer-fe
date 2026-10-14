@@ -13,6 +13,7 @@ import { PackageWhyTour } from "@/components/features/packages/PackageWhyTour";
 import { PriceCallbackCard } from "@/components/features/packages/PriceCallbackCard";
 import { getHomeContent, getTrip, getTrips } from "@/lib/content/fetchers";
 import { normalizePackageDetail } from "@/lib/content/package-detail";
+import { RichText } from "@/components/ui/RichText";
 import { PACKAGE_CONTENT } from "@/lib/content/packages";
 
 /**
@@ -65,9 +66,10 @@ export default async function PackagePage({
           <div className="mx-auto mt-8 grid max-w-6xl gap-6 px-4 lg:grid-cols-[1fr_25rem] lg:items-start">
             <div className="min-w-0">
               {pkg.summary ? (
-                <p className="mb-6 text-base leading-relaxed text-gray-700">
-                  {pkg.summary}
-                </p>
+                <RichText
+                  value={pkg.summary}
+                  className="mb-6 text-base leading-relaxed text-gray-700"
+                />
               ) : null}
               <PackageWhyTour items={pkg.whyTour} />
             </div>

@@ -8,6 +8,8 @@
  */
 
 import { apiFetch, session } from "./client";
+import { track } from "@/lib/analytics";
+import { LEAD_EVENT, leadProps, leadTraits } from "@/lib/analytics/lead";
 
 // --- itineraries ------------------------------------------------------------
 
@@ -252,19 +254,50 @@ export const listPackages = (destination?: string) =>
     `/api/v1/packages/${destination ? `?destination=${encodeURIComponent(destination)}` : ""}`,
   );
 
-export const createPackageRequest = (body: Record<string, unknown>) =>
-  apiFetch<{ request: unknown; matches: unknown[] }>(
+/**
+ * Tell GANGADHAR that this visitor just became a lead.
+ *
+ * Done here, where every form's submission already passes, rather than in
+ * each of the five components that collect one — a form added later is
+ * covered without anyone remembering to.
+ *
+ * Never awaited and never allowed to throw: the enquiry is already saved
+ * in rahgeer-be, emailed to ops and written to the sheet, and a tracking
+ * hiccup must not turn a successful submission into an error on screen.
+ */
+function trackLead(body: Record<string, unknown>): void {
+  try {
+    const traits = leadTraits(body);
+    if (!traits) return;
+    track(LEAD_EVENT, leadProps(body), { traits, urgent: true });
+  } catch {
+    // Analytics is never worth a broken form.
+  }
+}
+
+export const createPackageRequest = async (body: Record<string, unknown>) => {
+  const result = await apiFetch<{ request: unknown; matches: unknown[] }>(
     "/api/v1/package-requests/",
     {
       method: "POST",
       body,
     },
   );
+  trackLead(body);
+  return result;
+};
 
 // --- enquiries --------------------------------------------------------------
 
-export const createEnquiry = (body: Record<string, unknown>) =>
-  apiFetch<{ id: string }>("/api/v1/enquiries/", { method: "POST", body });
+export const createEnquiry = async (body: Record<string, unknown>) => {
+  const result = await apiFetch<{ id: string }>("/api/v1/enquiries/", {
+    method: "POST",
+    body,
+  });
+  // Only once the backend has it: a failed submission is not a lead.
+  trackLead(body);
+  return result;
+};
 
 // --- auth & profile ---------------------------------------------------------
 

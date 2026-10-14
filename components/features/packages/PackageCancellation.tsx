@@ -1,4 +1,5 @@
 import type { TitleBody } from "@/lib/content/package-detail";
+import { RichText } from "@/components/ui/RichText";
 
 /**
  * The cancellation policy.
@@ -34,9 +35,10 @@ export function PackageCancellation({ clauses }: { clauses: TitleBody[] }) {
                   </h3>
                 ) : null}
                 {clause.body ? (
-                  <p className="mt-1.5 text-sm leading-relaxed whitespace-pre-line text-gray-600 sm:text-[0.9375rem]">
-                    {clause.body}
-                  </p>
+                  <RichText
+                    value={clause.body}
+                    className="mt-1.5 text-sm leading-relaxed text-gray-600 sm:text-[0.9375rem]"
+                  />
                 ) : null}
               </div>
             </li>
