@@ -8,6 +8,7 @@ import { PackageHero } from "@/components/features/packages/PackageHero";
 import { PackageHighlights } from "@/components/features/packages/PackageHighlights";
 import { PackageItinerary } from "@/components/features/packages/PackageItinerary";
 import { PackagePriceTable } from "@/components/features/packages/PackagePriceTable";
+import { PackageTracking } from "@/components/features/packages/PackageTracking";
 import { PackageWhyTour } from "@/components/features/packages/PackageWhyTour";
 import { PriceCallbackCard } from "@/components/features/packages/PriceCallbackCard";
 import { getHomeContent, getTrip, getTrips } from "@/lib/content/fetchers";
@@ -50,6 +51,13 @@ export default async function PackagePage({
       <Header />
       {pkg ? (
         <main className="bg-cream-dark">
+          {/* Renders nothing; the page stays a server component. */}
+          <PackageTracking
+            slug={pkg.slug}
+            title={pkg.title}
+            destination={pkg.destination}
+            priceFromInr={pkg.priceFromInr}
+          />
           <PackageHero pkg={pkg} />
 
           {/* Why Tour and the price card share a row on a desktop, as the

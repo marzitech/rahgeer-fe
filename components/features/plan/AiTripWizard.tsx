@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,6 +25,7 @@ import {
   type ItineraryIntake,
 } from "@/lib/api/endpoints";
 import { ApiError } from "@/lib/api/client";
+import { initialProgress, progressReducer } from "@/lib/api/progress";
 import { streamItineraryProgress } from "@/lib/api/stream";
 import {
   reverseGeocodeCity,
@@ -33,6 +34,7 @@ import {
 } from "@/lib/geocode";
 import { hasInAppHistory } from "@/lib/navDepth";
 import { useIsAppWebView } from "@/components/providers/AppWebViewProvider";
+import { GenerationProgress } from "@/components/features/plan/GenerationProgress";
 import { TripPlanDossier } from "@/components/features/plan/TripPlanDossier";
 
 /** AI trip-planner wizard (design: Step 1 of 9 — destination picker).
@@ -1164,7 +1166,11 @@ export function AiTripWizard() {
   const [generation, setGeneration] = useState<
     "idle" | "generating" | "failed"
   >("idle");
-  const [generationStep, setGenerationStep] = useState("");
+  const [progress, dispatchProgress] = useReducer(
+    progressReducer,
+    1,
+    initialProgress,
+  );
   // Set only when the failure has a more honest story than the generic
   // "something went wrong" — today that's the create throttle (429).
   const [failureMessage, setFailureMessage] = useState<string | null>(null);
@@ -1310,7 +1316,9 @@ export function AiTripWizard() {
      geocoder has no match (or is unreachable). */
   const customOption =
     trimmedQuery.length >= 2 &&
-    !filtered.some((d) => d.name.toLowerCase() === trimmedQuery.toLowerCase()) &&
+    !filtered.some(
+      (d) => d.name.toLowerCase() === trimmedQuery.toLowerCase(),
+    ) &&
     !suggestions.some(
       (s) =>
         s.value.toLowerCase() === trimmedQuery.toLowerCase() ||
@@ -1375,8 +1383,9 @@ export function AiTripWizard() {
   async function generateItinerary() {
     // Contact is captured later at the download-gate, so generation runs
     // anonymously — no name/phone collected here.
+    const nights = DURATION_NIGHTS[duration ?? ""] ?? 4;
     setGeneration("generating");
-    setGenerationStep("");
+    dispatchProgress({ event: "reset", expectedDays: nights + 1 });
     setFailureMessage(null);
     try {
       const monthNumber =
@@ -1385,7 +1394,7 @@ export function AiTripWizard() {
       const { itinerary: created } = await createItinerary({
         destination: destination ?? "",
         travel_month: monthNumber,
-        duration_nights: DURATION_NIGHTS[duration ?? ""] ?? 4,
+        duration_nights: nights,
         departure_city: departure ?? "",
         group_type: GROUP_TYPE_MAP[travelWith ?? ""] ?? "solo",
         ...(needsTravellerCounts ? { pax: totalTravellers } : {}),
@@ -1397,10 +1406,17 @@ export function AiTripWizard() {
         interests: experience ? [experience] : undefined,
         special_requests: notes.trim() || undefined,
       });
+      if (created.ai_status === "success") {
+        // The same trip was planned before: the stored plan is served
+        // instantly, so there is nothing to wait for.
+        setItinerary(await getItinerary(created.id));
+        setGeneration("idle");
+        return;
+      }
       unsubscribeRef.current = streamItineraryProgress(
         created.id,
         async (event) => {
-          if (typeof event.step === "string") setGenerationStep(event.step);
+          dispatchProgress(event);
           if (event.event === "completed") {
             try {
               setItinerary(await getItinerary(created.id));
@@ -1455,18 +1471,13 @@ export function AiTripWizard() {
   return (
     <div className="rounded-[28px] bg-[linear-gradient(to_bottom,#fcf3d5_0%,#ffffff_20%,#ffffff_80%,#f9d9e9_100%)] p-5 shadow-2xl md:p-8">
       {generation === "generating" ? (
-        /* Loading screen per design — plane, headline, live SSE step */
-        <div className="py-16 text-center md:py-24">
-          <span aria-hidden className="text-[40px]">
-            ✈️
-          </span>
-          <h1 className="font-display mx-auto mt-4 max-w-xs text-2xl font-bold md:text-[28px]">
-            We&apos;re thoughtfully planning your trip
-          </h1>
-          <p className="text-foreground/50 mt-3 text-sm">
-            {generationStep || "Balancing activities with rest time..."}
-          </p>
-        </div>
+        /* The trip appears as it is written: title, route, each day. */
+        <GenerationProgress
+          progress={progress}
+          destination={destination ?? ""}
+          monthLabel={travelMonth ?? ""}
+          heroImage={DESTINATIONS.find((d) => d.name === destination)?.image}
+        />
       ) : generation === "failed" ? (
         <div className="py-14 text-center md:py-20">
           <span aria-hidden className="text-[40px]">

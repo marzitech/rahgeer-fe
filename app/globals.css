@@ -177,6 +177,15 @@ body {
   }
 }
 
+/* The trip planner's loading screen: a day title or a hotel fades in as
+   the backend writes it. */
+@keyframes plan-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+}
+
 /* Copy written in the admin's rich text editor.
    Scoped to .rich-text so it styles only that copy and never leaks into
    the page's own layout. The tag list matches the sanitiser's allowlist

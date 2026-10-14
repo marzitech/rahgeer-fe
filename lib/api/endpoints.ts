@@ -179,7 +179,9 @@ export interface Itinerary {
 
 export async function createItinerary(intake: ItineraryIntake) {
   const result = await apiFetch<{
-    itinerary: { id: string };
+    // ai_status is "success" straight away when the same trip was planned
+    // before — the stored plan is served instead of generating again.
+    itinerary: { id: string; ai_status: Itinerary["ai_status"] };
     guest_session_id: string;
   }>("/api/v1/itineraries/", { method: "POST", body: intake });
   session.setGuestSessionId(result.guest_session_id); // persist for claim later
