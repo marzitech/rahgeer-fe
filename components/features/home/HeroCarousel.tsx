@@ -48,11 +48,16 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
 
   if (count === 0) return null;
 
+  // A deck of finished artwork (no site-rendered copy anywhere) runs truly
+  // full-bleed on phones: no side gutter, no bottom padding, no rounded
+  // corners — any card chrome around it reads as a gap in the design.
+  const fullBleed = banners.every((b) => !hasOverlaidCopy(b));
+
   return (
     // Top padding = the fixed header's exact height (h-16 / lg:h-20), so
     // the banner starts flush beneath it — the artwork's own inset frame
     // provides the breathing room.
-    <section className="bg-sand pt-16 pb-6 lg:pt-20">
+    <section className={cn("bg-sand pt-16 lg:pt-20", fullBleed ? "pb-0 sm:pb-6" : "pb-6")}>
       {/* Visually removed (Oct 2026) but kept for screen readers: the
           sections below are h2s, and this is the page's only h1. */}
       <h1 className="sr-only">Travel Confidently</h1>
@@ -63,9 +68,9 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
       >
-        {/* Full-bleed: the banner runs edge to edge. The phone keeps its
-            small gutter — there the slide is a card, not a photo frame. */}
-        <div className="relative w-full px-3 sm:px-0">
+        {/* The banner runs edge to edge. The phone keeps a small gutter
+            only when the slide is a copy card rather than a photo frame. */}
+        <div className={cn("relative w-full sm:px-0", !fullBleed && "px-3")}>
           {/* Desktop layers the slides and cross-fades between them. A
               phone cannot: the stacked layout has no fixed height, so the
               inactive ones are simply hidden. They stay mounted either
@@ -154,12 +159,12 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
   return (
     <div
       className={cn(
-        "flex flex-col-reverse overflow-hidden rounded-2xl sm:block sm:rounded-none sm:bg-transparent sm:ring-0",
+        "flex flex-col-reverse overflow-hidden sm:block sm:rounded-none sm:bg-transparent sm:ring-0",
         // The white card chrome exists to seat the copy block under the
         // photo. Finished artwork has no copy block — there the image IS
         // the card, edge to edge, and a white frame around it is just a
         // gap in the design.
-        hasOverlaidCopy(slide) && "bg-white/70 ring-1 ring-brand/10",
+        hasOverlaidCopy(slide) && "rounded-2xl bg-white/70 ring-1 ring-brand/10",
       )}
     >
       {/* Photo. In flow under the copy on a phone; the whole frame on a
