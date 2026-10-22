@@ -48,12 +48,11 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
 
   return (
     <section className="bg-sand pt-20 pb-6 lg:pt-24">
-      <h1 className="px-4 text-center text-[2rem] leading-[1.1] font-extrabold text-brand sm:text-[3.5rem]">
-        Travel Confidently
-      </h1>
+      {/* Visually removed (Oct 2026) but kept for screen readers: the
+          sections below are h2s, and this is the page's only h1. */}
+      <h1 className="sr-only">Travel Confidently</h1>
 
       <div
-        className="mt-6 sm:mt-8"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
