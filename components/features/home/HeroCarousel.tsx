@@ -95,17 +95,15 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
             {/* The hero's one call to action, pinned bottom-center over
                 the banner — on a desktop the banner fills the viewport,
                 so a CTA below it would sit under the fold, defeating a
-                button whose whole job is to pull people down the page. */}
+                button whose whole job is to pull people down the page.
+                Desktop only: on a phone the trips rail is already one
+                flick away, and a button under the card just pushed it
+                further down. */}
             <div className="pointer-events-none hidden sm:absolute sm:inset-x-0 sm:bottom-7 sm:z-10 sm:flex sm:justify-center">
               <ExploreHolidaysCta />
             </div>
           </div>
 
-          {/* On a phone the slide is a card, not a frame — the CTA sits
-              below it, where it never covers the artwork. */}
-          <div className="mt-4 flex justify-center sm:hidden">
-            <ExploreHolidaysCta />
-          </div>
 
           {count > 1 ? (
             /* Controls sit below the banner — on the sand, not over the
@@ -161,8 +159,9 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
           baked in) keeps its full canvas, or the crop cuts its text. */}
       <div
         className={cn(
-          "relative m-3 mt-0 overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
-          hasOverlaidCopy(slide) ? "aspect-[5/4]" : "aspect-[1920/1012]",
+          "relative m-3 overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
+          // mt-0 only under a copy block — its own bottom padding is the gap.
+          hasOverlaidCopy(slide) ? "mt-0 aspect-[5/4]" : "aspect-[1920/1012]",
         )}
       >
         <Image
@@ -208,7 +207,9 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
 
       </div>
 
-      {/* Copy. */}
+      {/* Copy. Skipped entirely on finished artwork — rendered empty, its
+          padding shows as a dead white strip above the photo on phones. */}
+      {hasOverlaidCopy(slide) ? (
       <div className="px-5 pt-5 pb-4 sm:absolute sm:inset-y-0 sm:left-0 sm:flex sm:max-w-[48%] sm:flex-col sm:justify-center sm:p-10 lg:p-14">
         {slide.headline ? (
           <p className="font-display text-brand-deep text-[1.4rem] leading-[1.15] font-extrabold sm:text-3xl lg:text-[2.66rem]">
@@ -226,6 +227,7 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
           </Link>
         ) : null}
       </div>
+      ) : null}
     </div>
   );
 }
