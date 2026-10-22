@@ -4,7 +4,6 @@ import {
   FALLBACK_EXPERT,
   FALLBACK_FAQS,
   FALLBACK_FEATURES,
-  FALLBACK_HERO_BANNERS,
   needsLegibilityWash,
   normalizeHomeContent,
   splitCaption,
@@ -75,19 +74,22 @@ describe("normalizeHomeContent", () => {
     expect(content.features.map((f) => f.title)).toEqual(["Real one"]);
   });
 
-  it("falls back per list when the backend has nothing published", () => {
-    // A hero with no slides is a broken-looking page, so the bundled
-    // content stands in rather than leaving a gap.
+  it("hides the hero and falls back per list when nothing is published", () => {
+    // The hero shows ONLY what the travel desk has published: a bundled
+    // stand-in banner goes stale the moment marketing updates the real
+    // one, so an unreachable backend hides the carousel instead
+    // (HeroCarousel renders nothing for an empty list). Copy lists like
+    // features still fall back — generic copy does not go stale.
     const content = normalizeHomeContent({ hero_banners: [], features: [] });
 
-    expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
+    expect(content.heroBanners).toEqual([]);
     expect(content.features).toEqual(FALLBACK_FEATURES);
   });
 
-  it("falls back completely when the payload is missing or malformed", () => {
+  it("does the same when the payload is missing or malformed", () => {
     for (const payload of [null, undefined, {}, "nope", { hero_banners: "x", features: 3 }]) {
       const content = normalizeHomeContent(payload);
-      expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
+      expect(content.heroBanners).toEqual([]);
       expect(content.features).toEqual(FALLBACK_FEATURES);
       expect(content.faqs).toEqual(FALLBACK_FAQS);
       expect(content.expert).toEqual(FALLBACK_EXPERT);
@@ -300,10 +302,4 @@ describe("the bundled copy and the backend seed", () => {
     ]);
   });
 
-  it("leaves the hero as it was", () => {
-    // The hero was reverted after the copy rewrite: the standalone
-    // heading, the photo caption and the original headline all stay.
-    const [hero] = FALLBACK_HERO_BANNERS;
-    expect(hero.headline).toBe("A Life Well Lived Deserves Journeys Well Planned.");
-  });
 });

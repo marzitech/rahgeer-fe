@@ -2,9 +2,10 @@
  * Home-page content that the travel desk edits in the admin dashboard.
  *
  * The backend is the source of truth, but it is never allowed to take the
- * page down: every read falls back to the bundled content below, so a
- * backend outage or an empty table shows last-known-good copy instead of
- * a gap where the hero should be.
+ * page down: copy lists (features, FAQs, the Mitr card) fall back to the
+ * bundled content below on an outage or an empty table. The hero banner
+ * is the exception — marketing artwork goes stale, so with nothing
+ * published the carousel hides instead of showing a bundled stand-in.
  */
 
 export type HeroBanner = {
@@ -50,20 +51,6 @@ export type HomeContent = {
   faqs: FaqEntry[];
   expert: Expert;
 };
-
-/** Shown when the backend has nothing published, or cannot be reached. */
-export const FALLBACK_HERO_BANNERS: HeroBanner[] = [
-  {
-    id: "fallback-hero",
-    imageUrl: "/images/figma/hero-ghats.jpg",
-    alt: "A Marzi Travel Mitr chatting with travellers on the ghats at sunset",
-    headline: "A Life Well Lived Deserves Journeys Well Planned.",
-    caption: "",
-    badgeText: "Coolest Community For 50+",
-    ctaLabel: "",
-    ctaHref: "",
-  },
-];
 
 export const FALLBACK_FEATURES: SiteFeature[] = [
   {
@@ -292,7 +279,10 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
     : [];
 
   return {
-    heroBanners: banners.length > 0 ? banners : FALLBACK_HERO_BANNERS,
+    // No bundled stand-in for the hero: a baked-in banner goes stale the
+    // moment marketing publishes a new one, so an empty list simply hides
+    // the carousel (HeroCarousel renders nothing for zero slides).
+    heroBanners: banners,
     features: features.length > 0 ? features : FALLBACK_FEATURES,
     faqs: faqs.length > 0 ? faqs : FALLBACK_FAQS,
     expert: toExpert(root.travel_mitrs),

@@ -27,7 +27,10 @@ export default async function HomePage() {
     <>
       <HomeTracking />
       <Header />
-      <main>
+      {/* The hero normally provides the clearance under the fixed header;
+          with no published banners it renders nothing, so the page itself
+          must offset the first band or its heading slides behind the bar. */}
+      <main className={content.heroBanners.length === 0 ? "pt-16 lg:pt-20" : undefined}>
         <HeroCarousel banners={content.heroBanners} />
         {/* One band, one map: the watermark has to run continuously
             behind both sections rather than restart at each one. */}
