@@ -11,7 +11,7 @@ import { formatPriceInr, type TripCard } from "@/lib/content/trips";
 import { cn } from "@/lib/utils";
 
 /**
- * "Trips you can join this month" — the curated group tours.
+ * "Explore Our Upcoming Holidays" — the curated group tours.
  *
  * A horizontal snap rail: three cards in view on a desktop, one and a
  * peek on a phone. The peek is the affordance — it is what tells someone
@@ -70,7 +70,7 @@ export function TripsThisMonth({ trips }: { trips: TripCard[] }) {
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <h2 className="font-display text-navy min-w-0 text-[1.6rem] leading-tight font-extrabold sm:text-[2.875rem]">
-            Trips you can join this month
+            Explore Our Upcoming Holidays
           </h2>
           <span className="font-label inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.6rem] font-bold tracking-[0.08em] text-white uppercase sm:text-[0.8rem]">
             <span aria-hidden className="text-[0.5rem]">

@@ -3,8 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { splitCaption, type HeroBanner } from "@/lib/content/home-content";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { track } from "@/lib/analytics";
+import { EVENTS } from "@/lib/analytics/events";
+import {
+  hasOverlaidCopy,
+  splitCaption,
+  type HeroBanner,
+} from "@/lib/content/home-content";
 import { cn } from "@/lib/utils";
 
 /**
@@ -42,27 +48,40 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
 
   if (count === 0) return null;
 
+  // A deck of finished artwork (no site-rendered copy anywhere) runs truly
+  // full-bleed on phones: no side gutter, no bottom padding, no rounded
+  // corners — any card chrome around it reads as a gap in the design.
+  const fullBleed = banners.every((b) => !hasOverlaidCopy(b));
+
   return (
-    <section className="bg-sand pt-20 pb-6 lg:pt-24">
-      <h1 className="px-4 text-center text-[2rem] leading-[1.1] font-extrabold text-brand sm:text-[3.5rem]">
-        Travel Confidently
-      </h1>
+    // Top padding = the fixed header's exact height (h-16 / lg:h-20), so
+    // the banner starts flush beneath it — the artwork's own inset frame
+    // provides the breathing room.
+    <section className={cn("bg-sand pt-16 lg:pt-20", fullBleed ? "pb-0 sm:pb-6" : "pb-6")}>
+      {/* Visually removed (Oct 2026) but kept for screen readers: the
+          sections below are h2s, and this is the page's only h1. */}
+      <h1 className="sr-only">Travel Confidently</h1>
 
       <div
-        className="mt-6 sm:mt-8"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
       >
-        {/* Full-bleed: the banner runs edge to edge. The phone keeps its
-            small gutter — there the slide is a card, not a photo frame. */}
-        <div className="relative w-full px-3 sm:px-0">
+        {/* The banner runs edge to edge. The phone keeps a small gutter
+            only when the slide is a copy card rather than a photo frame. */}
+        <div className={cn("relative w-full sm:px-0", !fullBleed && "px-3")}>
           {/* Desktop layers the slides and cross-fades between them. A
               phone cannot: the stacked layout has no fixed height, so the
               inactive ones are simply hidden. They stay mounted either
-              way, so advancing never flashes an empty frame. */}
-          <div className="sm:relative sm:aspect-[21/9] sm:overflow-hidden">
+              way, so advancing never flashes an empty frame.
+
+              The frame is marketing's standard hero canvas (1920×1012,
+              shared with the marzi-web hero film). It must match what
+              they export: any other ratio makes object-cover crop the
+              artwork — a 21/9 frame took the top of the subject's head
+              off the Oct 2026 banner. */}
+          <div className="sm:relative sm:aspect-[1920/1012] sm:overflow-hidden">
             {banners.map((slide, i) => (
               <div
                 key={slide.id}
@@ -77,7 +96,19 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
                 <Slide slide={slide} priority={i === 0} />
               </div>
             ))}
+
+            {/* The hero's one call to action, pinned bottom-center over
+                the banner — on a desktop the banner fills the viewport,
+                so a CTA below it would sit under the fold, defeating a
+                button whose whole job is to pull people down the page.
+                Desktop only: on a phone the trips rail is already one
+                flick away, and a button under the card just pushed it
+                further down. */}
+            <div className="pointer-events-none hidden sm:absolute sm:inset-x-0 sm:bottom-7 sm:z-10 sm:flex sm:justify-center">
+              <ExploreHolidaysCta />
+            </div>
           </div>
+
 
           {count > 1 ? (
             /* Controls sit below the banner — on the sand, not over the
@@ -108,12 +139,48 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
   );
 }
 
+/** "Explore Our Upcoming Holidays ↓" — scrolls to the trips rail. A plain
+ *  anchor: HashScroll smooth-scrolls same-page hashes (respecting reduced
+ *  motion) and scroll-padding-top clears the fixed header. */
+function ExploreHolidaysCta() {
+  return (
+    <a
+      href="#trips"
+      onClick={() => track(EVENTS.TRAVEL_CTA_CLICKED, { cta: "explore-holidays", section: "hero" })}
+      className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-deep sm:text-base"
+    >
+      Explore Our Upcoming Holidays
+      <ChevronDown aria-hidden className="size-4 sm:size-5" />
+    </a>
+  );
+}
+
 function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
   return (
-    <div className="flex flex-col-reverse overflow-hidden rounded-2xl bg-white/70 ring-1 ring-brand/10 sm:block sm:rounded-none sm:bg-transparent sm:ring-0">
+    <div
+      className={cn(
+        "flex flex-col-reverse overflow-hidden sm:block sm:rounded-none sm:bg-transparent sm:ring-0",
+        // The white card chrome exists to seat the copy block under the
+        // photo. Finished artwork has no copy block — there the image IS
+        // the card, edge to edge, and a white frame around it is just a
+        // gap in the design.
+        hasOverlaidCopy(slide) && "rounded-2xl bg-white/70 ring-1 ring-brand/10",
+      )}
+    >
       {/* Photo. In flow under the copy on a phone; the whole frame on a
-          desktop, with the copy laid over its left third. */}
-      <div className="relative m-3 mt-0 aspect-[5/4] overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none">
+          desktop, with the copy laid over its left third. The phone's 5:4
+          crop is only safe on a plain photo — finished artwork (copy
+          baked in) keeps its full canvas, or the crop cuts its text. */}
+      <div
+        className={cn(
+          "relative overflow-hidden sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
+          // Inset with rounded corners inside the copy card; full-bleed
+          // when the artwork is the card (the outer rounded-2xl clips it).
+          hasOverlaidCopy(slide)
+            ? "m-3 mt-0 aspect-[5/4] rounded-xl"
+            : "aspect-[1920/1012]",
+        )}
+      >
         <Image
           src={slide.imageUrl}
           alt={slide.alt || slide.headline || "Marzi Holidays"}
@@ -124,8 +191,12 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         />
         {/* A LIGHT wash, not a dark scrim: the headline is brand maroon on
             desktop, so the left of the photo has to stay pale whatever
-            photo ops uploads. Not needed on mobile — nothing sits on it. */}
-        <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
+            photo ops uploads. Not needed on mobile — nothing sits on it —
+            nor on a slide whose copy is baked into the artwork (empty
+            headline/CTA): there it only fades the image's own text. */}
+        {hasOverlaidCopy(slide) ? (
+          <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
+        ) : null}
 
         {slide.badgeText ? (
           <span
@@ -153,7 +224,9 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
 
       </div>
 
-      {/* Copy. */}
+      {/* Copy. Skipped entirely on finished artwork — rendered empty, its
+          padding shows as a dead white strip above the photo on phones. */}
+      {hasOverlaidCopy(slide) ? (
       <div className="px-5 pt-5 pb-4 sm:absolute sm:inset-y-0 sm:left-0 sm:flex sm:max-w-[48%] sm:flex-col sm:justify-center sm:p-10 lg:p-14">
         {slide.headline ? (
           <p className="font-display text-brand-deep text-[1.4rem] leading-[1.15] font-extrabold sm:text-3xl lg:text-[2.66rem]">
@@ -171,6 +244,7 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
           </Link>
         ) : null}
       </div>
+      ) : null}
     </div>
   );
 }

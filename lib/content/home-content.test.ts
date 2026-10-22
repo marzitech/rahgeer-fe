@@ -4,9 +4,10 @@ import {
   FALLBACK_EXPERT,
   FALLBACK_FAQS,
   FALLBACK_FEATURES,
-  FALLBACK_HERO_BANNERS,
+  hasOverlaidCopy,
   normalizeHomeContent,
   splitCaption,
+  type HeroBanner,
 } from "./home-content";
 
 describe("normalizeHomeContent", () => {
@@ -73,19 +74,22 @@ describe("normalizeHomeContent", () => {
     expect(content.features.map((f) => f.title)).toEqual(["Real one"]);
   });
 
-  it("falls back per list when the backend has nothing published", () => {
-    // A hero with no slides is a broken-looking page, so the bundled
-    // content stands in rather than leaving a gap.
+  it("hides the hero and falls back per list when nothing is published", () => {
+    // The hero shows ONLY what the travel desk has published: a bundled
+    // stand-in banner goes stale the moment marketing updates the real
+    // one, so an unreachable backend hides the carousel instead
+    // (HeroCarousel renders nothing for an empty list). Copy lists like
+    // features still fall back — generic copy does not go stale.
     const content = normalizeHomeContent({ hero_banners: [], features: [] });
 
-    expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
+    expect(content.heroBanners).toEqual([]);
     expect(content.features).toEqual(FALLBACK_FEATURES);
   });
 
-  it("falls back completely when the payload is missing or malformed", () => {
+  it("does the same when the payload is missing or malformed", () => {
     for (const payload of [null, undefined, {}, "nope", { hero_banners: "x", features: 3 }]) {
       const content = normalizeHomeContent(payload);
-      expect(content.heroBanners).toEqual(FALLBACK_HERO_BANNERS);
+      expect(content.heroBanners).toEqual([]);
       expect(content.features).toEqual(FALLBACK_FEATURES);
       expect(content.faqs).toEqual(FALLBACK_FAQS);
       expect(content.expert).toEqual(FALLBACK_EXPERT);
@@ -184,6 +188,45 @@ describe("normalizeHomeContent", () => {
   });
 });
 
+/**
+ * The hero's light sand wash exists to keep the photo's left pale under the
+ * SITE-rendered maroon headline/CTA. Marketing also uploads banners with the
+ * copy baked into the artwork (headline/CTA fields left empty) — laying the
+ * wash over those faded the image's own full-contrast text (home hero,
+ * Oct 2026). The wash must only render when there is overlaid copy to protect.
+ */
+describe("hasOverlaidCopy", () => {
+  const banner = (overrides: Partial<HeroBanner>): HeroBanner => ({
+    id: "b",
+    imageUrl: "https://cdn.example/banner.webp",
+    alt: "",
+    headline: "",
+    caption: "",
+    badgeText: "",
+    ctaLabel: "",
+    ctaHref: "",
+    ...overrides,
+  });
+
+  it("washes a slide whose headline the site renders over the photo", () => {
+    expect(hasOverlaidCopy(banner({ headline: "Travel Confidently" }))).toBe(true);
+  });
+
+  it("washes a slide with a rendered CTA, even without a headline", () => {
+    expect(hasOverlaidCopy(banner({ ctaLabel: "Plan my trip", ctaHref: "/enquiry" }))).toBe(
+      true,
+    );
+  });
+
+  it("leaves a copy-baked-in banner untouched (empty headline and CTA)", () => {
+    expect(hasOverlaidCopy(banner({ badgeText: "ONLY FOR 50 & ABOVE" }))).toBe(false);
+  });
+
+  it("ignores a CTA missing its link — the button never renders then", () => {
+    expect(hasOverlaidCopy(banner({ ctaLabel: "Plan my trip" }))).toBe(false);
+  });
+});
+
 describe("splitCaption", () => {
   it("marks the *starred* phrase so the design's accent colour can apply", () => {
     expect(splitCaption("Mrs. & Mr. Pandya in Paris for their *30th Anniversary*")).toEqual([
@@ -259,10 +302,4 @@ describe("the bundled copy and the backend seed", () => {
     ]);
   });
 
-  it("leaves the hero as it was", () => {
-    // The hero was reverted after the copy rewrite: the standalone
-    // heading, the photo caption and the original headline all stay.
-    const [hero] = FALLBACK_HERO_BANNERS;
-    expect(hero.headline).toBe("A Life Well Lived Deserves Journeys Well Planned.");
-  });
 });

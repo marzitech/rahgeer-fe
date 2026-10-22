@@ -53,6 +53,13 @@ describe("the event registry", () => {
     for (const legacy of LEGACY) expect(names).toContain(legacy);
   });
 
+  it("names the marketing CTA click", () => {
+    // The hero banner's "Explore Our Upcoming Holidays" button is the
+    // first emitter; WHICH button is a property (cta/section), never the
+    // name, so the next marketing CTA reuses this event.
+    expect(current).toContain("travel_cta_clicked");
+  });
+
   it("covers the whole enquiry funnel", () => {
     // The single most important conversion on this site, which emitted nothing
     // at all before. Each step is separate on purpose: "rejected" is our form
