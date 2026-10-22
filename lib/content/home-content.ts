@@ -299,6 +299,19 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
   };
 }
 
+/**
+ * Should the hero lay its light sand wash over this slide's photo?
+ *
+ * The wash keeps the photo's left pale so the SITE-rendered maroon
+ * headline and CTA stay legible whatever photo ops uploads. But marketing
+ * also uploads banners with the copy baked into the artwork, leaving the
+ * headline/CTA fields empty — there the wash has nothing to protect and
+ * only fades the image's own full-contrast text.
+ */
+export function needsLegibilityWash(slide: HeroBanner): boolean {
+  return Boolean(slide.headline || (slide.ctaLabel && slide.ctaHref));
+}
+
 export type CaptionRun = { text: string; emphasis: boolean };
 
 /**

@@ -5,8 +5,10 @@ import {
   FALLBACK_FAQS,
   FALLBACK_FEATURES,
   FALLBACK_HERO_BANNERS,
+  needsLegibilityWash,
   normalizeHomeContent,
   splitCaption,
+  type HeroBanner,
 } from "./home-content";
 
 describe("normalizeHomeContent", () => {
@@ -181,6 +183,45 @@ describe("normalizeHomeContent", () => {
 
     expect(content.heroBanners[0]).toMatchObject({ headline: "", badgeText: "", ctaHref: "" });
     expect(content.features[0]).toMatchObject({ description: "", icon: "" });
+  });
+});
+
+/**
+ * The hero's light sand wash exists to keep the photo's left pale under the
+ * SITE-rendered maroon headline/CTA. Marketing also uploads banners with the
+ * copy baked into the artwork (headline/CTA fields left empty) — laying the
+ * wash over those faded the image's own full-contrast text (home hero,
+ * Oct 2026). The wash must only render when there is overlaid copy to protect.
+ */
+describe("needsLegibilityWash", () => {
+  const banner = (overrides: Partial<HeroBanner>): HeroBanner => ({
+    id: "b",
+    imageUrl: "https://cdn.example/banner.webp",
+    alt: "",
+    headline: "",
+    caption: "",
+    badgeText: "",
+    ctaLabel: "",
+    ctaHref: "",
+    ...overrides,
+  });
+
+  it("washes a slide whose headline the site renders over the photo", () => {
+    expect(needsLegibilityWash(banner({ headline: "Travel Confidently" }))).toBe(true);
+  });
+
+  it("washes a slide with a rendered CTA, even without a headline", () => {
+    expect(needsLegibilityWash(banner({ ctaLabel: "Plan my trip", ctaHref: "/enquiry" }))).toBe(
+      true,
+    );
+  });
+
+  it("leaves a copy-baked-in banner untouched (empty headline and CTA)", () => {
+    expect(needsLegibilityWash(banner({ badgeText: "ONLY FOR 50 & ABOVE" }))).toBe(false);
+  });
+
+  it("ignores a CTA missing its link — the button never renders then", () => {
+    expect(needsLegibilityWash(banner({ ctaLabel: "Plan my trip" }))).toBe(false);
   });
 });
 

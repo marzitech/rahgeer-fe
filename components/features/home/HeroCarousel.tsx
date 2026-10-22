@@ -4,7 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { splitCaption, type HeroBanner } from "@/lib/content/home-content";
+import {
+  needsLegibilityWash,
+  splitCaption,
+  type HeroBanner,
+} from "@/lib/content/home-content";
 import { cn } from "@/lib/utils";
 
 /**
@@ -124,8 +128,12 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
         />
         {/* A LIGHT wash, not a dark scrim: the headline is brand maroon on
             desktop, so the left of the photo has to stay pale whatever
-            photo ops uploads. Not needed on mobile — nothing sits on it. */}
-        <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
+            photo ops uploads. Not needed on mobile — nothing sits on it —
+            nor on a slide whose copy is baked into the artwork (empty
+            headline/CTA): there it only fades the image's own text. */}
+        {needsLegibilityWash(slide) ? (
+          <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
+        ) : null}
 
         {slide.badgeText ? (
           <span
