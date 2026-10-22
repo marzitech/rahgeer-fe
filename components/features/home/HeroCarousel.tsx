@@ -47,7 +47,10 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
   if (count === 0) return null;
 
   return (
-    <section className="bg-sand pt-20 pb-6 lg:pt-24">
+    // Top padding = the fixed header's exact height (h-16 / lg:h-20), so
+    // the banner starts flush beneath it — the artwork's own inset frame
+    // provides the breathing room.
+    <section className="bg-sand pt-16 pb-6 lg:pt-20">
       {/* Visually removed (Oct 2026) but kept for screen readers: the
           sections below are h2s, and this is the page's only h1. */}
       <h1 className="sr-only">Travel Confidently</h1>
