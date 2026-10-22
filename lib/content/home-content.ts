@@ -290,15 +290,16 @@ export function normalizeHomeContent(payload: unknown): HomeContent {
 }
 
 /**
- * Should the hero lay its light sand wash over this slide's photo?
+ * Does the site render copy of its own over this slide's photo?
  *
- * The wash keeps the photo's left pale so the SITE-rendered maroon
- * headline and CTA stay legible whatever photo ops uploads. But marketing
- * also uploads banners with the copy baked into the artwork, leaving the
- * headline/CTA fields empty — there the wash has nothing to protect and
- * only fades the image's own full-contrast text.
+ * Two kinds of banner come out of the dashboard: a photo the site lays
+ * its maroon headline/CTA over, and finished artwork with the copy baked
+ * in (headline/CTA fields empty). The hero treats them differently — the
+ * light legibility wash and the mobile 5:4 photo crop are both safe only
+ * on the first kind; on finished artwork they fade or cut the art's own
+ * text.
  */
-export function needsLegibilityWash(slide: HeroBanner): boolean {
+export function hasOverlaidCopy(slide: HeroBanner): boolean {
   return Boolean(slide.headline || (slide.ctaLabel && slide.ctaHref));
 }
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
-  needsLegibilityWash,
+  hasOverlaidCopy,
   splitCaption,
   type HeroBanner,
 } from "@/lib/content/home-content";
@@ -65,8 +65,14 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
           {/* Desktop layers the slides and cross-fades between them. A
               phone cannot: the stacked layout has no fixed height, so the
               inactive ones are simply hidden. They stay mounted either
-              way, so advancing never flashes an empty frame. */}
-          <div className="sm:relative sm:aspect-[21/9] sm:overflow-hidden">
+              way, so advancing never flashes an empty frame.
+
+              The frame is marketing's standard hero canvas (1920×1012,
+              shared with the marzi-web hero film). It must match what
+              they export: any other ratio makes object-cover crop the
+              artwork — a 21/9 frame took the top of the subject's head
+              off the Oct 2026 banner. */}
+          <div className="sm:relative sm:aspect-[1920/1012] sm:overflow-hidden">
             {banners.map((slide, i) => (
               <div
                 key={slide.id}
@@ -116,8 +122,15 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
   return (
     <div className="flex flex-col-reverse overflow-hidden rounded-2xl bg-white/70 ring-1 ring-brand/10 sm:block sm:rounded-none sm:bg-transparent sm:ring-0">
       {/* Photo. In flow under the copy on a phone; the whole frame on a
-          desktop, with the copy laid over its left third. */}
-      <div className="relative m-3 mt-0 aspect-[5/4] overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none">
+          desktop, with the copy laid over its left third. The phone's 5:4
+          crop is only safe on a plain photo — finished artwork (copy
+          baked in) keeps its full canvas, or the crop cuts its text. */}
+      <div
+        className={cn(
+          "relative m-3 mt-0 overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
+          hasOverlaidCopy(slide) ? "aspect-[5/4]" : "aspect-[1920/1012]",
+        )}
+      >
         <Image
           src={slide.imageUrl}
           alt={slide.alt || slide.headline || "Marzi Holidays"}
@@ -131,7 +144,7 @@ function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
             photo ops uploads. Not needed on mobile — nothing sits on it —
             nor on a slide whose copy is baked into the artwork (empty
             headline/CTA): there it only fades the image's own text. */}
-        {needsLegibilityWash(slide) ? (
+        {hasOverlaidCopy(slide) ? (
           <div className="hidden sm:block sm:absolute sm:inset-0 sm:bg-gradient-to-r sm:from-sand/95 sm:from-0% sm:via-sand/75 sm:via-32% sm:to-transparent sm:to-70%" />
         ) : null}
 

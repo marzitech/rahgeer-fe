@@ -4,7 +4,7 @@ import {
   FALLBACK_EXPERT,
   FALLBACK_FAQS,
   FALLBACK_FEATURES,
-  needsLegibilityWash,
+  hasOverlaidCopy,
   normalizeHomeContent,
   splitCaption,
   type HeroBanner,
@@ -195,7 +195,7 @@ describe("normalizeHomeContent", () => {
  * wash over those faded the image's own full-contrast text (home hero,
  * Oct 2026). The wash must only render when there is overlaid copy to protect.
  */
-describe("needsLegibilityWash", () => {
+describe("hasOverlaidCopy", () => {
   const banner = (overrides: Partial<HeroBanner>): HeroBanner => ({
     id: "b",
     imageUrl: "https://cdn.example/banner.webp",
@@ -209,21 +209,21 @@ describe("needsLegibilityWash", () => {
   });
 
   it("washes a slide whose headline the site renders over the photo", () => {
-    expect(needsLegibilityWash(banner({ headline: "Travel Confidently" }))).toBe(true);
+    expect(hasOverlaidCopy(banner({ headline: "Travel Confidently" }))).toBe(true);
   });
 
   it("washes a slide with a rendered CTA, even without a headline", () => {
-    expect(needsLegibilityWash(banner({ ctaLabel: "Plan my trip", ctaHref: "/enquiry" }))).toBe(
+    expect(hasOverlaidCopy(banner({ ctaLabel: "Plan my trip", ctaHref: "/enquiry" }))).toBe(
       true,
     );
   });
 
   it("leaves a copy-baked-in banner untouched (empty headline and CTA)", () => {
-    expect(needsLegibilityWash(banner({ badgeText: "ONLY FOR 50 & ABOVE" }))).toBe(false);
+    expect(hasOverlaidCopy(banner({ badgeText: "ONLY FOR 50 & ABOVE" }))).toBe(false);
   });
 
   it("ignores a CTA missing its link — the button never renders then", () => {
-    expect(needsLegibilityWash(banner({ ctaLabel: "Plan my trip" }))).toBe(false);
+    expect(hasOverlaidCopy(banner({ ctaLabel: "Plan my trip" }))).toBe(false);
   });
 });
 
