@@ -36,4 +36,8 @@ export const EVENTS = {
   /** Blocked by our own validation — the customer never reached the backend. */
   TRAVEL_ENQUIRY_REJECTED: "travel_enquiry_rejected",
   TRAVEL_PACKAGE_VIEWED: "travel_package_viewed",
+  /** A marketing CTA was clicked. Which one is carried as properties
+   *  ({ cta, section }), never the name — the hero's "Explore Our
+   *  Upcoming Holidays" button is the first emitter. */
+  TRAVEL_CTA_CLICKED: "travel_cta_clicked",
 } as const;

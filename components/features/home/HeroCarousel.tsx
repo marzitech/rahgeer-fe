@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { track } from "@/lib/analytics";
+import { EVENTS } from "@/lib/analytics/events";
 import {
   hasOverlaidCopy,
   splitCaption,
@@ -89,6 +91,20 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
                 <Slide slide={slide} priority={i === 0} />
               </div>
             ))}
+
+            {/* The hero's one call to action, pinned bottom-center over
+                the banner — on a desktop the banner fills the viewport,
+                so a CTA below it would sit under the fold, defeating a
+                button whose whole job is to pull people down the page. */}
+            <div className="pointer-events-none hidden sm:absolute sm:inset-x-0 sm:bottom-7 sm:z-10 sm:flex sm:justify-center">
+              <ExploreHolidaysCta />
+            </div>
+          </div>
+
+          {/* On a phone the slide is a card, not a frame — the CTA sits
+              below it, where it never covers the artwork. */}
+          <div className="mt-4 flex justify-center sm:hidden">
+            <ExploreHolidaysCta />
           </div>
 
           {count > 1 ? (
@@ -117,6 +133,22 @@ export function HeroCarousel({ banners }: { banners: HeroBanner[] }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/** "Explore Our Upcoming Holidays ↓" — scrolls to the trips rail. A plain
+ *  anchor: HashScroll smooth-scrolls same-page hashes (respecting reduced
+ *  motion) and scroll-padding-top clears the fixed header. */
+function ExploreHolidaysCta() {
+  return (
+    <a
+      href="#trips"
+      onClick={() => track(EVENTS.TRAVEL_CTA_CLICKED, { cta: "explore-holidays", section: "hero" })}
+      className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-deep sm:text-base"
+    >
+      Explore Our Upcoming Holidays
+      <ChevronDown aria-hidden className="size-4 sm:size-5" />
+    </a>
   );
 }
 
