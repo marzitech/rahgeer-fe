@@ -152,16 +152,28 @@ function ExploreHolidaysCta() {
 
 function Slide({ slide, priority }: { slide: HeroBanner; priority: boolean }) {
   return (
-    <div className="flex flex-col-reverse overflow-hidden rounded-2xl bg-white/70 ring-1 ring-brand/10 sm:block sm:rounded-none sm:bg-transparent sm:ring-0">
+    <div
+      className={cn(
+        "flex flex-col-reverse overflow-hidden rounded-2xl sm:block sm:rounded-none sm:bg-transparent sm:ring-0",
+        // The white card chrome exists to seat the copy block under the
+        // photo. Finished artwork has no copy block — there the image IS
+        // the card, edge to edge, and a white frame around it is just a
+        // gap in the design.
+        hasOverlaidCopy(slide) && "bg-white/70 ring-1 ring-brand/10",
+      )}
+    >
       {/* Photo. In flow under the copy on a phone; the whole frame on a
           desktop, with the copy laid over its left third. The phone's 5:4
           crop is only safe on a plain photo — finished artwork (copy
           baked in) keeps its full canvas, or the crop cuts its text. */}
       <div
         className={cn(
-          "relative m-3 overflow-hidden rounded-xl sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
-          // mt-0 only under a copy block — its own bottom padding is the gap.
-          hasOverlaidCopy(slide) ? "mt-0 aspect-[5/4]" : "aspect-[1920/1012]",
+          "relative overflow-hidden sm:absolute sm:inset-0 sm:m-0 sm:aspect-auto sm:rounded-none",
+          // Inset with rounded corners inside the copy card; full-bleed
+          // when the artwork is the card (the outer rounded-2xl clips it).
+          hasOverlaidCopy(slide)
+            ? "m-3 mt-0 aspect-[5/4] rounded-xl"
+            : "aspect-[1920/1012]",
         )}
       >
         <Image
