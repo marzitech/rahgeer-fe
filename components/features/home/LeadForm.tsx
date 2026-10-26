@@ -8,6 +8,7 @@ import { createEnquiry } from "@/lib/api/endpoints";
 import { getAttribution } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
+import { metaFunnel, setMetaAdvancedMatching } from "@/lib/meta-pixel";
 import { searchDestinations, type DestinationSuggestion } from "@/lib/geocode";
 
 const MONTHS = [
@@ -270,7 +271,18 @@ export function LeadForm({
         month ? `Preferred travel month: ${month}` : "",
         audience === "parents" ? "Booking for parents." : "",
       ].filter(Boolean);
-      await createEnquiry({
+      // One name for "which form was this", used by the backend field, the
+      // sheet column and Meta's lead_source alike. Three independently
+      // computed copies is how a funnel ends up comparing two different
+      // spellings of the same form.
+      const formKey =
+        formName ??
+        (audience === "yourself"
+          ? "plan-yourself"
+          : audience === "parents"
+            ? "plan-parents"
+            : "home-hero");
+      const created = await createEnquiry({
         full_name: fullName.trim(),
         phone: mobile,
         destination: destination.trim(),
@@ -279,13 +291,7 @@ export function LeadForm({
         source,
         // Which form converted — tracked as the Form column in the
         // ops leads Google Sheet.
-        form:
-          formName ??
-          (audience === "yourself"
-            ? "plan-yourself"
-            : audience === "parents"
-              ? "plan-parents"
-              : "home-hero"),
+        form: formKey,
         // Campaign attribution: persisted utm_* (72h first-touch) merged
         // with the live URL, plus promoter source/source_id — the backend
         // hoists standard UTMs to columns and keeps the raw dict.
@@ -294,6 +300,20 @@ export function LeadForm({
       // The conversion. This is the event a WhatsApp automation binds to, and
       // the one the whole funnel is measured against.
       track(EVENTS.TRAVEL_ENQUIRY_SUCCEEDED, funnelProps());
+
+      // ── And the same conversion, to Meta ──────────────────────────────
+      // Matching details FIRST: setMetaAdvancedMatching re-inits the pixel,
+      // so calling it before the event is what makes the Lead carry them.
+      // Both are hashed by fbq before anything leaves the browser.
+      setMetaAdvancedMatching({ phone: mobile, fullName: fullName.trim() });
+      // The enquiry id as Meta's event_id, NOT a fresh uuid: GANGADHAR sends
+      // this same lead through the Conversions API from the imported enquiry,
+      // and Meta deduplicates on (event_name, event_id). Two ids means every
+      // travel lead is counted twice — once by the browser, once by us.
+      metaFunnel.lead({
+        source: formKey,
+        eventId: typeof created?.id === "string" ? created.id : undefined,
+      });
       setState("success");
     } catch (error) {
       track(

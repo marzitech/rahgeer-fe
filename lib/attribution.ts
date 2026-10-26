@@ -16,10 +16,17 @@
  * - Promoter `source` / `source_id` are read ONLY from the live URL at
  *   submit time — never persisted — so an organic visit can't inherit a
  *   promoter from an earlier referred session.
+ * - Meta's `_fbc` (ad click) and `_fbp` (browser) are read from their own
+ *   cookies at submit time. They are NOT persisted here: Meta sets both with
+ *   a 90-day lifetime, so copying them into our 72h store would only make a
+ *   staler duplicate. They are what lets the server tell Meta, hours later,
+ *   which ad produced a lead the browser event may never have reported.
  *
  * SSR note: every entry point is guarded with `typeof window` since these
  * are imported from components that render on the server.
  */
+
+import { readMetaCookies } from "@/lib/meta-pixel";
 
 const TTL_MS = 72 * 60 * 60 * 1000; // 72 hours
 const UTM_STORAGE_KEY = "rahgeer_utm";
@@ -99,16 +106,59 @@ export function captureUtmFromUrl(): void {
 export function getAttribution(): AttributionParams {
   if (typeof window === "undefined") return {};
   const params = new URLSearchParams(window.location.search);
-  const out: AttributionParams = {
+  const utm: AttributionParams = {
     ...getStoredUtm(),
     ...utmParamsFrom(window.location.search),
   };
 
+  const identity: AttributionParams = {};
   const source = params.get("source");
   const sourceId = params.get("source_id");
   // "app" is the channel flag the mobile app uses (?source=app) — that is
   // LeadForm's `source` field, not promoter attribution.
-  if (source && source !== "app") out.source = source.slice(0, MAX_VALUE_LENGTH);
-  if (sourceId) out.source_id = sourceId.slice(0, MAX_VALUE_LENGTH);
+  if (source && source !== "app") identity.source = source.slice(0, MAX_VALUE_LENGTH);
+  if (sourceId) identity.source_id = sourceId.slice(0, MAX_VALUE_LENGTH);
+  const { fbc, fbp } = readMetaCookies();
+  if (fbc) identity.fbc = fbc.slice(0, MAX_VALUE_LENGTH);
+  if (fbp) identity.fbp = fbp.slice(0, MAX_VALUE_LENGTH);
+
+  return boundedAttribution(identity, utm);
+}
+
+/**
+ * The backend caps the attribution dict at MAX_KEYS and rejects the whole
+ * enquiry — a lost lead — when it is exceeded. So when there is more than
+ * fits, decide WHAT to drop here rather than letting the server decide
+ * whether to take the lead at all.
+ *
+ * Identity first (the click ids and the promoter, each of which is the only
+ * copy of something), then the named UTMs in the order a report reads them,
+ * then whatever custom keys a link invented. A fifteenth `utm_qr_batch` is
+ * worth less than knowing which ad was clicked.
+ */
+const UTM_PRIORITY = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+];
+
+export function boundedAttribution(
+  identity: AttributionParams,
+  utm: AttributionParams,
+): AttributionParams {
+  const ordered = [
+    ...Object.entries(identity),
+    ...UTM_PRIORITY.filter((key) => key in utm).map(
+      (key) => [key, utm[key]] as const,
+    ),
+    ...Object.entries(utm).filter(([key]) => !UTM_PRIORITY.includes(key)),
+  ];
+  const out: AttributionParams = {};
+  for (const [key, value] of ordered) {
+    if (Object.keys(out).length >= MAX_KEYS) break;
+    out[key] = value;
+  }
   return out;
 }

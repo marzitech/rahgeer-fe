@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
+import { metaFunnel } from "@/lib/meta-pixel";
 import type { Expert, SiteFeature } from "@/lib/content/home-content";
 import { iconSrc } from "@/lib/content/travel-icons";
 
@@ -107,9 +108,13 @@ function ExpertCard({ expert }: { expert: Expert }) {
           </p>
           <a
             href={`tel:${CALL_NUMBER}`}
-            onClick={() =>
-              track(EVENTS.CALL_CLICK_FOOTER, { section: "why_travel_with_us" })
-            }
+            onClick={() => {
+              track(EVENTS.CALL_CLICK_FOOTER, { section: "why_travel_with_us" });
+              metaFunnel.contact({
+                channel: "call",
+                placement: "why_travel_with_us",
+              });
+            }}
             className="bg-brand-deep hover:bg-brand mt-5 flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-white transition-colors"
           >
             Call Us Now
