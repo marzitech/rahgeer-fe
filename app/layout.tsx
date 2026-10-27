@@ -4,6 +4,7 @@ import { AppWebViewProvider } from "@/components/providers/AppWebViewProvider";
 import { AttributionCapture } from "@/components/AttributionCapture";
 import { GangadharTracker } from "@/components/GangadharTracker";
 import { HashScroll } from "@/components/HashScroll";
+import { MetaPixel } from "@/components/MetaPixel";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { isAppWebView } from "@/lib/app-webview";
@@ -69,6 +70,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         <HashScroll />
         <GangadharTracker />
+        <MetaPixel />
         <NavDepthTracker />
         <AttributionCapture />
         <AppWebViewProvider isApp={isApp}>{children}</AppWebViewProvider>

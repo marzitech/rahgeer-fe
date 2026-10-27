@@ -20,6 +20,7 @@
 import { useEffect } from "react";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
+import { metaFunnel } from "@/lib/meta-pixel";
 
 export function PackageTracking({
   slug,
@@ -43,6 +44,15 @@ export function PackageTracking({
           ? Math.round(priceFromInr * 100)
           : null,
       currency: "INR",
+    });
+    // The same view, told to Meta. Rupees rather than paise: `value` is a
+    // major-unit decimal on Meta's side, and sending paise would report a
+    // ₹45,000 trip as ₹45 lakh and wreck every ROAS figure in the account.
+    metaFunnel.viewContent({
+      id: slug,
+      title: title ?? null,
+      priceInr: priceFromInr ?? null,
+      kind: "package",
     });
     // Slug only: re-firing because a title arrived from a late fetch would
     // double-count one view.
