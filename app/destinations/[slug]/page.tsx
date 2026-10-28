@@ -52,7 +52,7 @@ export default async function DestinationPage({
           <div className="bg-marzi-purple/60 absolute inset-0" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#fdeef5]" />
 
-          <div className="relative mx-auto w-full max-w-[1192px] px-4 pt-32 pb-14 md:pt-40 md:pb-16">
+          <div className="relative mx-auto w-full max-w-[1192px] px-4 pt-32 pb-14 md:pt-40 md:pb-16 app:pt-10">
             <nav className="flex items-center gap-1.5 text-xs text-white/70">
               <Link href="/" className="hover:text-white">
                 Home
