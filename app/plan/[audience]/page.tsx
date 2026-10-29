@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Headset, Heart, Map, Plane, UserRound } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { LeadForm } from "@/components/features/home/LeadForm";
-import { canonicalUrl } from "@/lib/base-path";
 
 /** Planning page (design: Frame 2147224441) — reached from the home
  *  "Who are you planning for?" Start Planning CTAs. */
@@ -40,15 +38,6 @@ const TRUSTED_AVATARS = [
 
 export function generateStaticParams() {
   return Object.keys(AUDIENCES).map((audience) => ({ audience }));
-}
-
-// The layout's canonical (the zone root) would otherwise cascade onto this
-// page, so every route declares its own public marzi.life/holidays URL.
-export async function generateMetadata({
-  params,
-}: PageProps<"/plan/[audience]">): Promise<Metadata> {
-  const { audience } = await params;
-  return { alternates: { canonical: canonicalUrl(`/plan/${audience}`) } };
 }
 
 export default async function PlanPage({

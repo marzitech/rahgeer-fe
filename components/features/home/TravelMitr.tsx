@@ -1,4 +1,4 @@
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import { Calendar, Compass, FileText, Headset, House, Map } from "lucide-react";
 import { MitrHeading } from "./MitrHeading";
 

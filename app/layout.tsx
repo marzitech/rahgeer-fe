@@ -8,7 +8,6 @@ import { MetaPixel } from "@/components/MetaPixel";
 import { NavDepthTracker } from "@/components/NavDepthTracker";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { isAppWebView } from "@/lib/app-webview";
-import { canonicalUrl, PUBLIC_ORIGIN, withBasePath } from "@/lib/base-path";
 import "./globals.css";
 
 // The travel design system (Figma "Marzi World" → Travel): Bricolage
@@ -34,24 +33,18 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  // Absolute URLs in metadata resolve against the public origin, and the
-  // canonical is always the marzi.life/holidays zone — also on the
-  // holidays.marzi.life build, so search engines treat it as a duplicate.
-  // Child pages set their own `alternates.canonical` through canonicalUrl().
-  metadataBase: new URL(PUBLIC_ORIGIN),
-  alternates: { canonical: canonicalUrl("/") },
   title: "Marzi — Travel Confidently",
   description:
     "India's first dedicated travel platform for people above 50 — from planning to booking. Your Travel Mitr takes care of everything.",
-  manifest: withBasePath("/manifest.webmanifest"),
+  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Marzi",
   },
   icons: {
-    icon: withBasePath("/icon-192.png"),
-    apple: withBasePath("/apple-icon.png"),
+    icon: "/icon-192.png",
+    apple: "/apple-icon.png",
   },
 };
 

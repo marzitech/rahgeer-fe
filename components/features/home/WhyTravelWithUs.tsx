@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { metaFunnel } from "@/lib/meta-pixel";
