@@ -1,12 +1,10 @@
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { Faq } from "@/components/features/home/Faq";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
-import { canonicalUrl } from "@/lib/base-path";
 import { DESTINATION_CONTENT } from "@/lib/content/destinations";
 import { getHomeContent } from "@/lib/content/fetchers";
 import { FeaturedItineraries } from "./FeaturedItineraries";
@@ -25,15 +23,6 @@ export const revalidate = 60;
 
 export function generateStaticParams() {
   return Object.keys(DESTINATION_CONTENT).map((slug) => ({ slug }));
-}
-
-// The layout's canonical (the zone root) would otherwise cascade onto this
-// page, so every route declares its own public marzi.life/holidays URL.
-export async function generateMetadata({
-  params,
-}: PageProps<"/destinations/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
-  return { alternates: { canonical: canonicalUrl(`/destinations/${slug}`) } };
 }
 
 export default async function DestinationPage({
