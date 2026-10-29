@@ -6,7 +6,14 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { BASE_PATH, canonicalUrl, imageSrc, withBasePath } from "./base-path";
+import {
+  BASE_PATH,
+  canonicalUrl,
+  imageSrc,
+  prefixPath,
+  resolveBasePath,
+  withBasePath,
+} from "./base-path";
 
 describe("BASE_PATH", () => {
   it("is the /holidays mount point", () => {
@@ -74,5 +81,39 @@ describe("imageSrc", () => {
   it("passes a static import object through untouched", () => {
     const imported = { src: "/_next/static/media/a.png", height: 1, width: 1 };
     expect(imageSrc(imported)).toBe(imported);
+  });
+});
+
+describe("resolveBasePath", () => {
+  it("defaults to the /holidays zone when the variable is unset", () => {
+    expect(resolveBasePath(undefined)).toBe("/holidays");
+  });
+
+  it("serves at the root when the variable is '/' or empty", () => {
+    expect(resolveBasePath("/")).toBe("");
+    expect(resolveBasePath("")).toBe("");
+  });
+
+  it("normalises a missing leading slash and a trailing slash", () => {
+    expect(resolveBasePath("holidays")).toBe("/holidays");
+    expect(resolveBasePath("/holidays/")).toBe("/holidays");
+  });
+});
+
+describe("prefixPath at the root (the holidays.marzi.life build)", () => {
+  it("leaves paths untouched when the prefix is empty", () => {
+    expect(prefixPath("", "/images/destinations/kashmir.jpg")).toBe(
+      "/images/destinations/kashmir.jpg",
+    );
+    expect(prefixPath("", "/")).toBe("/");
+    expect(prefixPath("", "icon-192.png")).toBe("/icon-192.png");
+  });
+});
+
+describe("canonicalUrl is independent of where the build is served", () => {
+  it("always points at the marzi.life/holidays zone", () => {
+    expect(canonicalUrl("/packages/ladakh")).toBe(
+      "https://marzi.life/holidays/packages/ladakh",
+    );
   });
 });
