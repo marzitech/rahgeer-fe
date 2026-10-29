@@ -1,10 +1,21 @@
+import type { Metadata } from "next";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { SampleItineraryView } from "@/components/features/plan/SampleItineraryView";
+import { canonicalUrl } from "@/lib/base-path";
 
 /** Curated sample itinerary page — reached from an Explore-destinations
  *  card. Shows the itinerary teaser; the full plan is gated behind the
  *  download lead form. */
+// The layout's canonical (the zone root) would otherwise cascade onto this
+// page, so every route declares its own public marzi.life/holidays URL.
+export async function generateMetadata({
+  params,
+}: PageProps<"/itineraries/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  return { alternates: { canonical: canonicalUrl(`/itineraries/${slug}`) } };
+}
+
 export default async function SampleItineraryPage({
   params,
 }: PageProps<"/itineraries/[slug]">) {

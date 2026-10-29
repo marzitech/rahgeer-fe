@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { AiTripWizard } from "@/components/features/plan/AiTripWizard";
+import { canonicalUrl } from "@/lib/base-path";
 
 /** AI trip-planner wizard page — opened from the "Plan Trip using AI Trip
  *  planner" button on the planning pages. */
+// The layout's canonical (the zone root) would otherwise cascade onto this
+// page, so every route declares its own public marzi.life/holidays URL.
+export const metadata: Metadata = {
+  alternates: { canonical: canonicalUrl("/plan/ai") },
+};
+
 export default function AiPlanPage() {
   return (
     <>
