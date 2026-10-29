@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Download, Menu, X } from "lucide-react";
 import { PLAY_STORE_URL } from "@/lib/appStores";

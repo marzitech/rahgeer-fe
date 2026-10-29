@@ -3,8 +3,6 @@
  *  built for search-as-you-type. We only surface trip-sized places
  *  (countries, states, cities, islands…), not street addresses or POIs. */
 
-import { BASE_PATH } from "@/lib/base-path";
-
 export interface DestinationSuggestion {
   /** What the user sees, e.g. "Munnar, Kerala, India". */
   label: string;
@@ -54,7 +52,7 @@ export async function searchDestinations(
   // CORS policy blocks direct browser calls from our domain.
   // Country filtering happens client-side, so over-fetch to survive it.
   const res = await fetch(
-    `${BASE_PATH}/api/geocode/search?q=${encodeURIComponent(query)}&limit=${country ? 20 : 10}&lang=en`,
+    `/api/geocode/search?q=${encodeURIComponent(query)}&limit=${country ? 20 : 10}&lang=en`,
     { signal },
   );
   if (!res.ok) throw new Error(`Photon responded ${res.status}`);
@@ -97,7 +95,7 @@ export async function reverseGeocodeCity(
   signal?: AbortSignal,
 ): Promise<string | null> {
   const res = await fetch(
-    `${BASE_PATH}/api/geocode/reverse?lat=${lat}&lon=${lon}&lang=en`,
+    `/api/geocode/reverse?lat=${lat}&lon=${lon}&lang=en`,
     { signal },
   );
   if (!res.ok) throw new Error(`Photon responded ${res.status}`);
