@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import Link from "next/link";
 
 /* lucide-react v1 ships no brand icons — standard brand glyph paths inline. */

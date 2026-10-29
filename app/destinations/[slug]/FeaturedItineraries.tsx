@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { listPackages } from "@/lib/api/endpoints";

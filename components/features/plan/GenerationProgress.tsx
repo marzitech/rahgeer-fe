@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { BedDouble, Check } from "lucide-react";
 import { percentDone, type PlanProgress } from "@/lib/api/progress";
 
