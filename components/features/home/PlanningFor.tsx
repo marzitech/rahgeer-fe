@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { TrackedLink } from "@/components/TrackedLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EVENTS } from "@/lib/analytics/events";

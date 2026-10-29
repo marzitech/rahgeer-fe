@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { Sparkle } from "lucide-react";
 import { TalkToMitrButton } from "./TalkToMitrButton";
 

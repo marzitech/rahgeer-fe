@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
+import { withBasePath } from "@/lib/base-path";
 
 const STEPS = [
   {
@@ -60,7 +61,7 @@ export function HowItWorks() {
         aria-hidden
         className="absolute inset-0 bg-[length:520px] bg-repeat opacity-[0.07]"
         style={{
-          backgroundImage: "url('/images/textures/circular-pattern.png')",
+          backgroundImage: `url('${withBasePath("/images/textures/circular-pattern.png")}')`,
         }}
       />
       <div className="relative mx-auto max-w-[1192px] px-4">

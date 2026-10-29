@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Faq } from "@/components/features/home/Faq";
 import { Footer } from "@/components/features/home/Footer";
@@ -15,6 +16,7 @@ import { getHomeContent, getTrip, getTrips } from "@/lib/content/fetchers";
 import { normalizePackageDetail } from "@/lib/content/package-detail";
 import { RichText } from "@/components/ui/RichText";
 import { PACKAGE_CONTENT } from "@/lib/content/packages";
+import { canonicalUrl } from "@/lib/base-path";
 
 /**
  * Curated package page.
@@ -34,6 +36,15 @@ export async function generateStaticParams() {
     ...Object.keys(PACKAGE_CONTENT),
   ]);
   return [...slugs].map((slug) => ({ slug }));
+}
+
+// The layout's canonical (the zone root) would otherwise cascade onto this
+// page, so every route declares its own public marzi.life/holidays URL.
+export async function generateMetadata({
+  params,
+}: PageProps<"/packages/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  return { alternates: { canonical: canonicalUrl(`/packages/${slug}`) } };
 }
 
 export default async function PackagePage({
