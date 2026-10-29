@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { PackageDay } from "@/lib/content/package-detail";

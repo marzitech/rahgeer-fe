@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { track } from "@/lib/analytics";
@@ -9,6 +9,7 @@ import { EVENTS } from "@/lib/analytics/events";
 import { cn } from "@/lib/utils";
 import type { Expert } from "@/lib/content/home-content";
 import { CHAT_START, advanceChat, chatDelay, type ChatState } from "@/lib/chat-loop";
+import { withBasePath } from "@/lib/base-path";
 
 /**
  * "Bespoke Marzi Holidays" — the personalised-travel band.
@@ -260,7 +261,7 @@ export function TravelExpert({ expert }: { expert: Expert }) {
               aria-hidden
               className="pointer-events-none absolute inset-0 opacity-[0.24]"
               style={{
-                backgroundImage: "url('/images/textures/doodle-pattern.webp')",
+                backgroundImage: `url('${withBasePath("/images/textures/doodle-pattern.webp")}')`,
                 backgroundSize: "520px auto",
                 backgroundRepeat: "repeat",
               }}

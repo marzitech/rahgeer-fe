@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { isAppWebView } from "@/lib/app-webview";
 import { LeadForm } from "./LeadForm";
 import { TalkToMitrButton } from "./TalkToMitrButton";

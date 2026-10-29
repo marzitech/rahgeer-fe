@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/Image";
 import { Calendar, Check, Clock, MapPin, Phone, X } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { guessTripScope } from "@/components/features/home/LeadForm";
