@@ -1,4 +1,4 @@
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import type { TermDescription } from "@/lib/content/package-detail";
 
 /**

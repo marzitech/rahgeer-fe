@@ -1,19 +1,6 @@
 import type { NextConfig } from "next";
 
-import { resolveBasePath } from "./lib/base-path";
-
-const BASE_PATH = resolveBasePath(process.env.NEXT_PUBLIC_BASE_PATH);
-
 const nextConfig: NextConfig = {
-  /* Mount point. Unset → "/holidays": this app is a zone of marzi.life and
-     marzi-web proxies `/holidays/*` here. NEXT_PUBLIC_BASE_PATH="/" → the
-     root, for the holidays.marzi.life project (kept until the mobile app
-     release stops loading the subdomain in its WebView). Everything Next
-     emits (routes, chunks, next/image's endpoint, the rewrites below) is
-     prefixed; plain strings are not — see lib/base-path.ts, which reads the
-     same variable. */
-  ...(BASE_PATH ? { basePath: BASE_PATH } : {}),
-
   /* Trip photos and hero banners are uploaded in the admin dashboard and
      served from the Marzi media CDN, so next/image has to be told those
      hosts are allowed — without this every admin-uploaded image 400s.

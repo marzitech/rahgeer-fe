@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Users } from "lucide-react";

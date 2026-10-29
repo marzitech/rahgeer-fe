@@ -13,7 +13,7 @@ Next.js 16 (app router) · React 19 · TypeScript · Tailwind CSS 4
 ```bash
 cp .env.local.example .env.local   # points at the local backend
 npm install
-npm run dev                        # http://localhost:3000/holidays (NEXT_PUBLIC_BASE_PATH=/ for the root; see lib/base-path.ts)
+npm run dev                        # http://localhost:3000
 ```
 
 The backend must be running for API calls: `docker compose up` inside

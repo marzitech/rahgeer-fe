@@ -1,4 +1,4 @@
-import Image from "@/components/ui/Image";
+import Image from "next/image";
 import { Check, X } from "lucide-react";
 import { iconSrc } from "@/lib/content/travel-icons";
 import type { IconLabel } from "@/lib/content/package-detail";

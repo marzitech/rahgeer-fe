@@ -3,13 +3,11 @@ import { Footer } from "@/components/features/home/Footer";
 import { Header } from "@/components/features/home/Header";
 import { LeadForm } from "@/components/features/home/LeadForm";
 import { isAppWebView } from "@/lib/app-webview";
-import { canonicalUrl } from "@/lib/base-path";
 
 /** Standalone lead-capture landing page (campaign traffic) — just the
  *  planning lead form, nothing else. */
 
 export const metadata: Metadata = {
-  alternates: { canonical: canonicalUrl("/enquiry") },
   title: "Plan Your Trip — Marzi",
   description:
     "Tell us where you want to go and your Travel Mitr will call you to plan the whole trip — flights, hotels, visas and transfers.",
