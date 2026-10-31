@@ -9,6 +9,7 @@ import { TalkToMitrButton } from "@/components/features/home/TalkToMitrButton";
 import { ApiError } from "@/lib/api/client";
 import { createEnquiry } from "@/lib/api/endpoints";
 import type { PackageContent } from "@/lib/content/packages";
+import { isSoldOut, SOLD_OUT_LABEL } from "@/lib/content/sold-out";
 
 /** "Talk to a Travel Mitr" popup for a curated package — the lead-gate
  *  modal's warm card, trimmed to just Name + Mobile (never prefilled).
@@ -336,9 +337,15 @@ export function PackageDetail({ pkg }: { pkg: PackageContent }) {
             </div>
           ) : null}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <span className="bg-gold inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold">
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold ${
+                isSoldOut(pkg.slug) ? "bg-brand text-white ring-2 ring-white" : "bg-gold"
+              }`}
+            >
               <Check className="h-3.5 w-3.5" strokeWidth={3} />
-              Curated package · ready to book
+              {isSoldOut(pkg.slug)
+                ? `Curated package · ${SOLD_OUT_LABEL.toLowerCase()}`
+                : "Curated package · ready to book"}
             </span>
             <h1 className="font-display mt-3 text-2xl font-bold text-white md:text-[36px]">
               {pkg.title}
