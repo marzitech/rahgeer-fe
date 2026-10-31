@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, CalendarDays, Check } from "lucide-react";
 import type { PackageDetail } from "@/lib/content/package-detail";
+import { isSoldOut, SOLD_OUT_LABEL } from "@/lib/content/sold-out";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,6 +19,7 @@ export function PackageHero({ pkg }: { pkg: PackageDetail }) {
   const [index, setIndex] = useState(0);
   const images = pkg.gallery.length > 0 ? pkg.gallery : [""];
   const image = images[index];
+  const soldOut = isSoldOut(pkg.slug);
 
   return (
     <section className="bg-sand pt-24 pb-6 lg:pt-28 app:pt-6">
@@ -48,13 +50,21 @@ export function PackageHero({ pkg }: { pkg: PackageDetail }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-3 p-5 sm:gap-4 sm:p-10">
-            <span className="bg-sand-deep inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-black sm:text-[0.92rem]">
-              <Check className="text-brand-deep size-3.5" aria-hidden />
+            <span
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold sm:text-[0.92rem]",
+                soldOut ? "bg-brand text-white ring-2 ring-white" : "bg-sand-deep text-black",
+              )}
+            >
+              <Check
+                className={cn("size-3.5", soldOut ? "text-white/80" : "text-brand-deep")}
+                aria-hidden
+              />
               Curated package
-              <span aria-hidden className="text-brand-deep">
+              <span aria-hidden className={soldOut ? "text-white/70" : "text-brand-deep"}>
                 •
               </span>
-              Ready to book
+              {soldOut ? SOLD_OUT_LABEL : "Ready to book"}
             </span>
 
             <h1 className="font-display text-2xl leading-tight font-semibold text-white sm:text-[2.6rem]">

@@ -7,6 +7,7 @@ import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Users } from "luci
 import { track } from "@/lib/analytics";
 import { EVENTS } from "@/lib/analytics/events";
 import { nextSnapOffset } from "@/lib/content/rail";
+import { isSoldOut, SOLD_OUT_LABEL } from "@/lib/content/sold-out";
 import { formatPriceInr, type TripCard } from "@/lib/content/trips";
 import { cn } from "@/lib/utils";
 
@@ -178,6 +179,7 @@ function EdgeArrow({
 
 function TripCardView({ trip }: { trip: TripCard }) {
   const price = formatPriceInr(trip.priceFromInr);
+  const soldOut = isSoldOut(trip.slug);
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white">
@@ -194,6 +196,12 @@ function TripCardView({ trip }: { trip: TripCard }) {
           <div className="size-full bg-cream-dark" />
         )}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+
+        {soldOut ? (
+          <span className="font-label bg-brand absolute top-3 left-3 z-10 rounded-full px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-white uppercase shadow-lg ring-2 ring-white sm:text-xs">
+            {SOLD_OUT_LABEL}
+          </span>
+        ) : null}
 
         <div className="absolute inset-x-0 bottom-0 px-4 pb-3">
           <div className="flex items-end justify-between gap-2">
