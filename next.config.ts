@@ -14,6 +14,23 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  /* The site moved from holidays.marzi.life to marzi.life/holidays. Any
+     request that still arrives on the old subdomain is sent to the same path
+     under the new home (query strings carry over automatically), so old
+     links, bookmarks and search results keep working. Matching on host keeps
+     localhost and Vercel preview URLs unaffected. 308 = permanent, so search
+     engines move their index to the new URL. */
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "holidays.marzi.life" }],
+        destination: "https://marzi.life/holidays/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   /* Photon (photon.komoot.io) only allows certain origins via CORS, so the
      browser can't call it directly from our domain — destination search and
      reverse geocoding go through these same-origin proxies instead (query
